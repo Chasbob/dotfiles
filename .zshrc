@@ -42,6 +42,10 @@ plugins=(
     )
 
 source $ZSH/oh-my-zsh.sh
+
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
+
+
 for f in ~/.dotfiles/*; do source $f; done
 
 # User configuration
