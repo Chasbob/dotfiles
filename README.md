@@ -5,6 +5,12 @@ This repository contains copies of [oh my zsh](https://github.com/robbyrussell/o
 
 ## Install
 
+### Easy
+This method should work as long as you don't already have any of the files, you can just rename them before hand though.
+```curl https://raw.githubusercontent.com/Chasbob/dotfiles/master/docs/install.sh | bash```
+
+### The Other Way
+
 1. zsh must be installed on the system
 2. clone the repository as a bare repository into your home\
     ```git clone --bare https://github.com/Chasbob/dotfiles.git $HOME/.cfg```
