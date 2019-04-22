@@ -11,8 +11,10 @@ export ZSH="$HOME/.oh-my-zsh"
 # ZSH_THEME="robbyrussell"
 ZSH_THEME="powerlevel9k/powerlevel9k"
 DEFAULT_USER="charlie"
-
+setopt autonamedirs
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=()
+POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
+POWERLEVEL9K_SHORTEN_STRATEGY=truncate_to_unique
 
 DISABLE_AUTO_UPDATE="true"
 
@@ -30,23 +32,26 @@ ENABLE_CORRECTION="true"
 
 
 plugins=(
-    git
     docker-machine
     docker-compose
     docker
     history
-    vscode
     ssh-agent
     zsh-autosuggestions
     zsh-syntax-highlighting
+    shrink-path
     )
+
+
 
 source $ZSH/oh-my-zsh.sh
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
 
+setopt prompt_subst
+    PS1='%n@%m $(shrink_path -f)>'
 
-for f in ~/.dotfiles/*; do source $f; done
+#for f in ~/.dotfiles/*; do source $f; done
 
 # User configuration
 
@@ -60,8 +65,6 @@ if [[ -n $SSH_CONNECTION ]]; then
 else
   export EDITOR='vim'
 fi
-
-# ssh
 
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
