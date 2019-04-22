@@ -61,6 +61,9 @@ dkstats() {
 dkb() {
   docker exec -it $1 /bin/bash
 }
+dkub() {
+    docker run --rm -ti ubuntu bash
+}
 
 dkexe() {
   docker exec -it $1 $2
