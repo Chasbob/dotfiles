@@ -15,23 +15,11 @@ alias dkps="docker ps --format '{{.ID}} ~ {{.Names}} ~ {{.Status}} ~ {{.Image}}'
 alias dkpsp="docker ps --format '{{.Names}} ~ {{.Ports}}'"
 alias dkpsn="docker ps --format '{{.Names}}'"
 dma(){
-    if [ $1 != ""] [&& $2 != "" ]; then
-        echo "2"
         docker-machine create --driver generic \
         --generic-ip-address=$1 \
         --generic-ssh-key ~/.ssh/id_rsa \
         --generic-ssh-user charlie \
         $2
-    elif [ $1 != "" ]; then
-        echo "1"
-        docker-machine create --driver generic \
-        --generic-ip-address=$1 \
-        --generic-ssh-key ~/.ssh/id_rsa \
-        --generic-ssh-user charlie \
-        $1
-    else
-        echo "Illegal number of parameters"
-    fi
 }
 
 dkln() {
@@ -93,4 +81,9 @@ dcra() {
 
 dr(){
   docker restart $1 && docker logs -f $1
+}
+
+dms() {
+  eval $(docker-machine env $1)
+  echo $DOCKER_HOST
 }
