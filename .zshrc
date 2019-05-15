@@ -53,7 +53,7 @@ export SDKMAN_DIR="$HOME/.sdkman"
 PATH=$PATH:~/bin:~/tools/flutter/bin:~/tools/android_sdk_tools/bin
 
 # export ANDROID_HOME="/Users/charlie/tools"
-source <(kubectl completion zsh)
+#source <(kubectl completion zsh)
 
 # list IPv4 addresses
 alias inet="ifconfig|grep 'inet '"
