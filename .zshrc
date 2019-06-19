@@ -63,3 +63,4 @@ source ~/.dotfiles/aliases.sh
 source ~/.dotfiles/docker.sh
 source ~/.dotfiles/git.sh
 source ~/.dotfiles/proxmox.sh
+_byobu_sourced=1 . /usr/local/Cellar/byobu/5.127/bin/byobu-launch 2>/dev/null || true
