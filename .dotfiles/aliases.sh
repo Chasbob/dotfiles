@@ -12,7 +12,7 @@ fn() {
 }
 # run a task against all maven poms found
 all_pom() {
-    for pom in $(find . -name "pom.xml" 2>/dev/null)
+    for pom in $(find . -name "pom.xml" | awk '{ print length, $0 }' | sort -n -s | cut -d" " -f2- | tac 2>/dev/null)
     do
         mvn $1 -f $pom
     done
@@ -26,3 +26,4 @@ alias c="clear"
 alias nsl="nslookup"
 alias s="spotify"
 alias op="open ."
+alias cl="clear && l"
