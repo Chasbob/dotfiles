@@ -48,6 +48,11 @@ dkln() {
   docker logs -f `docker ps | grep $1 | awk '{print $1}'`
 }
 
+# grep container logs
+dlfg(){
+    docker logs -f $1 2>&1 | grep $2
+}
+
 dtest(){
   docker ps | grep $1 | awk '{print $1}'
 }
