@@ -16,3 +16,11 @@ qm(){
         echo "Give some arguments."
     fi
 }
+
+qm-ids(){
+    qm list | grep "[0-9]" | awk -F ' +' '{print $3}' | awk '{$1=$1};1'
+}
+
+new-vm(){
+    
+}
