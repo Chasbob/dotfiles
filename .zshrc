@@ -59,8 +59,8 @@ export NVM_DIR="$HOME/.nvm"
 
 PATH=$PATH:~/bin:~/tools/flutter/bin:~/tools/android_sdk_tools/bin
 
-source ~/.dotfiles/aliases.sh
-source ~/.dotfiles/docker.sh
-source ~/.dotfiles/git.sh
-source ~/.dotfiles/proxmox.sh
+source ~/.dotfiles/aliases.zsh
+source ~/.dotfiles/docker.zsh
+source ~/.dotfiles/git.zsh
+source ~/.dotfiles/proxmox.zsh
 _byobu_sourced=1 . /usr/local/Cellar/byobu/5.127/bin/byobu-launch 2>/dev/null || true
