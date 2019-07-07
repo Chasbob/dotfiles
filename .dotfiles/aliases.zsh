@@ -3,7 +3,7 @@
 
 # ssh and open port
 ssp(){
-    ssh -L $1\:localhost\:$1 $2
+    ssh -L "$1"\:localhost\:$1 $2
 }
 
 # find by name and hide errors
@@ -18,12 +18,22 @@ all_pom() {
     done
 }
 
+newMAC(){
+    ifconfig en0 | grep ether
+    MAC=$(openssl rand -hex 6 | sed 's/\(..\)/\1:/g; s/.$//')
+    # echo MAC="$MAC"
+    sudo ifconfig en0 ether "$MAC"
+    sudo ifconfig en0 down && sudo ifconfig en0 up
+    ifconfig en0 | grep ether
+}
+
 # list IPv4 addresses
 alias inet="ifconfig|grep 'inet '"
-# kill byobu
-alias reset-byobu="ps aux | grep byobu | awk '{print \$2}' | xargs kill"
 alias c="clear"
 alias nsl="nslookup"
 alias s="spotify"
 alias op="open ."
 alias cl="clear && l"
+alias wanip="dig @resolver1.opendns.com ANY myip.opendns.com +short"
+alias restart_en0='sudo ifconfig en0 down && sudo ifconfig en0 up'
+
