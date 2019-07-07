@@ -22,7 +22,7 @@ plugins=(
     docker-compose
     docker
     history
-    ssh-agent
+#    ssh-agent
     zsh-autosuggestions
     zsh-syntax-highlighting
     shrink-path
