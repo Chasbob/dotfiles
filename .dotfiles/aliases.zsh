@@ -34,6 +34,7 @@ alias nsl="nslookup"
 alias s="spotify"
 alias op="open ."
 alias cl="clear && l"
+alias cll="clear && ll"
 alias wanip="dig @resolver1.opendns.com ANY myip.opendns.com +short"
 alias restart_en0='sudo ifconfig en0 down && sudo ifconfig en0 up'
 
