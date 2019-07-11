@@ -2,23 +2,40 @@
 
 # proxmox qm
 # get vmid
-qmid(){
+qid(){
     qm list | grep " $1 " | awk '{print $1}'
 }
 # run qm commands on kirk
 qm(){
-    ssh -t kirk sudo qm $@ 2>/dev/null
+    ssh -t kirk "sudo qm $*" 2>/dev/null
 }
 
-qm-names(){
-    qm list | grep "" | awk {'printf ("%s\t%s\n",$1,$2)'}
+qidn(){
+    qm list | grep "" | awk \{'printf ("%s\t%s\n",$1,$2)'\}
 }
 
-qmt(){
-    qm list | grep -i " $2 " | awk '{print $1}' | xargs ssh -tt kirk "sudo qm $1 " 2>/dev/null
+qn(){
+    qm list | grep "\d" | awk \{'printf ("%s\n",$2)'\}
 }
 
-new-vm(){
-    VMID=$$
+qmn(){
+    VMID=$(qm list | grep -i " $2 " | awk '{print $1}')
+    #  | xargs -I VMID ssh -t kirk "sudo qm $1 VMID"
+    # qmid "$VMID"
+    echo "sudo qm $1 $VMID"
+    ssh -t kirk "sudo qm $1 $VMID" 2>/dev/null
+}
+
+newVM(){
+    VMID=$(jot -w %i -r 1 100000)
+    [ -n "$2" ] && VMID="$2"
+    # echo VMID: "$VMID"
+    # echo 2: "$2"
     ssh -t kirk "sudo qm clone 103 $VMID --name $1 && sudo qm start $VMID"
+}
+
+newNode(){
+    VMID=$(jot -w %i -r 1 100000)
+    [ -n "$2" ] && VMID="$2"
+    ssh -t kirk "sudo qm clone 500 $VMID --name $1 && sudo qm start $VMID"
 }
