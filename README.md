@@ -6,18 +6,19 @@ This repository contains copies of [oh my zsh](https://github.com/robbyrussell/o
 ## Install
 
 ### Easy
+
 This method should work as long as you don't already have any of the files, you can just rename them before hand though.
-```curl https://raw.githubusercontent.com/Chasbob/dotfiles/master/docs/install.sh | bash```
+`curl https://raw.githubusercontent.com/Chasbob/dotfiles/master/docs/install.sh | sh`
 
 ### The Other Way
 
 1. zsh must be installed on the system
 2. clone the repository as a bare repository into your home\
-    ```git clone --bare https://github.com/Chasbob/dotfiles.git $HOME/.cfg```
+    `git clone --bare https://github.com/Chasbob/dotfiles.git $HOME/.cfg`
 3. Define the config aliase\
-    ```alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'```
+    `alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'`
 4. Checkout the actual content from the bare repository to your $HOME:
-    ```config checkout```
+    `config checkout`
 
     ```bash
     error: The following untracked working tree files would be overwritten by checkout:
@@ -28,7 +29,7 @@ This method should work as long as you don't already have any of the files, you 
 
     This is because your $HOME folder might already have some stock configuration files which would be overwritten by Git. The solution is simple: back up the files if you care about them, remove them if you don't care. Here is a rough shortcut to move all the offending files automatically to a backup folder:
 
-    ```bash
+    ```sh
     mkdir -p .config-backup && \
     config checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | \
     xargs -I{} mv {} .config-backup/{}
@@ -38,7 +39,7 @@ This method should work as long as you don't already have any of the files, you 
     config checkout
 
 5. Set the flag showUntrackedFiles to no on this specific (local) repository:\
-    ```config config --local status.showUntrackedFiles no```\
+    `config config --local status.showUntrackedFiles no`  
 
 To add further files:
 
