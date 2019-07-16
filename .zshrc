@@ -2,7 +2,8 @@ zmodload zsh/zprof
 export ZSH="$HOME/.oh-my-zsh"
 export ZSH_CUSTOM=$HOME/.zsh_custom
 export TERM="xterm-256color"
-ZSH_THEME="robbyrussell"
+ZSH_THEME="powerlevel10k/powerlevel10k"
+POWERLEVEL9K_MODE='nerdfont-complete'
 
 DEFAULT_USER="charlie"
 
@@ -50,3 +51,4 @@ source ~/.dotfiles/docker.zsh
 source ~/.dotfiles/git.zsh
 source ~/.dotfiles/proxmox.zsh
 _byobu_sourced=1 . /usr/local/Cellar/byobu/5.127/bin/byobu-launch 2>/dev/null || true
+source ~/.purepower
