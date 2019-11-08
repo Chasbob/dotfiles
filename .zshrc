@@ -1,54 +1,52 @@
-zmodload zsh/zprof
-export ZSH="$HOME/.oh-my-zsh"
-export ZSH_CUSTOM=$HOME/.zsh_custom
-export TERM="xterm-256color"
-ZSH_THEME="powerlevel10k/powerlevel10k"
-POWERLEVEL9K_MODE='nerdfont-complete'
-
-DEFAULT_USER="charlie"
-
-DISABLE_AUTO_UPDATE="true"
-DISABLE_AUTO_TITLE="true"
-ENABLE_CORRECTION="true"
-
-plugins=(
-    docker-machine
-    docker-compose
-    docker
-    history
-    zsh-autosuggestions
-    zsh-syntax-highlighting
-)
-
-source $ZSH/oh-my-zsh.sh
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block, everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
 
-# You may need to manually set your language environment
+# # You may need to manually set your language environment
 export LANG=en_GB.UTF-8
 
 export EDITOR='vim'
 
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
-# #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+# load sdk on demand
+function sdk() {
+    export SDKMAN_DIR="$HOME/.sdkman"
+    [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+}
+# load nvm on demand
+function nvm() {
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
+    echo "Loaded nvm!"
+}
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# Darwin is the architecture name for macOS systems
+# # Darwin is the architecture name for macOS systems
 if [[ "$(uname)" == "Darwin" ]]; then
     test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 fi
-
-PATH=$PATH:~/bin:~/tools/flutter/bin:~/tools/android_sdk_tools/bin
 
 source ~/.dotfiles/aliases.zsh
 source ~/.dotfiles/docker.zsh
 source ~/.dotfiles/git.zsh
 source ~/.dotfiles/proxmox.zsh
-_byobu_sourced=1 . /usr/local/Cellar/byobu/5.127/bin/byobu-launch 2>/dev/null || true
-source ~/.purepower
+source ~/perl5/perlbrew/etc/bashrc
+source ~/powerlevel10k/powerlevel10k.zsh-theme
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+source ~/.zsh_custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.zsh_custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
+
+autoload -Uz compinit && compinit
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+
+export PATH=$PATH:~/.local/bin
