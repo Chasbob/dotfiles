@@ -42,9 +42,9 @@ source ~/powerlevel10k/powerlevel10k.zsh-theme
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-source ~/.zsh_custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-source ~/.zsh_custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+#ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
 
 autoload -Uz compinit && compinit
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
