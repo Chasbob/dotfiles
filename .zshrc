@@ -32,19 +32,17 @@ if [[ "$(uname)" == "Darwin" ]]; then
     test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 fi
 
-source ~/.dotfiles/aliases.zsh
-source ~/.dotfiles/docker.zsh
-source ~/.dotfiles/git.zsh
-source ~/.dotfiles/proxmox.zsh
-source ~/perl5/perlbrew/etc/bashrc
-source ~/powerlevel10k/powerlevel10k.zsh-theme
-
+source ~/.dotfiles/aliases/general.zsh
+source ~/.dotfiles/aliases/docker.zsh
+source ~/.dotfiles/aliases/git.zsh
+source ~/.dotfiles/aliases/proxmox.zsh
+source ~/.dotfiles/zsh/powerlevel10k/powerlevel10k.zsh-theme
+source ~/.dotfiles/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.dotfiles/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fpath=(~/.dotfiles/zsh/zsh-completions/src $fpath)
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-#ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
 
 autoload -Uz compinit && compinit
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
