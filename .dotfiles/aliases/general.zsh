@@ -3,19 +3,12 @@
 
 # ssh and open port
 ssp(){
-    ssh -L "$1"\:localhost\:$1 $2
+    ssh -L "$1"\:localhost\:"$1" "$2"
 }
 
 # find by name and hide errors
 fn() {
-    find . -name $1 2>/dev/null
-}
-# run a task against all maven poms found
-all_pom() {
-    for pom in $(find . -name "pom.xml" | awk '{ print length, $0 }' | sort -n -s | cut -d" " -f2- | tac 2>/dev/null)
-    do
-        mvn $1 -f $pom
-    done
+    find . -name "$1" 2>/dev/null
 }
 
 newMAC(){
@@ -33,8 +26,10 @@ alias c="clear"
 alias nsl="nslookup"
 alias s="spotify"
 alias op="open ."
+alias l="ls -lh"
+alias la="ls -lah"
 alias cl="clear && l"
-alias cll="clear && ll"
+alias cla="clear && la"
 alias wanip="dig @resolver1.opendns.com ANY myip.opendns.com +short"
 alias restart_en0='sudo ifconfig en0 down && sudo ifconfig en0 up'
 
