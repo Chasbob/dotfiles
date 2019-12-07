@@ -25,7 +25,12 @@ dmus() {
 # docker compose
 alias dc='docker-compose'
 alias dcc='docker-compose config'
-alias duplf="docker-compose up -d && docker-compose logs -f"
+alias dcuplf="docker-compose up -d && docker-compose logs -f"
+alias dcup="docker-compose up"
+alias dcupd="docker-compose up -d"
+alias dcps="docker-compose ps"
+alias dclf="docker-compose logs -f"
+alias dcdn="docker-compose down"
 dcra() {
   docker-compose up -d --force-recreate
 }
