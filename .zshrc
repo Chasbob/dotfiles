@@ -45,6 +45,9 @@ fpath=(~/.dotfiles/zsh/zsh-completions/src $fpath)
 
 
 autoload -Uz compinit && compinit
+
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+zstyle ':completion:*' menu select
+
 
 export PATH=$PATH:~/.local/bin
