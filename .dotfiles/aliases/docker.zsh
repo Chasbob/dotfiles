@@ -22,6 +22,12 @@ dmus() {
       unset $(env | grep DOCKER | awk -F'=' '{print $1}' | xargs)
 }
 
+# add hetzner docker machine
+
+dmah() {
+	envchain hetzner docker-machine create --driver hetzner "$1"
+}
+
 # docker compose
 alias dc='docker-compose'
 alias dcc='docker-compose config'
