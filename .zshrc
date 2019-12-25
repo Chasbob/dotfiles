@@ -5,6 +5,8 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+DOTFILES_ROOT='$HOME/Projects/dotfiles'
+
 
 DEFAULT_USER='charlie'
 POWERLEVEL9K_CUSTOM_WIFI_SIGNAL="zsh_wifi_signal"
@@ -88,15 +90,14 @@ if [[ "$(uname)" == "Darwin" ]]; then
     test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 fi
 
-source ~/.dotfiles/aliases/general.zsh
-source ~/.dotfiles/aliases/docker.zsh
-source ~/.dotfiles/aliases/git.zsh
-source ~/.dotfiles/aliases/proxmox.zsh
-source ~/.dotfiles/aliases/tools.zsh
-source ~/.dotfiles/zsh/powerlevel10k/powerlevel10k.zsh-theme
-source ~/.dotfiles/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-source ~/.dotfiles/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-fpath=(~/.dotfiles/zsh/zsh-completions/src $fpath)
+source $DOTFILES_ROOT/aliases/general.zsh
+source $DOTFILES_ROOT/aliases/docker.zsh
+source $DOTFILES_ROOT/aliases/git.zsh
+source $DOTFILES_ROOT/aliases/proxmox.zsh
+source $DOTFILES_ROOT/aliases/tools.zsh
+source $DOTFILES_ROOT/powerlevel10k/powerlevel10k.zsh-theme
+export ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR=/usr/local/share/zsh-syntax-highlighting/highlighters
+fpath=(/usr/local/share/zsh-completions $fpath)
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
