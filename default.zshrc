@@ -2,35 +2,14 @@
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block, everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+        source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+if [[ -z "$DOTFILES_ROOT" ]]; then
+        echo setting DOTFILES_ROOT=$HOME/dotfiles
+        DOTFILES_ROOT=$HOME/dotfiles
 fi
 
-DOTFILES_ROOT='$HOME/Projects/dotfiles'
-
-
 DEFAULT_USER='charlie'
-POWERLEVEL9K_CUSTOM_WIFI_SIGNAL="zsh_wifi_signal"
-POWERLEVEL9K_CUSTOM_WIFI_SIGNAL_BACKGROUND="white"
-POWERLEVEL9K_CUSTOM_WIFI_SIGNAL_FOREGROUND="black"
-
-zsh_wifi_signal(){
-        local output=$(/System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport -I)
-        local airport=$(echo $output | grep 'AirPort' | awk -F': ' '{print $2}')
-
-        if [ "$airport" = "Off" ]; then
-                local color='%F{black}'
-                echo -n "%{$color%}Wifi Off"
-        else
-                local ssid=$(echo $output | grep ' SSID' | awk -F': ' '{print $2}')
-                local speed=$(echo $output | grep 'lastTxRate' | awk -F': ' '{print $2}')
-                local color='%F{black}'
-
-                [[ $speed -gt 100 ]] && color='%F{black}'
-                [[ $speed -lt 50 ]] && color='%F{red}'
-
-                echo -n "%{$color%}$speed Mbps \uf1eb%{%f%}" # removed char not in my PowerLine font
-        fi
-}
 
 POWERLEVEL9K_CONTEXT_TEMPLATE='%n'
 POWERLEVEL9K_CONTEXT_DEFAULT_FOREGROUND='white'
@@ -70,8 +49,6 @@ POWERLEVEL9K_FOLDER_ICON=''
 POWERLEVEL9K_STATUS_VERBOSE=true
 POWERLEVEL9K_STATUS_CROSS=true
 
-
-
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
 
 export LS_COLORS="exfxcxdxbxegedabagacad"
@@ -81,8 +58,6 @@ zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 export LANG=en_GB.UTF-8
 
 export EDITOR='vim'
-
-alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
 
 # # Darwin is the architecture name for macOS systems
@@ -99,7 +74,7 @@ source $DOTFILES_ROOT/powerlevel10k/powerlevel10k.zsh-theme
 export ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR=/usr/local/share/zsh-syntax-highlighting/highlighters
 fpath=(/usr/local/share/zsh-completions $fpath)
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+source $DOTFILES_ROOT/p10k.zsh
 
 
 autoload -Uz compinit && compinit
