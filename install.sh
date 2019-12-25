@@ -1,3 +1,6 @@
 #!/bin/sh
-git clone --recursive https://github.com/Chasbob/dotfiles.git
-echo DOTFILES_ROOT=$PWD/dotfiles | cat - dotfiles/default.zshrc > dotfiles/.zshrc
+
+DOTFILES_ROOT="$( cd "$(dirname "$0")" ; pwd -P )"
+echo DOTFILES_ROOT=$DOTFILES_ROOT | cat - $DOTFILES_ROOT/default.zshrc > $DOTFILES_ROOT/.zshrc
+
+ln -sf $DOTFILES_ROOT/.zshrc ~/.zshrc
