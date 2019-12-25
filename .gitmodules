@@ -7,10 +7,6 @@
 [submodule ".dotfiles/zsh/zsh-autosuggestions"]
 	path = .dotfiles/zsh/zsh-autosuggestions
 	url = https://github.com/zsh-users/zsh-autosuggestions.git
-[submodule ".dotfiles/zsh/powerlevel10k"]
-	path = .dotfiles/zsh/powerlevel10k
-	url = https://github.com/romkatv/powerlevel10k.git
-	shallow = true
 [submodule ".dotfiles/zsh/zsh-completions"]
 	path = .dotfiles/zsh/zsh-completions
 	url = https://github.com/zsh-users/zsh-completions.git
