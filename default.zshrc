@@ -71,8 +71,9 @@ source $DOTFILES_ROOT/aliases/git.zsh
 source $DOTFILES_ROOT/aliases/proxmox.zsh
 source $DOTFILES_ROOT/aliases/tools.zsh
 source $DOTFILES_ROOT/powerlevel10k/powerlevel10k.zsh-theme
-export ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR=/usr/local/share/zsh-syntax-highlighting/highlighters
-fpath=(/usr/local/share/zsh-completions $fpath)
+source $DOTFILES_ROOT/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $DOTFILES_ROOT/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fpath=($DOTFILES_ROOT/zsh-completions/src $fpath)
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 source $DOTFILES_ROOT/p10k.zsh
 
