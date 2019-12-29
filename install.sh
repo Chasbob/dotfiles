@@ -5,7 +5,8 @@ echo DOTFILES_ROOT=$DOTFILES_ROOT | cat - $DOTFILES_ROOT/default.zshrc > $DOTFIL
 
 ln -sf $DOTFILES_ROOT/.zshrc ~/.zshrc
 ln -sf $DOTFILES_ROOT/.vimrc ~/.vimrc
-ln -sf $DOTFILES_ROOT/vim ~/.vim
+mkdir -p ~/.vim/bundle
+ln -sf $DOTFILES_ROOT/vim/Vundle.vim ~/.vim/bundle
 ln -sf $DOTFILES_ROOT/tmux ~/.tmux
 ln -sf ~/.tmux/.tmux.conf ~/.tmux.conf
 cp ~/.tmux/.tmux.conf.local ~/
