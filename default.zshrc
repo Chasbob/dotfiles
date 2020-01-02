@@ -87,4 +87,4 @@ zstyle ':completion:*' menu select
 ZSH_AUTOSUGGEST_USE_ASYNC=true
 bindkey '^ ' autosuggest-execute
 
-export PATH=$PATH:~/.local/bin
+export PATH=$PATH:$DOTFILES_ROOT/bin
