@@ -73,7 +73,7 @@ source $DOTFILES_ROOT/aliases/tools.zsh
 source $DOTFILES_ROOT/powerlevel10k/powerlevel10k.zsh-theme
 source $DOTFILES_ROOT/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $DOTFILES_ROOT/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-fpath=($DOTFILES_ROOT/zsh-completions/src $fpath)
+fpath=($DOTFILES_ROOT/zsh-completions/src $DOTFILES_ROOT/completions $fpath)
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 source $DOTFILES_ROOT/p10k.zsh
 
