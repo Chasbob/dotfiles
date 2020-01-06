@@ -84,6 +84,8 @@ zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 zstyle ':completion:*' menu select
 
 
+setopt auto_cd
+
 ZSH_AUTOSUGGEST_USE_ASYNC=true
 bindkey '^ ' autosuggest-execute
 
