@@ -7,7 +7,7 @@ This repository contains copies of [oh my zsh](https://github.com/robbyrussell/o
 
 **Currently the install script will not handle the files already exisiting**
 
-1. git clone https://github.com/Chasbob/dotfiles.git
+1. git clone --recursive https://github.com/Chasbob/dotfiles.git
 2. ./dotfiles/install.sh
 
 ## Testing
