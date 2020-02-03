@@ -21,5 +21,5 @@ ENV TERM=xterm-256color
 ENV temp=temp
 RUN git clone https://github.com/Chasbob/dotfiles
 COPY install.sh ./dotfiles/
-# RUN ./dotfiles/install.sh -y
+RUN ./dotfiles/install.sh -y
 CMD ["/bin/zsh", "-l"]
