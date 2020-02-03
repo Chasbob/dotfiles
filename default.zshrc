@@ -24,7 +24,7 @@ fi
 # Check if ssh-agent needs to be setup
 if [ -z "$SSH_AUTH_SOCK" ]; then
         echo setting ssh agent
-        $(ssh-agent -s)
+        eval "$(ssh-agent -s)"
         ssh-add
 fi
 
