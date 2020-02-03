@@ -1,0 +1,6 @@
+setopt autocd
+setopt autopushd
+
+CDPATH=.:$HOME:$HOME/Projects
+
+export CDPATH

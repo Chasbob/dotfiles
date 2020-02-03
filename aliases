@@ -1,0 +1,373 @@
+if [[ "$OSTYPE" == darwin* ]]; then
+  alias o='open'
+else
+  alias o='xdg-open'
+
+  if [ $+commands[xclip] ]; then
+    alias pbcopy='xclip -selection clipboard -in'
+    alias pbpaste='xclip -selection clipboard -out'
+  fi
+fi
+
+alias pbc='pbcopy'
+alias pbp='pbpaste'
+
+# Add get aliase for downloading with progress
+if [ $+commands[curl] ]; then
+  alias get='curl --continue-at - --location --progress-bar --remote-name --remote-time'
+elif [ $+commands[wget] ]; then
+  alias get='wget --continue --progress=bar --timestamping'
+fi
+
+# Serve PWD over http
+if [ $+commands[python3] ]; then
+  alias http-serve='python3 -m http.server'
+else
+  alias http-serve='python -m SimpleHTTPServer'
+fi
+
+alias grep='grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
+
+alias diffdir='diff -rq'
+
+function def_real_alias () {
+  while [[ $# -ge 2 ]]; do
+    alias "$1=$2"
+    shift 2
+  done
+}
+
+function def_real_aliases () {
+  def_real_alias $real_aliases
+  unset real_aliases
+}
+
+function def_global_alias () {
+  while [[ $# -ge 2 ]]; do
+    alias -g "$1=$2"
+    shift 2
+  done
+}
+
+function def_global_aliases () {
+  def_global_alias $global_aliases
+  unset global_aliases
+}
+
+function def_fun () {
+  while [[ $# -ge 2 ]]; do
+    eval "function $1 () { $2 \$@ }"
+    shift 2
+  done
+}
+
+function def_funs () {
+  def_fun $funs
+  unset funs
+}
+
+# ssh and open port
+ssp(){
+    ssh -L "$1"\:localhost\:"$1" "$2"
+}
+
+# find by name and hide errors
+fn() {
+    find . -name "$1" 2>/dev/null
+}
+
+newMAC(){
+    ifconfig en0 | grep ether
+    MAC=$(openssl rand -hex 6 | sed 's/\(..\)/\1:/g; s/.$//')
+    # echo MAC="$MAC"
+    sudo ifconfig en0 ether "$MAC"
+    sudo ifconfig en0 down && sudo ifconfig en0 up
+    ifconfig en0 | grep ether
+}
+
+real_aliases=(
+    inet "ifconfig | grep 'inet '"
+    inet6 "ifconfig | grep 'inet6 '"
+    o "open ."
+    wanip "dig @resolver1.opendns.com ANY myip.opendns.com +short"
+); def_real_aliases
+
+
+funs=(
+    c "clear"
+    nsl "nslookup"
+    l "ls -GFAtrl"
+    la "ls -GFAl"
+    ll "l -l"
+    l1 "l -1"
+    lh "l -H"
+    lr "l -R"
+    lk "la -l"
+); def_funs
+
+# grep for a given process and optionally cut the length of the output while also hiding any grep process
+psaux(){
+    ps aux | grep "$1" | grep -v "grep"| cut -c 1-"$2"
+}
+
+
+function git () {
+  local git= self= op=
+
+  if [[ -n "${BASH}" ]]; then
+    git=$(which git)
+    self=${FUNCNAME}
+  elif [[ -n "${ZSH_NAME}" ]]; then
+    git=$(whence -p git)
+    self=$0
+  else
+    echo "Meh"
+    return 1
+  fi
+
+  if [[ $# -eq 0 ]]; then
+    if [[ -n "${BASH}" ]]; then
+      type "${self}" | less
+    elif [[ -n "${ZSH_NAME}" ]]; then
+      which "${self}" | less
+    else
+      echo "Meh"
+      return 1
+    fi
+  else
+    op="$1"
+    shift
+
+    case "${op}" in
+      (i) touch .gitignore; "${git}" init; "${self}" a.; "${self}" cim "$@" ;;
+
+      (s) "${git}" status ;;
+      (c) "${git}" clone "$@" ;;
+      (h) "${git}" show "$@" ;;
+      (mv) "${git}" mv "$@" ;;
+      (mv!) "${git}" mv -f "$@" ;;
+      (me) "${git}" merge "$@" ;;
+      (ta) "${git}" tag "$@" ;;
+      (bl) "${git}" blame "$@" ;;
+
+      (cl) "${git}" clean "$@" ;;
+      (cl!) "${self}" cl -f ;;
+
+      (ci) "${git}" commit "$@" ;;
+      (cia) "${self}" ci --amend "$@" ;;
+      (cim) "${self}" ci --message "$@" ;;
+
+      (co) "${git}" checkout "$@" ;;
+      (com) "${self}" co master ;;
+      (cot) "${self}" co trunk ;;
+      (co!) "${self}" co --force "$@" ;;
+      (cob) "${self}" co -b "$@" ;;
+
+      (ls) "${git}" ls-files "$@" ;;
+      (lsm) "${self}" ls -m ;;
+      (lsd) "${self}" ls -d ;;
+      (lsdrm) "${self}" lsd | xargs "${git}" rm ;;
+
+      (rt) "${git}" reset "$@" ;;
+      (rt!) "${self}" rt --hard "$@" ;;
+      (rv) "${git}" revert "$@" ;;
+
+      (g) "${git}" grep "$@" ;;
+      (gi) "${self}" g -i "$@" ;;
+
+      (f) "${git}" fetch "$@" ;;
+      (fa) "${self}" f --all "$@" ;;
+
+      (rm) "${git}" rm "$@" ;;
+      (rmr) "${self}" rm -r "$@" ;;
+      (rm!) "${self}" rm -rf "$@" ;;
+
+      (rb) "${git}" rebase "$@" ;;
+      (rbi) "${self}" rb --interactive "$@" ;;
+      (rbc) "${self}" rb --continue "$@" ;;
+      (rbs) "${self}" rb --skip "$@" ;;
+      (rba) "${self}" rb --abort "$@" ;;
+      (rbs) "${self}" rb --skip "$@" ;;
+      (rbi!) "${self}" rbi --root "$@" ;;
+
+      (ri) "${self}" rbi HEAD~"$1" ;;
+      (rs) "${self}" rt --soft HEAD~"$1" && "${self}" cim "$(git log --format=%B --reverse HEAD..HEAD@{1} | head -1)" ;;
+
+      (ph) "${git}" push "$@" ;;
+      (phu) "${self}" ph -u "$@" ;;
+      (ph!) "${self}" ph --force "$@" ;;
+      (pho) "${self}" phu origin "$@" ;;
+      (phom) "${self}" pho master "$@" ;;
+
+      (oo) "${self}" ph origin "$(git brh)" ;;
+      (oo!) "${self}" ph! origin "$(git brh)" ;;
+
+      (pl) "${git}" pull "$@" ;;
+      (pl!) "${self}" pl --force "$@" ;;
+      (plr) "${self}" pl --rebase "$@" ;;
+      (plro) "${self}" plr origin "$@" ;;
+      (plru) "${self}" plr upstream "$@" ;;
+      (plrom) "${self}" plro master ;;
+      (plrum) "${self}" plru master ;;
+      (plrot) "${self}" plro trunk ;;
+      (plrut) "${self}" plru trunk ;;
+
+      (a) "${git}" add "$@" ;;
+      (au) "${self}" a -u ;;
+      (a.) "${self}" a . ;;
+
+      (aum) "${self}" au; "${self}" cim "$@" ;;
+      (aux) "${self}" aum "x" ;;
+      (a.m) "${self}" a.; "${self}" cim "$@" ;;
+      (a.x) "${self}" a.m "x" ;;
+
+      (auxx) "${self}" aux; "${self}" rs 2 ;;
+      (au.x) "${self}" a.x; "${self}" rs 2 ;;
+      (auxx!) "${self}" auxx; "${self}" oo! ;;
+
+      (l) "${git}" log "$@" ;;
+      (l1) "${self}" l -1 --pretty=%B ;;
+      (lo) "${self}" l --oneline ;;
+      (lp) "${self}" l --patch ;;
+      (lp1) "${self}" lp -1 ;;
+      (lpw) "${self}" lp --word-diff=color ;;
+
+      (br) "${git}" branch "$@" ;;
+      (bra) "${self}" br -a ;;
+      (brm) "${self}" br -m "$@" ;;
+      (brmh) "${self}" brm "$(git brh)" ;;
+      (brd) "${self}" br -d "$@" ;;
+      (brD) "${self}" br -D "$@" ;;
+      (brh) "${git}" rev-parse --abbrev-ref HEAD ;;
+
+      (d) "${git}" diff "$@" ;;
+      (dc) "${git}" diff --cached "$@" ;;
+      (dh) "${self}" d HEAD ;;
+      (dhw) "${self}" d --word-diff=color ;;
+
+      (re) "${git}" remote "$@" ;;
+      (rea) "${self}" re add "$@" ;;
+      (reao) "${self}" rea origin "$@" ;;
+      (reau) "${self}" rea upstream "$@" ;;
+      (rer) "${self}" re remove "$@" ;;
+      (ren) "${self}" re rename "$@" ;;
+      (rero) "${self}" rer origin "$@" ;;
+      (reru) "${self}" rer upstream "$@" ;;
+      (res) "${self}" re show "$@" ;;
+      (reso) "${self}" res origin ;;
+      (resu) "${self}" res upstream ;;
+
+      (rl) "${git}" rev-list "$@" ;;
+      (rla) "${self}" rl --all "$@" ;;
+      (rl0) "${self}" rl --max-parents=0 HEAD ;;
+
+      (cp) "${git}" cherry-pick "$@" ;;
+      (cpc) "${self}" cp --continue "$@" ;;
+      (cpa) "${self}" cp --abort "$@" ;;
+
+      (fb) "${git}" filter-branch "$@" ;;
+      (fb!) "${self}" fb -f "$@" ;;
+      (fbm) "${self}" fb! --msg-filter "$@" ;;
+      (fbi) "${self}" fb! --index-filter "$@" ;;
+      (fbe) "${self}" fb! --env-filter "$@" ;;
+
+      (rp) "${git}" rev-parse "$@" ;;
+      (rph) "${self}" rp HEAD ;;
+
+      (sh) "${git}" stash "$@" ;;
+      (shp) "${self}" sh pop "$@" ;;
+
+      (st) "${git}" subtree "$@" ;;
+      (sta) "${self}" st add "$@" ;;
+      (stph) "${self}" st push "$@" ;;
+      (stpl) "${self}" st pull "$@" ;;
+
+      (sm) "${git}" submodule "$@" ;;
+      (sms) "${self}" sm status "$@" ;;
+      (smy) "${self}" sm summary "$@" ;;
+      (smu) "${self}" sm update "$@" ;;
+      (sma) "${self}" sm add "$@" ;;
+      (smi) "${self}" sm init "$@" ;;
+
+      (ref) "${git}" reflog "$@" ;;
+
+      (*) "${git}" "${op}" "$@" ;;
+    esac
+  fi
+}
+
+function d () {
+  local d= self= op=
+
+  if [[ -n "${BASH}" ]]; then
+    d=$(which docker)
+    self=${FUNCNAME}
+  elif [[ -n "${ZSH_NAME}" ]]; then
+    d=$(whence -p docker)
+    self=$0
+  else
+    echo "Meh"
+    return 1
+  fi
+
+  if [[ $# -eq 0 ]]; then
+    if [[ -n "${BASH}" ]]; then
+      type "${self}" | less
+    elif [[ -n "${ZSH_NAME}" ]]; then
+      which "${self}" | less
+    else
+      echo "Meh"
+      return 1
+    fi
+  else
+    op="$1"
+    shift
+    echo "$@"
+    case "${op}" in
+      (lf) "${d}" "logs -f" "$@" ;;
+      (*) "${d}" "${op}" "$@" ;;
+    esac
+  fi
+}
+
+function dc () {
+  local dc= self= op=
+
+  if [[ -n "${BASH}" ]]; then
+    dc=$(which docker-compose)
+    self=${FUNCNAME}
+  elif [[ -n "${ZSH_NAME}" ]]; then
+    dc=$(whence -p docker-compose)
+    self=$0
+  else
+    echo "Meh"
+    return 1
+  fi
+
+  if [[ $# -eq 0 ]]; then
+    if [[ -n "${BASH}" ]]; then
+      type "${self}" | less
+    elif [[ -n "${ZSH_NAME}" ]]; then
+      which "${self}" | less
+    else
+      echo "Meh"
+      return 1
+    fi
+  else
+    op="$1"
+    shift
+    echo "$@"
+    case "${op}" in
+      (lf) "${dc}" logs -f "$@" ;;
+
+      (c) "${dc}" config ;;
+
+      (upd) "${dc}" up -d "$@" ;;
+      (ra) "${self}" upd --force-recreate "$@" ;;
+
+      (dn) "${dc}" down "$@" ;;
+
+      (*) "${dc}" "${op}" "$@" ;;
+    esac
+  fi
+}
