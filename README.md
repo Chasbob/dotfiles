@@ -5,10 +5,13 @@ This repository contains copies of [oh my zsh](https://github.com/robbyrussell/o
 
 ## Install
 
-**Currently the install script will not handle the files already exisiting**
+**Files that would have been overwriten are moved to `dotfile-backups` within the repository**
 
-1. git clone --recursive https://github.com/Chasbob/dotfiles.git
-2. ./dotfiles/install.sh
+1. `git clone https://github.com/Chasbob/dotfiles.git`
+2. `./dotfiles/install.sh`
+
+For step 2 you can run `./dotfiles/install.sh -y` to accept all options and run without being prompted.
+
 
 ## Testing
 
