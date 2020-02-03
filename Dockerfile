@@ -5,7 +5,9 @@ RUN apt update && \
     zsh \
     vim \
     sudo \
-    locales
+    locales \
+    ssh \
+    tmux
 
 RUN adduser --shell /bin/zsh --gecos 'charlie' --disabled-password charlie
 RUN locale-gen "en_GB.UTF-8"
@@ -13,9 +15,11 @@ RUN locale-gen "en_GB.UTF-8"
 RUN echo "Defaults:charlie !requiretty\ncharlie ALL=(ALL) NOPASSWD: ALL\n" > /etc/sudoers.d/charlie
 
 USER charlie
-WORKDIR /home/charlie
 ENV LANG=en_GB.UTF-8
+WORKDIR /home/charlie
 ENV TERM=xterm-256color
-RUN git clone --recursive https://github.com/Chasbob/dotfiles
-RUN ./dotfiles/install.sh
+ENV temp=temp
+RUN git clone https://github.com/Chasbob/dotfiles
+COPY install.sh ./dotfiles/
+# RUN ./dotfiles/install.sh -y
 CMD ["/bin/zsh", "-l"]
