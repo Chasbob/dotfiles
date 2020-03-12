@@ -1,5 +1,7 @@
 # Dotfiles
 
+![Docker Image Version (latest by date)](https://img.shields.io/docker/v/chasbob/dotfiles?style=plastic) ![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/chasbob/dotfiles?style=plastic)  ![Docker Pulls](https://img.shields.io/docker/pulls/chasbob/dotfiles?style=plastic) ![GitHub](https://img.shields.io/github/license/chasbob/dotfiles)
+
 This is my oh my zsh and powerlevel 9k setup, setup as described [here](https://www.atlassian.com/git/tutorials/dotfiles).\
 This repository contains copies of [oh my zsh](https://github.com/robbyrussell/oh-my-zsh) and [Powerlevel9k](https://github.com/bhilburn/powerlevel9k).
 
