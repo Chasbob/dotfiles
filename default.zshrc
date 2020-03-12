@@ -65,7 +65,8 @@ POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
 
 # Setup colour to use for zsh suggestions
 # forground colour of yellow with black
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#ffff00,bg=black,bold,underline'
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#ffff00,bold,underline'
+#ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#ffff00,bg=black,bold,underline'
 
 
 # Setup zsh syntax highlighting
