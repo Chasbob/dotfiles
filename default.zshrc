@@ -32,6 +32,8 @@ if [ -z "$SSH_AUTH_SOCK" ]; then
         eval "$(ssh-agent -s)"
         ssh-add
 fi
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 # Change this to reflect your username.
 DEFAULT_USER='charlie'
