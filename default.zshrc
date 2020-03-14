@@ -15,6 +15,11 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
         source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+# If using `p10k configure` you will need to update $DOTFILES_ROOT/p10k.zsh to reflect this
+# I think it just overwrites the file so no use in linking it
+source $DOTFILES_ROOT/p10k.zsh
+
 # Declare path pointing to the dotfiles repository
 if [[ -z "$DOTFILES_ROOT" ]]; then
         echo setting DOTFILES_ROOT=$HOME/dotfiles
@@ -32,7 +37,7 @@ fi
 DEFAULT_USER='charlie'
 
 
-POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
+# POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
 
 
 
@@ -82,10 +87,6 @@ fpath=(
 autoload -Uz compinit
 compinit
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-# If using `p10k configure` you will need to update $DOTFILES_ROOT/p10k.zsh to reflect this
-# I think it just overwrites the file so no use in linking it
-source $DOTFILES_ROOT/p10k.zsh
 
 # ZSH_AUTOSUGGEST_USE_ASYNC=true
 
