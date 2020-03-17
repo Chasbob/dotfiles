@@ -1,0 +1,107 @@
+# Font configuration (changes require restart)
+font:
+  # The normal (roman) font face to use.
+  normal:
+#    family: CascadiaCode Nerd Font
+    family: CascadiaCode Nerd Font
+    # Style can be specified to pick a specific face.
+    style: Book
+
+# Colors (Monokai Dark)
+schemes:
+  
+  monokai-dark: &monokai-dark
+  # Default colors
+    primary:
+      background: '0x272822'
+      foreground: '0xF8F8F2'
+
+    # Normal colors
+    normal:
+     black:   '0x272822'
+     red:     '0xF92672'
+     green:   '0xA6E22E'
+     yellow:  '0xF4BF75'
+     blue:    '0x66D9EF'
+     magenta: '0xAE81FF'
+     cyan:    '0xA1EFE4'
+     white:   '0xF8F8F2'
+
+    # Bright colors
+    bright:
+     black:   '0x75715E'
+     red:     '0xF92672'
+     green:   '0xA6E22E'
+     yellow:  '0xF4BF75'
+     blue:    '0x66D9EF'
+     magenta: '0xAE81FF'
+     cyan:    '0xA1EFE4'
+     white:   '0xF9F8F5'
+  oceanic-next: &oceanic-next
+  # Default colors
+    primary:
+      background: '0x1b2b34'
+      foreground: '0xd8dee9'
+
+    # Colors the cursor will use if `custom_cursor_colors` is true
+    cursor:
+      text: '0x1b2b34'
+      cursor: '0xffffff'
+
+    # Normal colors
+    normal:
+      black:   '0x343d46'
+      red:     '0xEC5f67'
+      green:   '0x99C794'
+      yellow:  '0xFAC863'
+      blue:    '0x6699cc'
+      magenta: '0xc594c5'
+      cyan:    '0x5fb3b3'
+      white:   '0xd8dee9'
+
+    # Bright colors
+    bright:
+      black:   '0x343d46'
+      red:     '0xEC5f67'
+      green:   '0x99C794'
+      yellow:  '0xFAC863'
+      blue:    '0x6699cc'
+      magenta: '0xc594c5'
+      cyan:    '0x5fb3b3'
+      white:   '0xd8dee9'
+  solarized-dark: &solarized-dark
+  # Default colors
+    primary:
+      background: '0x002b36' # base03
+      foreground: '0x839496' # base0
+
+  # Cursor colors
+    cursor:
+      text:   '0x002b36' # base03
+      cursor: '0x839496' # base0
+
+    # Normal colors
+    normal:
+      black:   '0x073642' # base02
+      red:     '0xdc322f' # red
+      green:   '0x859900' # green
+      yellow:  '0xb58900' # yellow
+      blue:    '0x268bd2' # blue
+      magenta: '0xd33682' # magenta
+      cyan:    '0x2aa198' # cyan
+      white:   '0xeee8d5' # base2
+
+    # Bright colors
+    bright:
+      black:   '0x002b36' # base03
+      red:     '0xcb4b16' # orange
+      green:   '0x586e75' # base01
+      yellow:  '0x657b83' # base00
+      blue:    '0x839496' # base0
+      magenta: '0x6c71c4' # violet
+      cyan:    '0x93a1a1' # base1
+      white:   '0xfdf6e3' # base3
+colors: *oceanic-next
+window:
+  dynamic_padding: false
+  decorations: buttonless
