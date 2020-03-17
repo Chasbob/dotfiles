@@ -30,6 +30,10 @@ alias grep='grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
 
 alias diffdir='diff -rq'
 
+if [ $+commands[nvim] ]; then
+  alias vim='nvim'
+fi
+
 function def_real_alias () {
   while [[ $# -ge 2 ]]; do
     alias "$1=$2"

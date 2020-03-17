@@ -5,7 +5,7 @@ fi
 export LC_ALL="en_GB.UTF-8"
 export LANG="en_GB.UTF-8"
 
-export EDITOR="vim"
+export EDITOR="nvim"
 export VISUAL="vim"
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
@@ -103,3 +103,6 @@ if [[ "$ZPROF" = true ]]; then
   echo test
   zprof
 fi
+
+[[ -s "$HOME/.local/share/marker/marker.sh" ]] && source "$HOME/.local/share/marker/marker.sh"
+
