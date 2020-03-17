@@ -69,6 +69,7 @@ cask "jetbrains-toolbox"
 cask "monitorcontrol"
 cask "spotify"
 cask "vagrant"
+cask "gitkraken"
 mas "Magnet", id: 441258766
 mas "Microsoft Remote Desktop", id: 1295203466
 mas "Microsoft To Do", id: 1274495053
