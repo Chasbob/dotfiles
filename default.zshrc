@@ -69,6 +69,8 @@ DEFAULT_USER='charlie'
 
 # Setup zsh auto suggestions
 . $DOTFILES_ROOT/zsh-autosuggestions/zsh-autosuggestions.zsh
+# Setup interactive cd
+. $DOTFILES_ROOT/zsh-interactive-cd.plugin.zsh
 
 # Setup colour to use for zsh suggestions
 # forground colour of yellow with black
