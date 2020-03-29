@@ -1,6 +1,0 @@
-setopt autocd
-setopt autopushd
-
-CDPATH=.:$HOME:$HOME/Projects/PA:$HOME/Projects/Hackathons:$HOME/Projects/University
-
-export CDPATH

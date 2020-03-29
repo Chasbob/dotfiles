@@ -2,17 +2,14 @@
 	path = tmux
 	url = https://github.com/Chasbob/.tmux.git
 [submodule "powerlevel10k"]
-	path = powerlevel10k
+	path = zsh/powerlevel10k
 	url = https://github.com/romkatv/powerlevel10k.git
 [submodule "zsh-autosuggestions"]
-	path = zsh-autosuggestions
+	path = zsh/zsh-autosuggestions
 	url = https://github.com/zsh-users/zsh-autosuggestions
 [submodule "zsh-completions"]
-	path = zsh-completions
+	path = zsh/zsh-completions
 	url = https://github.com/zsh-users/zsh-completions
 [submodule "zsh-syntax-highlighting"]
-	path = zsh-syntax-highlighting
+	path = zsh/zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting
-[submodule "vim/Vundle.vim"]
-	path = vim/Vundle.vim
-	url = https://github.com/VundleVim/Vundle.vim.git

@@ -1,3 +1,0 @@
-PATH=$DOTFILES_ROOT/bin:$PATH
-PATH=$HOME/.tools/flutter/bin:$PATH
-export PATH
