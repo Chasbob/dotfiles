@@ -1,8 +1,10 @@
+
+# Setup open alias
 if [[ "$OSTYPE" == darwin* ]]; then
   alias o='open'
 else
   alias o='xdg-open'
-
+  # alias xclip to pbcopy and paste
   if [ $+commands[xclip] ]; then
     alias pbcopy='xclip -selection clipboard -in'
     alias pbpaste='xclip -selection clipboard -out'
@@ -30,10 +32,13 @@ alias grep='ggrep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
 
 alias diffdir='diff -rq'
 
+# Alias NeoVim for Vim
 if [ $+commands[nvim] ]; then
   alias vim='nvim'
 fi
 
+
+# Slightly over the top set of functions for defining aliases
 function def_real_alias () {
   while [[ $# -ge 2 ]]; do
     alias "$1=$2"
@@ -75,11 +80,6 @@ ssp(){
     ssh -L "$1"\:localhost\:"$1" "$2"
 }
 
-# find by name and hide errors
-fn() {
-    find . -name "$1" 2>/dev/null
-}
-
 newMAC(){
     ifconfig en0 | grep ether
     MAC=$(openssl rand -hex 6 | sed 's/\(..\)/\1:/g; s/.$//')
@@ -94,6 +94,7 @@ real_aliases=(
     inet6 "ifconfig | grep 'inet6 '"
     o "open ."
     wanip "dig @resolver1.opendns.com ANY myip.opendns.com +short"
+    bat "bat --theme=\"Monokai Extended Origin\" --color=always"
 ); def_real_aliases
 
 
@@ -115,6 +116,7 @@ psaux(){
 }
 
 
+# Lots of git aliases
 function git () {
   local git= self= op=
 
@@ -300,6 +302,8 @@ function git () {
   fi
 }
 
+
+# The start of lots of docker aliases
 function d () {
   local d= self= op=
 
@@ -334,6 +338,7 @@ function d () {
   fi
 }
 
+# The start of lots of docker compose aliases
 function dc () {
   local dc= self= op=
 
