@@ -14,22 +14,3 @@ profzsh() {
   ZPROF=true $shell -i -c exit
 }
 
-sloc () {
-  git ls-files | grep "$1" | grep -v grep | xargs wc -l
-}
-
-
-# Load tools on demand instead of for every new shell since they can be slow to start (especially nvm)
-function load-sdk() {
-    export SDKMAN_DIR="$HOME/.sdkman"
-    [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-    unset -f load-sdk
-}
-# load nvm on demand
-function load-nvm() {
-    export NVM_DIR="$HOME/.nvm"
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
-    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
-    echo "Loaded nvm!"
-    unset -f load-nvm
-}
