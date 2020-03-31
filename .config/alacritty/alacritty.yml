@@ -3,13 +3,19 @@ font:
   # The normal (roman) font face to use.
   normal:
 #    family: CascadiaCode Nerd Font
-    family: CascadiaCode Nerd Font
+    family: JetBrainsMono NF
     # Style can be specified to pick a specific face.
-    style: Book
+    style: Regular
 
+background_opacity: 0.8
+selection:
+  semantic_escape_chars: ",│`|:\"' ()[]{}<>"
+
+  # When set to `true`, selected text will be copied to the primary clipboard.
+  save_to_clipboard: true
 # Colors (Monokai Dark)
 schemes:
-  
+
   monokai-dark: &monokai-dark
   # Default colors
     primary:
@@ -105,3 +111,8 @@ colors: *oceanic-next
 window:
   dynamic_padding: false
   decorations: buttonless
+
+key_bindings:
+  - { key: N, mods: Command, action: SpawnNewInstance  }
+  - { key: T, mods: Command, chars: "\x01c"            }
+  - { key: W, mods: Command, chars: "\x01:kill-pane"   }
