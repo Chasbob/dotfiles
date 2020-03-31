@@ -71,4 +71,5 @@ export SDKMAN_DIR="$HOME/.config/sdkman"
 autoload -Uz compinit
 compinit
 
-[[ -s "$ZDOTDIR/fzf-marker.plugin.zsh" ]] && source "$ZDOTDIR/fzf-marker.plugin.zsh"
+# https://github.com/pindexis/marker
+[[ -s "$HOME/.local/share/marker/marker.sh" ]] && source "$HOME/.local/share/marker/marker.sh"
