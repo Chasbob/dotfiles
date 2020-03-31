@@ -17,6 +17,7 @@ Plug 'tpope/vim-commentary'
 Plug 'kovetskiy/sxhkd-vim'
 Plug 'mhartington/oceanic-next'
 Plug 'wakatime/vim-wakatime'
+Plug 'airblade/vim-gitgutter'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
