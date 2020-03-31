@@ -1,2 +1,3 @@
-PATH=$DOTFILES_ROOT/bin:$PATH
+PATH=$(echo $ZDOTDIR | sed 's/\(dotfiles\).*/\1/g')/bin:$PATH
+
 export PATH
