@@ -305,7 +305,6 @@ function git () {
 
 
 # The start of lots of docker aliases
-compdef d='docker'
 function d () {
   local d= self= op=
 
@@ -341,7 +340,6 @@ function d () {
 }
 
 # The start of lots of docker compose aliases
-compdef dc='docker-compose'
 function dc () {
   local dc= self= op=
 
