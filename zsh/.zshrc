@@ -73,3 +73,7 @@ compinit
 
 # https://github.com/pindexis/marker
 [[ -s "$HOME/.local/share/marker/marker.sh" ]] && source "$HOME/.local/share/marker/marker.sh"
+
+# direnv hook
+# https://direnv.net/docs/installation.html
+eval "$(direnv hook zsh)"
