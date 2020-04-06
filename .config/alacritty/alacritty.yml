@@ -7,7 +7,6 @@ font:
     # Style can be specified to pick a specific face.
     style: Regular
 
-background_opacity: 0.8
 selection:
   semantic_escape_chars: ",│`|:\"' ()[]{}<>"
 
