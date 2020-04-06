@@ -17,6 +17,17 @@ if [ -z "$SSH_AUTH_SOCK" ]; then
         ssh-add
 fi
 
+# Add zsh-completions to completions path
+fpath=(
+  "$ZDOTDIR/zsh-completions/src"
+  "$ZDOTDIR/completion"
+  "${fpath[@]}"
+)
+
+# Setup completions
+autoload -Uz compinit
+compinit
+
 # Change this to reflect your username.
 DEFAULT_USER='charlie'
 
@@ -56,20 +67,9 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#ffff00,bold,underline'
 # Setup zsh syntax highlighting
 . "$ZDOTDIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
-# Add zsh-completions to completions path
-fpath=(
-  "$ZDOTDIR/zsh-completions/src"
-  "$ZDOTDIR/completion"
-  "${fpath[@]}"
-)
-
 # https://sdkman.io/install
 export SDKMAN_DIR="$HOME/.config/sdkman"
 [[ -s "$HOME/.config/sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.config/sdkman/bin/sdkman-init.sh"
-
-
-autoload -Uz compinit
-compinit
 
 # https://github.com/pindexis/marker
 [[ -s "$HOME/.local/share/marker/marker.sh" ]] && source "$HOME/.local/share/marker/marker.sh"
