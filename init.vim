@@ -20,19 +20,29 @@ if ! filereadable(expand('~/.config/nvim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.config/nvim/plugged')
+" cs"' to replace double with single quote
 Plug 'tpope/vim-surround'
+" Bound to <leader>n at line 80
 Plug 'scrooloose/nerdtree'
+" :Magit
 Plug 'jreybert/vimagit'
-Plug 'lukesmithxyz/vimling'
-Plug 'vimwiki/vimwiki'
+" Makes the status line nice
 Plug 'bling/vim-airline'
+" Commenting plugin, gcc / gcgc
 Plug 'tpope/vim-commentary'
-Plug 'kovetskiy/sxhkd-vim'
+" Oceanic Theme
 Plug 'mhartington/oceanic-next'
+" Wakatime tracking
 Plug 'wakatime/vim-wakatime'
+" Gutter annotations for vim
 Plug 'airblade/vim-gitgutter'
+" Live markdown preview in browser
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
+" TOML language support
+Plug 'cespare/vim-toml'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Just fzf things
+" Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 call plug#end()
 
 set bg=light
@@ -52,6 +62,8 @@ endif
 syntax enable
 colorscheme OceanicNext
 
+" Enable powerline fonts for airline
+let g:airline_powerline_fonts = 1
 " Some basics:
 	nnoremap c "_c
 	set nocompatible
@@ -60,7 +72,7 @@ colorscheme OceanicNext
 	set encoding=utf-8
 	set number relativenumber
 " Enable autocompletion:
-	set wildmode=longest,list,full
+	set wildmode=list:longest,full
 " Disables automatic commenting on newline:
 	autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
@@ -74,13 +86,6 @@ colorscheme OceanicNext
 	map <leader>n :NERDTreeToggle<CR>
 	autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
-" vimling:
-	nm <leader>d :call ToggleDeadKeys()<CR>
-	imap <leader>d <esc>:call ToggleDeadKeys()<CR>a
-	nm <leader>i :call ToggleIPA()<CR>
-	imap <leader>i <esc>:call ToggleIPA()<CR>a
-	nm <leader>q :call ToggleProse()<CR>
-
 " Shortcutting split navigation, saving a keypress:
 	map <C-h> <C-w>h
 	map <C-j> <C-w>j
@@ -89,10 +94,6 @@ colorscheme OceanicNext
 
 " Check file in shellcheck:
 	map <leader>s :!clear && shellcheck %<CR>
-
-" Open my bibliography file in split
-	map <leader>b :vsp<space>$BIB<CR>
-	map <leader>r :vsp<space>$REFER<CR>
 
 " Replace all is aliased to S.
 	nnoremap S :%s//g<Left><Left>
@@ -106,41 +107,17 @@ colorscheme OceanicNext
 " Runs a script that cleans out tex build files whenever I close out of a .tex file.
 	autocmd VimLeave *.tex !texclear %
 
-" Ensure files are read as what I want:
-	let g:vimwiki_ext2syntax = {'.Rmd': 'markdown', '.rmd': 'markdown','.md': 'markdown', '.markdown': 'markdown', '.mdown': 'markdown'}
-	map <leader>v :VimwikiIndex
-	let g:vimwiki_list = [{'path': '~/vimwiki', 'syntax': 'markdown', 'ext': '.md'}]
-	autocmd BufRead,BufNewFile /tmp/calcurse*,~/.calcurse/notes/* set filetype=markdown
-	autocmd BufRead,BufNewFile *.ms,*.me,*.mom,*.man set filetype=groff
-	autocmd BufRead,BufNewFile *.tex set filetype=tex
-
 " Save file as sudo on files that require root permission
 	cnoremap w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!
-
-" Enable Goyo by default for mutt writting
-	autocmd BufRead,BufNewFile /tmp/neomutt* let g:goyo_width=80
-	autocmd BufRead,BufNewFile /tmp/neomutt* :Goyo | set bg=light
-	autocmd BufRead,BufNewFile /tmp/neomutt* map ZZ :Goyo\|x!<CR>
-	autocmd BufRead,BufNewFile /tmp/neomutt* map ZQ :Goyo\|q!<CR>
 
 " Automatically deletes all trailing whitespace on save.
 	autocmd BufWritePre * %s/\s\+$//e
 
-" When shortcut files are updated, renew bash and ranger configs with new material:
-	autocmd BufWritePost files,directories !shortcuts
-" Run xrdb whenever Xdefaults or Xresources are updated.
-	autocmd BufWritePost *Xresources,*Xdefaults !xrdb %
-" Update binds when sxhkdrc is updated.
-	autocmd BufWritePost *sxhkdrc !pkill -USR1 sxhkd
 
-" Turns off highlighting on the bits of code that are changed, so the line that is changed is highlighted but the actual text that has changed stands out on the line and is readable.
-if &diff
-    highlight! link DiffText MatchParen
-endif
 
-" Mostly based on https://github.com/LukeSmithxyz/voidrice/blob/master/.config/nvim/init.vim
 
-" Example config from https://github.com/neoclide/coc.nvim
+" COC things...
+
 " TextEdit might fail if hidden is not set.
 set hidden
 
@@ -181,8 +158,7 @@ inoremap <silent><expr> <c-space> coc#refresh()
 
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
 " position. Coc only does snippet and additional edit on confirm.
-if has('patch8.1.1068')
-  " Use `complete_info` if your (Neo)Vim version supports it.
+if exists('*complete_info')
   inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 else
   imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
