@@ -3,11 +3,13 @@ RUN apt update && \
     DEBIAN_FRONTEND=noninteractive apt install -y -qq \
     git \
     zsh \
-    vim \
+    neovim \
     sudo \
     locales \
     ssh \
-    tmux
+    tmux \
+    autojump \
+    direnv
 
 RUN adduser --shell /bin/zsh --gecos 'charlie' --disabled-password charlie
 RUN locale-gen "en_GB.UTF-8"
