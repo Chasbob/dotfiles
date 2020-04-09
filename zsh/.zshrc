@@ -60,6 +60,8 @@ DEFAULT_USER='charlie'
 # Setup interactive cd
 . "$ZDOTDIR/zsh-interactive-cd.plugin.zsh"
 
+. "$ZDOTDIR/forgit.plugin.zsh"
+
 # Setup colour to use for zsh suggestions
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#ffff00,bold,underline'
 
