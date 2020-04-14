@@ -375,6 +375,7 @@ function dc () {
       (c) "${dc}" config ;;
 
       (upd) "${dc}" up -d "$@" ;;
+      (uplf) "${self}" upd && "${self}" lf "$@" ;;
       (ra) "${self}" upd --force-recreate "$@" ;;
 
       (dn) "${dc}" down "$@" ;;
