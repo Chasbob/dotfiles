@@ -1,5 +1,9 @@
 #!/bin/bash
 
-test -f "$2"/alacritty/alacritty.yml && mv "$2"/alacritty/alacritty.yml{,.bak}
-mkdir -p "$2"/alacritty
-ln -s {"$1","$2"}/alacritty/alacritty.yml
+SOURCE=$1
+DESTINATION=$2
+
+test -e "$DESTINATION"/alacritty/alacritty.yml && mv "$DESTINATION"/alacritty/alacritty.yml{,.bak}
+test -L "$DESTINATION"/alacritty/alacritty.yml && mv "$DESTINATION"/alacritty/alacritty.yml{,.bak}
+mkdir -p "$DESTINATION"/alacritty
+ln -s {"$SOURCE","$DESTINATION"}/alacritty/alacritty.yml
