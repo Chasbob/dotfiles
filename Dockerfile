@@ -21,7 +21,6 @@ ENV LANG=en_GB.UTF-8
 WORKDIR /home/charlie
 ENV TERM=xterm-256color
 ENV temp=temp
-RUN git clone https://github.com/Chasbob/dotfiles
-COPY install.sh ./dotfiles/
-RUN ./dotfiles/install.sh -y
+RUN git clone --recursive https://github.com/Chasbob/dotfiles ~/.config/dotfiles
+RUN ~/.config/dotfiles/install.sh
 CMD ["/bin/zsh", "-l"]
