@@ -36,7 +36,7 @@ function shouldInstall {
 
 	target=$1
 	for i in $COMPONENTS; do
-		if [[ $i == $target ]]; then
+		if [[ $i == "$target" ]]; then
 			return 0
 		fi
 	done
@@ -59,9 +59,9 @@ if shouldInstall alacritty; then
     ./alacritty/install.sh "$SOURCE" "$DESTINATION"
 fi
 
-if shouldInstall zsh; then
+if shouldInstall tmux; then
 	echo "Installing zsh..."
-	./zsh/install.sh "$SOURCE"
+	./tmux/install.sh "$SOURCE"
 fi
 
 echo "Done."
