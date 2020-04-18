@@ -46,22 +46,22 @@ function shouldInstall {
 
 if shouldInstall zsh; then
 	echo "Installing zsh..."
-	./zsh/install.sh "$SOURCE"
+	"$SOURCE"/zsh/install.sh "$SOURCE"
 fi
 
 if shouldInstall nvim; then
 	echo "Installing nvim..."
-	./nvim/install.sh "$SOURCE" "$DESTINATION"
+	"$SOURCE"/nvim/install.sh "$SOURCE" "$DESTINATION"
 fi
 
 if shouldInstall alacritty; then
     echo "Installing alacritty..."
-    ./alacritty/install.sh "$SOURCE" "$DESTINATION"
+    "$SOURCE"/alacritty/install.sh "$SOURCE" "$DESTINATION"
 fi
 
 if shouldInstall tmux; then
 	echo "Installing zsh..."
-	./tmux/install.sh "$SOURCE"
+	"$SOURCE"/tmux/install.sh "$SOURCE"
 fi
 
 echo "Done."
