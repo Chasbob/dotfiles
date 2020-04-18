@@ -60,7 +60,7 @@ if shouldInstall alacritty; then
 fi
 
 if shouldInstall tmux; then
-	echo "Installing zsh..."
+	echo "Installing tmux..."
 	"$SOURCE"/tmux/install.sh "$SOURCE"
 fi
 
