@@ -1,101 +1,67 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-setup-zsh(){
-    cd "$DOTFILES_ROOT" || return
-    submodules=(powerlevel10k zsh-autosuggestions zsh-completions zsh-syntax-highlighting)
-    git submodule update --init "${submodules[@]}"
-    echo DOTFILES_ROOT="$DOTFILES_ROOT" | cat - "$DOTFILES_ROOT"/header.zshrc > "$DOTFILES_ROOT"/.zshrc
+# argument parsing
+SOURCE="$( cd "$(dirname "$0")" >/dev/null 2>&1 || . ; pwd -P )"
+DESTINATION="$HOME/.config"
+echo "SOURCE=$SOURCE"
+while getopts "h:p:" flag; do
+	case $flag in
+	h)
+		echo "Usage: $0 [-p path] [components]"
+		exit 1
+		;;
+	p)
+		DESTINATION="$OPTARG"
+		;;
+    *)
+		echo "Usage: $0 [-p path] [components]"
+		exit 1
+		;;
+	esac
+done
+shift $(( OPTIND - 1 ))
 
-    if [ -f "$HOME"/.zshrc ]; then
-        mkdir -p dotfile-backups
-        mv "$HOME"/.zshrc dotfile-backups
-    fi
-    ln -s "$DOTFILES_ROOT"/.zshrc ~/.zshrc
-}
-setup-tmux(){
-    git submodule update --init tmux
-    if [ -f "$HOME/.tmux" ]; then
-        mkdir -p dotfile-backups
-        mv ~/.tmux dotfile-backups
-    fi
-
-    ln -s "$DOTFILES_ROOT"/tmux ~/.tmux
-
-    if [ -f "$HOME/.tmux.conf" ]; then
-        mkdir -p dotfile-backups
-        mv ~/.tmux.conf dotfile-backups
-    fi
-    ln -s ~/.tmux/.tmux.conf ~/.tmux.conf
-
-    if [ -f "$HOME/.tmux.conf.local" ]; then
-        mkdir -p dotfile-backups
-        mv ~/.tmux.conf.local dotfile-backups
-    fi
-    cp ~/.tmux/.tmux.conf.local ~/
-}
-
-setup-vim(){
-    git submodule update --init vim/Vundle.vim
-    if [ -f "$HOME/.vimrc" ]; then
-        mkdir -p dotfile-backups
-        mv ~/.vimrc dotfile-backups
-    fi
-    ln -s "$DOTFILES_ROOT"/.vimrc ~/.vimrc
-    mkdir -p ~/.vim/bundle
-    if [ -d "$HOME/.vim/bundle/Vundle.vim" ]; then
-        mkdir -p dotfile-backups
-        mv "$HOME/.vim/bundle/Vundle.vim" dotfile-backups/
-    fi
-    ln -s "$DOTFILES_ROOT"/vim/Vundle.vim ~/.vim/bundle
-    vim +PluginInstall +qall
-}
-
-interactive(){
-    while true; do
-        read -rep $'Do you wish to install this configuration? (Yes [Yy], No [Nn]): ' yn
-        case $yn in
-            [Yy]* ) break;;
-            [Nn]* ) exit;;
-            * ) echo "Please answer yes [Yy] or no [Nn].";;
-        esac
-    done
-
-    while true; do
-        read -rep $'Setup ZSH? (Yes [Yy], No [Nn]): ' yn
-        case $yn in
-            [Yy]* ) setup-zsh; break;;
-            [Nn]* ) break;;
-            * ) echo "Please answer yes [Yy] or no [Nn].";;
-        esac
-    done
-
-    while true; do
-        read -rep $'Setup tmux? (Yes [Yy], No [Nn]): ' yn
-        case $yn in
-            [Yy]* ) setup-tmux; break;;
-            [Nn]* ) break;;
-            * ) echo "Please answer yes [Yy] or no [Nn].";;
-        esac
-    done
-
-    while true; do
-        read -rep $'Setup vim? (Yes [Yy], No [Nn])\n' yn
-        case $yn in
-            [Yy]* ) setup-vim; break;;
-            [Nn]* ) break;;
-            * ) echo "Please answer yes [Yy] or no [Nn].";;
-        esac
-    done
-}
-DOTFILES_ROOT="$( cd "$(dirname "$0")" || echo "cd failed" ; pwd -P)"
-if [ "$1" == "-y" ]; then
-    START=$PWD
-    cd "$DOTFILES_ROOT" || return
-    setup-zsh
-    setup-tmux
-    setup-vim
-    cd "$START" || return
+# rest of arguments are components
+if [[ $# -ge 1 ]]; then
+	COMPONENTS=$@
 else
-    interactive
+	COMPONENTS=all
 fi
 
+# components checker
+function shouldInstall {
+	if [[ $COMPONENTS == all ]]; then
+		return 0
+	fi
+
+	target=$1
+	for i in $COMPONENTS; do
+		if [[ $i == $target ]]; then
+			return 0
+		fi
+	done
+
+	return 1
+}
+
+if shouldInstall zsh; then
+	echo "Installing zsh..."
+	./zsh/install.sh "$SOURCE"
+fi
+
+if shouldInstall nvim; then
+	echo "Installing nvim..."
+	./nvim/install.sh "$SOURCE" "$DESTINATION"
+fi
+
+if shouldInstall alacritty; then
+    echo "Installing alacritty..."
+    ./alacritty/install.sh "$SOURCE" "$DESTINATION"
+fi
+
+if shouldInstall zsh; then
+	echo "Installing zsh..."
+	./zsh/install.sh "$SOURCE"
+fi
+
+echo "Done."
