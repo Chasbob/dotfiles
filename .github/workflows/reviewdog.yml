@@ -1,5 +1,7 @@
 name: reviewdog
-on: [pull_request]
+on:
+  push:
+
 jobs:
   shellcheck:
     name: runner / shellcheck
@@ -10,6 +12,6 @@ jobs:
         uses: reviewdog/action-shellcheck@v1
         with:
           github_token: ${{ secrets.github_token }}
-          reporter: github-pr-review # Change reporter.
+          reporter: github-check # Change reporter.
           path: "zsh/custom" # Optional.
           pattern: "*" # Optional.
