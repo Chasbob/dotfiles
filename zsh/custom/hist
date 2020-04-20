@@ -1,3 +1,5 @@
+#!/bin/bash
+
 SAVEHIST=1000
 HISTSIZE=5000
 HISTFILE=$HOME/.zhistory

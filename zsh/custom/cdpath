@@ -1,3 +1,5 @@
+#!/bin/bash
+
 setopt autocd
 setopt autopushd
 
