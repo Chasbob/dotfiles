@@ -3,6 +3,7 @@
 # Setup open alias
 if [[ "$OSTYPE" == darwin* ]]; then
   alias o='open'
+  alias grep='ggrep'
 else
   alias o='xdg-open'
   # alias xclip to pbcopy and paste

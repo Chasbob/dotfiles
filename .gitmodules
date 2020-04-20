@@ -1,15 +1,6 @@
 [submodule "tmux"]
 	path = tmux
 	url = https://github.com/Chasbob/.tmux.git
-[submodule "powerlevel10k"]
-	path = zsh/external/powerlevel10k
-	url = https://github.com/romkatv/powerlevel10k.git
-[submodule "zsh-autosuggestions"]
-	path = zsh/external/zsh-autosuggestions
-	url = https://github.com/zsh-users/zsh-autosuggestions
-[submodule "zsh-completions"]
-	path = zsh/external/zsh-completions
-	url = https://github.com/zsh-users/zsh-completions
-[submodule "zsh-syntax-highlighting"]
-	path = zsh/external/zsh-syntax-highlighting
-	url = https://github.com/zsh-users/zsh-syntax-highlighting
+[submodule "zsh/external/zplug"]
+	path = zsh/external/zplug
+	url = https://github.com/zplug/zplug

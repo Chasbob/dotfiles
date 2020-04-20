@@ -3,6 +3,6 @@
 setopt autocd
 setopt autopushd
 
-CDPATH=.:$HOME:$HOME/Documents/Projects:$HOME/.config:$HOME/.config/dotfiles
+CDPATH=.:$HOME:$HOME/Documents/Projects
 
 export CDPATH
