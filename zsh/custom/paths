@@ -2,4 +2,6 @@
 
 PATH=$(echo $ZDOTDIR | sed 's/\(dotfiles\).*/\1/g')/bin:$PATH
 
+PATH=$PATH:$HOME/.local/bin
+
 export PATH
