@@ -335,7 +335,7 @@ function d () {
     shift
     echo "$@"
     case "${op}" in
-      (lf) "${d}" "logs -f" "$@" ;;
+      (lf) "${d}" logs -f "$@" ;;
       (*) "${d}" "${op}" "$@" ;;
     esac
   fi
