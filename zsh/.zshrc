@@ -7,22 +7,44 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
         source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-# If using `p10k configure` you will need to update p10k.zsh to reflect this
-# I think it just overwrites the file so no use in linking it
 . "$ZDOTDIR/custom/p10k.zsh"
 
-# Check if ssh-agent needs to be setup
-if [ -z "$SSH_AUTH_SOCK" ]; then
-        echo setting ssh agent
-        eval "$(ssh-agent -s)"
-        ssh-add
-fi
+. "$ZPLUG_HOME/init.zsh"
+
+zplug "romkatv/powerlevel10k", as:theme, depth:1
+
+zplug "zsh-users/zsh-history-substring-search"
+
+zplug "zsh-users/zsh-autosuggestions"
+
+zplug "zsh-users/zsh-syntax-highlighting"
+
+zplug "k4rthik/git-cal", as:command
+
+zplug "b4b4r07/enhancd", use:init.sh
+
+zplug 'wfxr/forgit'
+
+zplug "b4b4r07/httpstat", \
+    as:command, \
+    use:'(*).sh', \
+    rename-to:"$1"
+
+zplug "junegunn/fzf-bin", \
+    from:gh-r, \
+    as:command, \
+    rename-to:fzf
+
+# Can manage everything e.g., other person's zshrc
+zplug "tcnksm/docker-alias", use:zshrc
+
+zplug "plugins/ssh-agent", from:oh-my-zsh
+zplug "plugins/docker", from:oh-my-zsh
+zplug "plugins/docker-compose", from:oh-my-zsh
 
 # Add zsh-completions to completions path
 fpath=(
   "$ZDOTDIR/external/zsh-completions/src"
-  "$ZDOTDIR/completion"
   "${fpath[@]}"
 )
 
@@ -31,7 +53,7 @@ autoload -Uz compinit
 compinit
 
 # Change this to reflect your username.
-DEFAULT_USER='chasbob'
+export DEFAULT_USER='chasbob'
 
 # Setup history
 . "$ZDOTDIR/custom/hist"
@@ -54,22 +76,8 @@ DEFAULT_USER='chasbob'
 # Setup bindkeys
 . "$ZDOTDIR/custom/bindkeys"
 
-# Setup powerlevel10k
-. "$ZDOTDIR/external/powerlevel10k/powerlevel10k.zsh-theme"
-
-# Setup zsh auto suggestions
-. "$ZDOTDIR/external/zsh-autosuggestions/zsh-autosuggestions.zsh"
-# Setup interactive cd
-. "$ZDOTDIR/external/zsh-interactive-cd.plugin.zsh"
-
-. "$ZDOTDIR/external/forgit.plugin.zsh"
-
 # Setup colour to use for zsh suggestions
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#ffff00,bold,underline'
-
-
-# Setup zsh syntax highlighting
-. "$ZDOTDIR/external/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#ffff00,bold,underline'
 
 # https://sdkman.io/install
 export SDKMAN_DIR="$HOME/.config/sdkman"
@@ -78,9 +86,13 @@ export SDKMAN_DIR="$HOME/.config/sdkman"
 # https://github.com/pindexis/marker
 [[ -s "$HOME/.local/share/marker/marker.sh" ]] && source "$HOME/.local/share/marker/marker.sh"
 
-# autojump hook
-[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
-
 # direnv hook
 # https://direnv.net/docs/installation.html
-eval "$(direnv hook zsh)"
+if type -a direnv >/dev/null; then
+  eval "$(direnv hook zsh)"
+fi
+
+if ! zplug check --verbose; then
+  echo Please run `zplug install`
+fi
+zplug load
