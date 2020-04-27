@@ -1,5 +1,5 @@
 #!/bin/bash
 
-PATH=$PATH:$HOME/.local/bin:$HOME/go/bin
+PATH=$PATH:$HOME/.local/bin:$HOME/go/bin:$XDG_CONFIG_HOME/dotfiles/bin
 
 export PATH

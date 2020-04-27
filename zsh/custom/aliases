@@ -38,6 +38,7 @@ alias diffdir='diff -rq'
 if [ $+commands[nvim] ]; then
   alias vim='nvim'
 fi
+alias v='vim'
 
 
 # Slightly over the top set of functions for defining aliases

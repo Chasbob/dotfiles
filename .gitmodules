@@ -1,6 +1,3 @@
 [submodule "tmux"]
 	path = tmux
 	url = https://github.com/Chasbob/.tmux.git
-[submodule "zsh/external/zplug"]
-	path = zsh/external/zplug
-	url = https://github.com/zplug/zplug
