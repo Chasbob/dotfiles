@@ -41,8 +41,8 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
 " TOML language support
 Plug 'cespare/vim-toml'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" Just fzf things
-" Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+" Docker (compose) file syntax
+Plug 'ekalinin/dockerfile.vim'
 call plug#end()
 
 set bg=light
@@ -257,3 +257,7 @@ nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
+set expandtab
+set shiftwidth=2
+set softtabstop=2
