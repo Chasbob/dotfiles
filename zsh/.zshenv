@@ -6,7 +6,7 @@ export XDG_CACHE_HOME="$HOME/.cache"
 
 export ZDOTDIR="$XDG_CONFIG_HOME"/dotfiles/zsh
 export ZPLUG_HOME="$XDG_CONFIG_HOME/zplug"
-export ZSH_CACHE_DIR="$XDG_CACHE_HOME/.cache"
+export ZSH_CACHE_DIR="$ZPLUG_HOME/repos/robbyrussell/oh-my-zsh/cache/"
 
 export LC_ALL="en_GB.UTF-8"
 export LANG="en_GB.UTF-8"
