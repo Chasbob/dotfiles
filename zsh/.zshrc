@@ -17,7 +17,7 @@ fi
 
 . "$ZDOTDIR/custom/p10k.zsh"
 
-zplug 'zplug/zplug', hook-build:'zplug --self-manage'
+zplug 'zplug/zplug'
 
 zplug "zsh-users/zsh-completions",              defer:0
 zplug "zsh-users/zsh-autosuggestions",          defer:2, on:"zsh-users/zsh-completions"
@@ -41,6 +41,8 @@ zplug "plugins/docker", from:oh-my-zsh
 zplug "plugins/docker-compose", from:oh-my-zsh
 zplug "plugins/gradle-completion", from:oh-my-zsh
 
+export NVM_LAZY_LOAD=true
+export NVM_COMPLETION=true
 zplug "lukechilds/zsh-nvm"
 zplug "MichaelAquilina/zsh-you-should-use"
 zplug "sharkdp/fd", as:command, from:gh-r, rename-to:fdd
@@ -54,12 +56,10 @@ fpath=(
 
 # Setup completions
 autoload -Uz compinit
-compinit
-# if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
-# 	compinit;
-# else
-# 	compinit -C;
-# fi;
+for dump in ~/.zcompdump(N.mh+24); do
+  compinit
+done
+compinit -C
 
 # Change this to reflect your username.
 compdef fdd='fd'

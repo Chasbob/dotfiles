@@ -62,7 +62,6 @@
   # Right prompt segments.
   typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
     # =========================[ Line #1 ]=========================
-    command_execution_time    # previous command duration
     virtualenv                # python virtual environment
     context                   # user@host
     # time                    # current time
