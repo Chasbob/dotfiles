@@ -1,5 +1,5 @@
 #!/bin/bash
 
-PATH=$PATH:$HOME/.local/bin:$HOME/go/bin:$XDG_CONFIG_HOME/dotfiles/bin
+PATH=$PATH:$HOME/.local/bin:$HOME/go/bin:$(find $XDG_CONFIG_HOME -mindepth 1 -maxdepth 2 -type d -name bin | tr '\n' ':' | sed 's/:*$//')
 
 export PATH

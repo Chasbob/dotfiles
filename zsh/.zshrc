@@ -42,7 +42,6 @@ zplug "plugins/docker-compose", from:oh-my-zsh
 zplug "plugins/gradle-completion", from:oh-my-zsh
 
 zplug "lukechilds/zsh-nvm"
-# zplug "matthieusb/zsh-sdkman"
 zplug "MichaelAquilina/zsh-you-should-use"
 zplug "sharkdp/fd", as:command, from:gh-r, rename-to:fdd
 zplug "dandavison/delta", as:command, from:gh-r, rename-to:delta
@@ -88,7 +87,7 @@ export DEFAULT_USER='chasbob'
 . "$ZDOTDIR/custom/bindkeys"
 
 # Setup colour to use for zsh suggestions
-export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#ffff00,bold,underline'
+# export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#ffff00,bold,underline'
 
 # https://sdkman.io/install
 export SDKMAN_DIR="$HOME/.config/sdkman"
@@ -107,11 +106,7 @@ if which pyenv >/dev/null 2>&1; then
   eval "$(pyenv init -)"
 fi
 
- # Install plugins if there are plugins that have not been installed
-if ! zplug check --verbose; then
-  echo "Run zplug status"
-fi
 zplug load
 
 
-echo "done in $SECONDS seconds"
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
