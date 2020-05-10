@@ -28,10 +28,6 @@ zplug "romkatv/powerlevel10k", as:theme
 
 zplug 'wfxr/forgit'
 
-zplug "junegunn/fzf-bin", \
-    from:gh-r, \
-    as:command, \
-    rename-to:fzf
 zplug "junegunn/fzf", from:github, use:"shell/completion.zsh"
 
 # Can manage everything e.g., other person's zshrc
@@ -47,6 +43,8 @@ zplug "lukechilds/zsh-nvm"
 zplug "MichaelAquilina/zsh-you-should-use"
 zplug "sharkdp/fd", as:command, from:gh-r, rename-to:fdd
 zplug "dandavison/delta", as:command, from:gh-r, rename-to:delta
+zplug "junegunn/fzf-bin", from:gh-r, as:command, rename-to:fzf
+zplug "BurntSushi/ripgrep", from:gh-r, as:command, rename-to:ripgrep, hook-build:"ln -s $ZPLUG_REPOS/BurntSushi/ripgrep/ripgrep $ZPLUG_BIN/"
 
 # Add zsh-completions to completions path
 fpath=(
@@ -62,7 +60,6 @@ done
 compinit -C
 
 # Change this to reflect your username.
-compdef fdd='fd'
 export DEFAULT_USER='chasbob'
 
 # Setup history
@@ -86,8 +83,8 @@ export DEFAULT_USER='chasbob'
 # Setup bindkeys
 . "$ZDOTDIR/custom/bindkeys"
 
-# Setup colour to use for zsh suggestions
-# export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#ffff00,bold,underline'
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+ZSH_AUTOSUGGEST_USE_ASYNC=1
 
 # https://sdkman.io/install
 export SDKMAN_DIR="$HOME/.config/sdkman"
