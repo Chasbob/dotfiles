@@ -101,6 +101,7 @@ real_aliases=(
     wanip "dig @resolver1.opendns.com ANY myip.opendns.com +short"
     bat "bat --theme=\"Monokai Extended Origin\" --color=always"
     dots "cd $ZDOTDIR/.."
+    gs "git status"
 ); def_real_aliases
 
 
