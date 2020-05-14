@@ -110,7 +110,6 @@ funs=(
     nsl "nslookup"
     l "ls -FAtrl"
     la "ls -FAl"
-    ll "l -l"
     l1 "l -1"
     lh "l -H"
     lr "l -R"
