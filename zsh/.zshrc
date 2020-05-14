@@ -32,7 +32,7 @@ zplug "junegunn/fzf", from:github, use:"shell/completion.zsh"
 
 # Can manage everything e.g., other person's zshrc
 zplug "tcnksm/docker-alias", use:zshrc
-zplug "plugins/ssh-agent", from:oh-my-zsh
+zplug "plugins/gpg-agent", from:oh-my-zsh
 zplug "plugins/docker", from:oh-my-zsh
 zplug "plugins/docker-compose", from:oh-my-zsh
 zplug "plugins/gradle-completion", from:oh-my-zsh
@@ -48,12 +48,14 @@ zplug "BurntSushi/ripgrep", from:gh-r, as:command, rename-to:ripgrep, hook-build
 
 # Add zsh-completions to completions path
 fpath=(
+  "$ZDOTDIR/funcs/*"
   "$ZDOTDIR/external/zsh-completions/src"
   "${fpath[@]}"
 )
 
 # Setup completions
 autoload -Uz compinit
+autoload $ZDOTDIR/funcs/*
 for dump in ~/.zcompdump(N.mh+24); do
   compinit
 done

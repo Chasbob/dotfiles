@@ -44,6 +44,7 @@ function shouldInstall {
 	return 1
 }
 
+set -x
 if shouldInstall zsh; then
 	echo "Installing zsh..."
 	"$SOURCE"/zsh/install.sh "$SOURCE"
@@ -64,4 +65,5 @@ if shouldInstall tmux; then
 	"$SOURCE"/tmux/install.sh "$SOURCE"
 fi
 
+set +x
 echo "Done."
