@@ -23,6 +23,7 @@ zplug "zsh-users/zsh-completions",              defer:0
 zplug "zsh-users/zsh-autosuggestions",          defer:2, on:"zsh-users/zsh-completions"
 zplug "zdharma/fast-syntax-highlighting",       defer:3, on:"zsh-users/zsh-autosuggestions"
 zplug "zsh-users/zsh-history-substring-search"
+zplug "hlissner/zsh-autopair",                  defer:2
 
 zplug "romkatv/powerlevel10k", as:theme
 
