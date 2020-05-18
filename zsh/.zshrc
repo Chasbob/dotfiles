@@ -38,17 +38,15 @@ zplug "plugins/docker", from:oh-my-zsh
 zplug "plugins/docker-compose", from:oh-my-zsh
 zplug "plugins/gradle-completion", from:oh-my-zsh
 
-export NVM_LAZY_LOAD=true
-export NVM_COMPLETION=true
-zplug "lukechilds/zsh-nvm"
 zplug "MichaelAquilina/zsh-you-should-use"
 zplug "sharkdp/fd", as:command, from:gh-r, rename-to:fdd
 zplug "dandavison/delta", as:command, from:gh-r, rename-to:delta
 zplug "junegunn/fzf-bin", from:gh-r, as:command, rename-to:fzf
-zplug "BurntSushi/ripgrep", from:gh-r, as:command, rename-to:ripgrep, hook-build:"ln -s $ZPLUG_REPOS/BurntSushi/ripgrep/ripgrep $ZPLUG_BIN/"
+
 
 # Add zsh-completions to completions path
 fpath=(
+  "${ASDF_DIR}/completions"
   "$ZDOTDIR/funcs/*"
   "$ZDOTDIR/external/zsh-completions/src"
   "${fpath[@]}"
@@ -86,24 +84,16 @@ export DEFAULT_USER='chasbob'
 # Setup bindkeys
 . "$ZDOTDIR/custom/bindkeys"
 
+# asdf related imports
+. "$ZDOTDIR/custom/asdf"
+
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 ZSH_AUTOSUGGEST_USE_ASYNC=1
-
-# https://sdkman.io/install
-export SDKMAN_DIR="$HOME/.config/sdkman"
-[[ -s "$HOME/.config/sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.config/sdkman/bin/sdkman-init.sh"
-
-# https://github.com/pindexis/marker
-[[ -s "$HOME/.local/share/marker/marker.sh" ]] && source "$HOME/.local/share/marker/marker.sh"
 
 # direnv hook
 # https://direnv.net/docs/installation.html
 if which direnv >/dev/null 2>&1; then
   eval "$(direnv hook zsh)"
-fi
-
-if which pyenv >/dev/null 2>&1; then
-  eval "$(pyenv init -)"
 fi
 
 zplug load

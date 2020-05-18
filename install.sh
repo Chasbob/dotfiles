@@ -28,8 +28,17 @@ else
 	COMPONENTS=all
 fi
 
+function prefixOutput {
+  prefix="$1"
+  {
+    shift
+    eval $($@)
+  } > >(sed "s/^/[$1]: /") 2> >(sed "s/^/[$1]: (stderr) /" >&2)
+}
+
 # components checker
 function shouldInstall {
+        set +x
 	if [[ $COMPONENTS == all ]]; then
 		return 0
 	fi
@@ -41,29 +50,33 @@ function shouldInstall {
 		fi
 	done
 
+        set -x
 	return 1
 }
 
-set -x
 if shouldInstall zsh; then
 	echo "Installing zsh..."
-	"$SOURCE"/zsh/install.sh "$SOURCE"
+	prefixOutput "zsh" "$SOURCE"/zsh/install.sh "$SOURCE"
 fi
 
 if shouldInstall nvim; then
 	echo "Installing nvim..."
-	"$SOURCE"/nvim/install.sh "$SOURCE" "$DESTINATION"
+	prefixOutput "nvim" "$SOURCE"/nvim/install.sh "$SOURCE" "$DESTINATION"
 fi
 
 if shouldInstall alacritty; then
     echo "Installing alacritty..."
-    "$SOURCE"/alacritty/install.sh "$SOURCE" "$DESTINATION"
+    prefixOutput "alacritty" "$SOURCE"/alacritty/install.sh "$SOURCE" "$DESTINATION"
 fi
 
 if shouldInstall tmux; then
 	echo "Installing tmux..."
-	"$SOURCE"/tmux/install.sh "$SOURCE"
+	prefixOutput "tmux" "$SOURCE"/tmux/install.sh "$SOURCE"
 fi
 
-set +x
+if shouldInstall asdf; then
+	echo "Installing asdf..."
+        prefixOutput "asdf" "$SOURCE"/asdf/install.sh "$SOURCE"
+fi
+
 echo "Done."
