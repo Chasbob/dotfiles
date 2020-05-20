@@ -12,91 +12,91 @@ fi
 . "$ZPLUG_HOME/init.zsh"
 
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-        source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-. "$ZDOTDIR/custom/p10k.zsh"
+. "$ZDOTDIR/p10k.zsh"
 
-zplug 'zplug/zplug'
+zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 
-zplug "zsh-users/zsh-completions",              defer:0
+# 'core' zsh plugins
+zplug "zsh-users/zsh-completions",              defer:0, depth:1
 zplug "zsh-users/zsh-autosuggestions",          defer:2, on:"zsh-users/zsh-completions"
-zplug "zdharma/fast-syntax-highlighting",       defer:3, on:"zsh-users/zsh-autosuggestions"
-zplug "zsh-users/zsh-history-substring-search"
+zplug "zdharma/fast-syntax-highlighting",       defer:2, on:"zsh-users/zsh-autosuggestions"
+zplug "zsh-users/zsh-history-substring-search", defer:3
+
+# theme - configured with p10k.zsh
+zplug "romkatv/powerlevel10k", as:theme, depth:1
+
+# extras that I find rather useful
+zplug 'wfxr/forgit',                            defer:2
 zplug "hlissner/zsh-autopair",                  defer:2
 
-zplug "romkatv/powerlevel10k", as:theme
+# external aliases and completions
+zplug "tcnksm/docker-alias", use:zshrc, lazy:true
+zplug "docker/cli", use:contrib/completion/zsh/_docker, lazy:true
+zplug "docker/compose", use:contrib/completion/zsh/_docker-compose, lazy:true
+zplug "gradle/gradle-completion", use:_gradle, lazy:true
+zplug "smallstep/cli", use:autocomplete/zsh_autocomplete, lazy:true
 
-zplug 'wfxr/forgit'
-
-zplug "junegunn/fzf", from:github, use:"shell/completion.zsh"
-
-# Can manage everything e.g., other person's zshrc
-zplug "tcnksm/docker-alias", use:zshrc
-zplug "plugins/gpg-agent", from:oh-my-zsh
-zplug "plugins/docker", from:oh-my-zsh
-zplug "plugins/docker-compose", from:oh-my-zsh
-zplug "plugins/gradle-completion", from:oh-my-zsh
-
-zplug "MichaelAquilina/zsh-you-should-use"
-zplug "sharkdp/fd", as:command, from:gh-r, rename-to:fdd
-zplug "dandavison/delta", as:command, from:gh-r, rename-to:delta
-zplug "junegunn/fzf-bin", from:gh-r, as:command, rename-to:fzf
-
-
+zplug load
 # Add zsh-completions to completions path
 fpath=(
   "${ASDF_DIR}/completions"
-  "$ZDOTDIR/funcs/*"
+  "$ZDOTDIR/completions"
   "$ZDOTDIR/external/zsh-completions/src"
   "${fpath[@]}"
 )
 
-# Setup completions
+# # Setup completions
 autoload -Uz compinit
+# allows functions to be stored as individual files and auto-loaded by filename
 autoload $ZDOTDIR/funcs/*
-for dump in ~/.zcompdump(N.mh+24); do
+setopt EXTENDEDGLOB
+for dump in "$XDG_CACHE_HOME"/zsh/zcompdump(#qN.m1); do
   compinit
+  if [[ -s "$dump" && (! -s "$dump.zwc" || "$dump" -nt "$dump.zwc") ]]; then
+    zcompile "$dump"
+  fi
 done
+unsetopt EXTENDEDGLOB
 compinit -C
 
 # Change this to reflect your username.
 export DEFAULT_USER='chasbob'
 
 # Setup history
-. "$ZDOTDIR/custom/hist"
+. "$ZDOTDIR/hist"
 
 # Setup zsh styles
-. "$ZDOTDIR/custom/zstyles"
+. "$ZDOTDIR/zstyles"
 
 # Setup PATH
-. "$ZDOTDIR/custom/paths"
+. "$ZDOTDIR/paths"
 
 # Setup CDPATH for directory completion
-. "$ZDOTDIR/custom/cdpath"
+. "$ZDOTDIR/cdpath"
 
 # Setup functions
-. "$ZDOTDIR/custom/funcs"
+. "$ZDOTDIR/funcs"
 
 # Setup aliases
-. "$ZDOTDIR/custom/aliases"
+. "$ZDOTDIR/aliases"
 
 # Setup bindkeys
-. "$ZDOTDIR/custom/bindkeys"
+. "$ZDOTDIR/bindkeys"
 
-# asdf related imports
-. "$ZDOTDIR/custom/asdf"
+# Setup asdf
+. "$ASDF_DIR/asdf.sh" 2>/dev/null
 
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-ZSH_AUTOSUGGEST_USE_ASYNC=1
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
 
 # direnv hook
 # https://direnv.net/docs/installation.html
-if which direnv >/dev/null 2>&1; then
-  eval "$(direnv hook zsh)"
-fi
+type direnv >/dev/null 2>&1 && eval "$(direnv hook zsh)"
 
-zplug load
+export GPG_TTY="$(tty)"
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+gpgconf --launch gpg-agent
 
-
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'

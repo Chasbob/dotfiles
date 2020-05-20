@@ -1,5 +1,5 @@
 ### BREW + FZF
-# mnemonic [B]rew [I]nstall [P]lugin
+# mnemonic [B]rew [C]lean [P]lugin
 
 local uninst=$(brew leaves | eval "fzf ${FZF_DEFAULT_OPTS} -m --header='[brew:clean]'")
 

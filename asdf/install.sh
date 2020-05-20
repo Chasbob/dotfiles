@@ -1,11 +1,7 @@
 #!/bin/bash
 
-if [[ ! -d $ASDF_DIR ]]; then
-  git clone https://github.com/asdf-vm/asdf.git $ASDF_DIR
-fi
+ASDF_DIR=${ASDF_DIR:-$HOME/.config/asdf}
 
-for plugin in bat fd firebase flutter gohugo gradle java neovim nodejs python ripgrep tmux; do
-  echo adding "$plugin"...
-  asdf plugin-add "$plugin"
-done
+echo "Load asdf"
+[ ! -d "$ASDF_DIR" ] && git clone https://github.com/asdf-vm/asdf.git "$ASDF_DIR"
 
