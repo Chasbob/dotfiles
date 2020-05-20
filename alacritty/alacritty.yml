@@ -111,6 +111,5 @@ window:
   decorations: buttonless
 
 key_bindings:
-  - { key: N, mods: Command, action: SpawnNewInstance  }
-  - { key: T, mods: Command, chars: "\x01c"            }
-  - { key: W, mods: Command, chars: "\x01:kill-pane"   }
+  - { key: N,    mods: Command, action: SpawnNewInstance }
+  - { key: Key3, mods: Alt,     chars: "#"               }

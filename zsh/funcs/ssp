@@ -1,0 +1,5 @@
+### SSH port forward
+# ssh with local port forward
+# mnemonic [SS]h [P]ort
+
+ssh -L "$1"\:localhost\:"$1" "$2"

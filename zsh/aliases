@@ -1,0 +1,64 @@
+#!/bin/bash
+
+# Setup open alias
+if [[ "$OSTYPE" == darwin* ]]; then
+  alias o='open'
+  alias grep='ggrep'
+  alias ls='ls -G'
+  type gsed >/dev/null && alias sed='gsed'
+else
+  alias o='xdg-open'
+  alias ls='ls --color'
+  # alias xclip to pbcopy and paste
+  if [ $+commands[xclip] ]; then
+    alias pbcopy='xclip -selection clipboard -in'
+    alias pbpaste='xclip -selection clipboard -out'
+  fi
+fi
+
+alias pbc='pbcopy'
+alias pbp='pbpaste'
+
+# Add get aliase for downloading with progress
+if [ $+commands[curl] ]; then
+  alias get='curl --continue-at - --location --progress-bar --remote-name --remote-time'
+elif [ $+commands[wget] ]; then
+  alias get='wget --continue --progress=bar --timestamping'
+fi
+
+# Serve PWD over http
+if [ $+commands[python3] ]; then
+  alias http-serve='python3 -m http.server'
+else
+  alias http-serve='python -m SimpleHTTPServer'
+fi
+
+alias grep='grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
+
+alias diffdir='diff -rq'
+
+# Alias NeoVim for Vim
+if [ $+commands[nvim] ]; then
+  alias vim='nvim'
+fi
+alias v='vim'
+
+alias inet='ifconfig | grep 'inet ''
+alias inet6='ifconfig | grep 'inet6 ''
+alias o='open .'
+alias wanip='dig @resolver1.opendns.com ANY myip.opendns.com +short'
+alias bat='bat --theme="Monokai Extended Origin" --color=always'
+alias dots='cd $ZDOTDIR/..'
+alias gs='git status'
+alias lspath='echo "$PATH" | tr ":" "\n"'
+
+alias nsl='nslookup'
+alias l='ls -FAtrl'
+alias la='ls -FAl'
+alias l1='l -1'
+alias lh='l -H'
+alias lr='l -R'
+alias lk='la -l'
+
+
+alias cdt='cd $(mktemp -d)'

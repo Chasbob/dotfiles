@@ -11,7 +11,6 @@ augroup END
 " let vim_markdown_preview_pandoc=1
 
 
-let mapleader ="`"
 if ! filereadable(expand('~/.config/nvim/autoload/plug.vim'))
 	echo "Downloading junegunn/vim-plug to manage plugins..."
 	silent !mkdir -p ~/.config/nvim/autoload/
@@ -21,7 +20,7 @@ endif
 
 call plug#begin('~/.config/nvim/plugged')
 " cs"' to replace double with single quote
-Plug 'tpope/vim-surround'
+Plug 'preservim/nerdcommenter'
 " Bound to <leader>n at line 80
 Plug 'scrooloose/nerdtree'
 " :Magit
@@ -33,16 +32,16 @@ Plug 'tpope/vim-commentary'
 " Oceanic Theme
 Plug 'mhartington/oceanic-next'
 " Wakatime tracking
-Plug 'wakatime/vim-wakatime'
+silent! Plug 'wakatime/vim-wakatime'
 " Gutter annotations for vim
 Plug 'airblade/vim-gitgutter'
-" Live markdown preview in browser
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
 " TOML language support
 Plug 'cespare/vim-toml'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Docker (compose) file syntax
 Plug 'ekalinin/dockerfile.vim'
+Plug 'dense-analysis/ale'
+Plug 'Yggdroot/indentLine'
 call plug#end()
 
 set bg=light
@@ -60,10 +59,53 @@ endif
 
 " Theme
 syntax enable
-colorscheme OceanicNext
+silent! colorscheme OceanicNext
+
+let g:gitgutter_highlight_linenrs = 1
+let g:gitgutter_preview_win_floating = 1
+
+" gitgutter
+function! GitStatus()
+  let [a,m,r] = GitGutterGetHunkSummary()
+  return printf('+%d ~%d -%d', a, m, r)
+endfunction
+set statusline+=%{GitStatus()}
 
 " Enable powerline fonts for airline
 let g:airline_powerline_fonts = 1
+let g:airline#extensions#ale#enabled = 1
+let g:airline#extensions#tabline#enabled = 1
+
+
+" indentLine
+let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+
+
+" ALE
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+let g:ale_sign_error = '✘'
+let g:ale_sign_warning = '⚠'
+let g:ale_sign_column_always = 0
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'javascript': ['eslint'],
+\}
+
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+
+" Use compact syntax for prettified multi-line comments
+let g:NERDCompactSexyComs = 1
+
+" Allow commenting and inverting empty lines (useful when commenting a region)
+let g:NERDCommentEmptyLines = 1
+
+" Enable trimming of trailing whitespace when uncommenting
+let g:NERDTrimTrailingWhitespace = 1
+
+" Enable NERDCommenterToggle to check all selected lines is commented or not
+let g:NERDToggleCheckAllLines = 1
+
 " Some basics:
 	nnoremap c "_c
 	set nocompatible

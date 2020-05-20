@@ -1,7 +1,0 @@
-#!/bin/bash
-
-. "$ASDF_DIR/asdf.sh"
-
-# asdf java
-
-# . "$ASDF_DATA_DIR"/plugins/java/set-java-home.zsh
