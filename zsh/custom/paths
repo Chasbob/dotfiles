@@ -2,4 +2,9 @@
 
 PATH=$PATH:$HOME/.local/bin:$HOME/go/bin:$(find $XDG_CONFIG_HOME -mindepth 1 -maxdepth 2 -type d -name bin | tr '\n' ':' | sed 's/:*$//')
 
+
+if [[ "$OSTYPE" == darwin* ]]; then
+  [ -d /usr/local/opt/coreutils/libexec/gnubin ] && PATH="/usr/local/opt/coreutils/libexec/gnubin":$PATH
+fi
+
 export PATH
