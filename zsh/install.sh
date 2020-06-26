@@ -1,7 +1,12 @@
 #!/bin/bash
 
 SOURCE=$1
-INSTALL_PLUGINS=$2
+ZPLUG_HOME=$2/zplug
+INSTALL_PLUGINS=$3
+
+if [[ ! -d $ZPLUG_HOME ]]; then
+  git clone https://github.com/zplug/zplug $ZPLUG_HOME
+fi
 
 ZDOTDIR=$SOURCE/zsh
 echo "Setup .zshenv..."

@@ -60,11 +60,11 @@ if shouldInstall gnugp; then
 fi
 
 if shouldInstall git; then
-        prefixOutput "git" "$SOURCE"/git/install.sh "$SOURCE"
+        prefixOutput "git" "$SOURCE"/git/install.sh "$SOURCE" "$DESTINATION"
 fi
 
 if shouldInstall zsh; then
-	prefixOutput "zsh" "$SOURCE"/zsh/install.sh "$SOURCE" $INSTALL_PLUGINS
+	prefixOutput "zsh" "$SOURCE"/zsh/install.sh "$SOURCE" "$DESTINATION" $INSTALL_PLUGINS
 fi
 
 if shouldInstall nvim; then
