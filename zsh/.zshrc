@@ -52,17 +52,15 @@ fpath=(
 
 # # Setup completions
 autoload -Uz compinit
-# allows functions to be stored as individual files and auto-loaded by filename
 autoload $ZDOTDIR/funcs/*
-setopt EXTENDEDGLOB
-for dump in "$XDG_CACHE_HOME"/zsh/zcompdump(#qN.m1); do
-  compinit
-  if [[ -s "$dump" && (! -s "$dump.zwc" || "$dump" -nt "$dump.zwc") ]]; then
-    zcompile "$dump"
+
+() {
+  if [[ $# -gt 0 ]]; then
+    compinit
+  else
+    compinit -C
   fi
-done
-unsetopt EXTENDEDGLOB
-compinit -C
+} ${ZDOTDIR:-$HOME}/.zcompdump(N.mh+24)
 
 # Change this to reflect your username.
 export DEFAULT_USER='chasbob'
