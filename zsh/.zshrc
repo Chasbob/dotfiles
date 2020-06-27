@@ -20,31 +20,33 @@ fi
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 
 # 'core' zsh plugins
-zplug "zsh-users/zsh-completions",              defer:0, depth:1
-zplug "zsh-users/zsh-autosuggestions",          defer:2, on:"zsh-users/zsh-completions"
-zplug "zdharma/fast-syntax-highlighting",       defer:2, on:"zsh-users/zsh-autosuggestions"
-zplug "zsh-users/zsh-history-substring-search", defer:3
+zstyle ":zplug:tag" defer 0
+zstyle ":zplug:tag" depth 1
+zstyle ":zplug:tag" as command
+zplug "zsh-users/zsh-completions", use:'src'
+zplug "zsh-users/zsh-autosuggestions", defer:2, on:"zsh-users/zsh-completions", lazy:false, as:plugin
+zplug "zdharma/fast-syntax-highlighting", defer:2, on:"zsh-users/zsh-autosuggestions", lazy:false, as:plugin
+zplug "zsh-users/zsh-history-substring-search", defer:3, lazy:false, as:plugin
 
 # theme - configured with p10k.zsh
-zplug "romkatv/powerlevel10k", as:theme, depth:1
+zplug "romkatv/powerlevel10k", as:theme, depth:1, lazy:false
 
 # extras that I find rather useful
-zplug 'wfxr/forgit',                            defer:2
-zplug "hlissner/zsh-autopair",                  defer:2
+zplug 'wfxr/forgit', defer:2, as:plugin, lazy:false
+zplug "hlissner/zsh-autopair", defer:2, as:plugin, lazy:false
 
 # external aliases and completions
-zplug "tcnksm/docker-alias", use:zshrc, lazy:true
-zplug "docker/cli", use:contrib/completion/zsh/_docker, lazy:true
-zplug "docker/compose", use:contrib/completion/zsh/_docker-compose, lazy:true
-zplug "gradle/gradle-completion", use:_gradle, lazy:true
-zplug "smallstep/cli", use:autocomplete/zsh_autocomplete, lazy:true
+zplug "docker/cli", use:'contrib/completion/zsh/_docker'
+zplug "plugins/docker-compose", from:oh-my-zsh, as:plugin
+zplug "gradle/gradle-completion", use:_gradle
+zplug "smallstep/cli", use:'autocomplete/zsh_autocomplete', rename-to:'_step'
 
 zplug load
 # Add zsh-completions to completions path
 fpath=(
   "${ASDF_DIR}/completions"
   "$ZDOTDIR/completions"
-  "$ZDOTDIR/external/zsh-completions/src"
+  "$ZPLUG_BIN"
   "${fpath[@]}"
 )
 

@@ -51,6 +51,7 @@ alias bat='bat --theme="Monokai Extended Origin" --color=always'
 alias dots='cd $ZDOTDIR/..'
 alias gs='git status'
 alias lspath='echo "$PATH" | tr ":" "\n"'
+alias lsfpath='echo "$fpath" | tr " " "\n"'
 
 alias nsl='nslookup'
 alias l='ls -FAtrl'
@@ -62,3 +63,4 @@ alias lk='la -l'
 
 
 alias cdt='cd $(mktemp -d)'
+

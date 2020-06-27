@@ -26,3 +26,5 @@ export ENHANCD_FILTER="fzf"
 
 export FZF_CTRL_T_OPTS="--ansi --preview-window 'right:60%' --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
 export FZF_CTRL_T_COMMAND="fdd -I --type file"
+
+export COMPOSE_DOCKER_CLI_BUILD=1
