@@ -13,9 +13,9 @@ if hash tree &>/dev/null; then
       else
         print "\n"
       fi
-      tree -ahpCI '*git' --dirsfirst $i
+      tree -ahpCI "*git|$(cat .gitignore | egrep -v '^#.*$|^[[:space:]]*$' | sed 's/\/*$//g' | tr '\n' '|')" --dirsfirst $i
     done
   else
-    tree -ahpCI '*git' --dirsfirst
+    tree -ahpCI "*git|$(cat .gitignore | egrep -v '^#.*$|^[[:space:]]*$' | sed 's/\/*$//g' | tr '\n' '|')" --dirsfirst
   fi
 fi

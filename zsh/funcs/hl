@@ -1,0 +1,4 @@
+### Highlight with grep
+# mnemonic [H]ighlight [G]rep
+
+grep -e "^" -e "$1"
