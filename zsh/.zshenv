@@ -11,6 +11,7 @@ export ZSH_CACHE_DIR="$XDG_CACHE_HOME/zsh"
 export ZPLUG_CACHE_DIR="$XDG_CACHE_HOME/zplug"
 
 export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"
+export GPG_TTY="$(tty)"
 export STEPPATH="$XDG_CONFIG_HOME/step"
 
 export ASDF_DIR="$XDG_CONFIG_HOME/asdf"

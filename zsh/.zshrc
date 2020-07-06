@@ -77,9 +77,6 @@ export DEFAULT_USER='chasbob'
 # Setup CDPATH for directory completion
 . "$ZDOTDIR/cdpath"
 
-# Setup functions
-. "$ZDOTDIR/funcs"
-
 # Setup aliases
 . "$ZDOTDIR/aliases"
 
@@ -96,7 +93,5 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
 # https://direnv.net/docs/installation.html
 type direnv >/dev/null 2>&1 && eval "$(direnv hook zsh)"
 
-export GPG_TTY="$(tty)"
-export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-gpgconf --launch gpg-agent
+#gpgconf --launch gpg-agent
 

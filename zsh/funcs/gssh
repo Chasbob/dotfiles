@@ -1,0 +1,4 @@
+### SSH Using gpg-agent
+# mnemonic [G]pg-agent [SS]h
+
+SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket) $@
