@@ -3,7 +3,7 @@
 # argument parsing
 SOURCE="$( cd "$(dirname "$0")" >/dev/null 2>&1 || . ; pwd -P )"
 DESTINATION="$HOME/.config"
-INSTALL_PLUGINS=false
+INSTALL_PLUGINS=${INSTALL_PLUGINS:-false}
 while getopts "h:p:i:" flag; do
 	case $flag in
 	h)
@@ -13,9 +13,6 @@ while getopts "h:p:i:" flag; do
 	p)
 		DESTINATION="$OPTARG"
 		;;
-        i)
-                INSTALL_PLUGINS=true
-                ;;
     *)
 		echo "Usage: $0 [-p path] [components]"
 		exit 1
