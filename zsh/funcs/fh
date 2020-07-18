@@ -1,5 +1,5 @@
 ### HISTORY + FZF
 # execute command from history with fzf
 # mnemonic [F]zf [H]istory
-
-eval $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed -r 's/ *[0-9]*\*? *//' | sed -r 's/\\/\\\\/g')
+QUERY=${@:-''}
+eval $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac -q "$QUERY" | sed -r 's/ *[0-9]*\*? *//' | sed -r 's/\\/\\\\/g')

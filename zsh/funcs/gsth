@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Substitute git and ssh urls with their https equivilent
+# Mnemonic [G]it or [S]SH to [H]TTPS
+
+#< "${1:-/dev/stdin}"
+INPUT="${1:-/dev/stdin}"
+
+sed -E 's/(git|ssh)\@([-a-z0-9.]*):([-a-z0-9.]+[^ .,;\t\n\r<">\):]?[^, <>"\t]*[^ .,;\t\n\r<">\):])/https:\/\/\2\/\3/gi;t;d' <(cat $INPUT)
