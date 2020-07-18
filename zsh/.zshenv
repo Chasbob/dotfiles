@@ -4,6 +4,7 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
 
+export DOTDIR="$XDG_CONFIG_HOME/dotfiles"
 export ZDOTDIR="$XDG_CONFIG_HOME/dotfiles/zsh"
 export ZPLUG_HOME="$XDG_CONFIG_HOME/zplug"
 
@@ -29,3 +30,4 @@ export FZF_CTRL_T_OPTS="--ansi --preview-window 'right:60%' --preview 'bat --col
 export FZF_CTRL_T_COMMAND="fdd -I --type file"
 
 export COMPOSE_DOCKER_CLI_BUILD=1
+export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
