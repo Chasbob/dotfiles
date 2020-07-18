@@ -1,8 +1,8 @@
 #!/bin/bash
 
 setopt autocd
-setopt autopushd
+#setopt autopushd
 
-# CDPATH=.
+CDPATH=.:$HOME/Projects
 #
 # export CDPATH

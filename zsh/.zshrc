@@ -38,6 +38,7 @@ zplug "hlissner/zsh-autopair", defer:2, as:plugin, lazy:false
 # external aliases and completions
 zplug "docker/cli", use:'contrib/completion/zsh/_docker'
 zplug "plugins/docker-compose", from:oh-my-zsh, as:plugin
+zplug "plugins/docker", from:oh-my-zsh, as:plugin
 zplug "gradle/gradle-completion", use:_gradle
 zplug "smallstep/cli", use:'autocomplete/zsh_autocomplete', rename-to:'_step'
 
@@ -54,13 +55,17 @@ fpath=(
 autoload -Uz compinit
 autoload $ZDOTDIR/funcs/*
 
-() {
-  if [[ $# -gt 0 ]]; then
-    compinit
-  else
-    compinit -C
-  fi
-} ${ZDOTDIR:-$HOME}/.zcompdump(N.mh+24)
+# Load and initialize the completion system ignoring insecure directories with a
+# cache time of 20 hours, so it should almost always regenerate the first time a
+# shell is opened each day.
+autoload -Uz compinit
+_comp_files=(${ZDOTDIR:-$HOME}/.zcompdump(Nm-20))
+if (( $#_comp_files )); then
+  compinit -i -C
+else
+  compinit -i
+fi
+unset _comp_files
 
 # Change this to reflect your username.
 export DEFAULT_USER='chasbob'
@@ -93,5 +98,6 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
 # https://direnv.net/docs/installation.html
 type direnv >/dev/null 2>&1 && eval "$(direnv hook zsh)"
 
-#gpgconf --launch gpg-agent
+
+[ -S "$GNUPGHOME"/S.gpg-agent.ssh ] || gpgconf --launch gpg-agent
 

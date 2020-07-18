@@ -11,3 +11,5 @@
 	diffFilter = delta --color-only
 [commit]
 	gpgsign = true
+[pull]
+	ff = only
