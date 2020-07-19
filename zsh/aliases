@@ -69,26 +69,3 @@ alias lk='la -l'
 
 alias cdt='pushd $(mktemp -d)'
 
-alias gradle=gradle-or-gradlew
-compdef _gradle gradle-or-gradlew
-
-
-# docker compose aliases from https://github.com/ohmyzsh/ohmyzsh/blob/master/plugins/docker-compose/docker-compose.plugin.zsh
-# included here so the plugin can still lazy load
-alias dco='docker-compose'
-
-alias dcb='docker-compose build'
-alias dce='docker-compose exec'
-alias dcps='docker-compose ps'
-alias dcrestart='docker-compose restart'
-alias dcrm='docker-compose rm'
-alias dcr='docker-compose run'
-alias dcstop='docker-compose stop'
-alias dcup='docker-compose up'
-alias dcupd='docker-compose up -d'
-alias dcupdlf='docker-compose up -d && docker-compose logs -f'
-alias dcdn='docker-compose down'
-alias dcl='docker-compose logs'
-alias dclf='docker-compose logs -f'
-alias dcpull='docker-compose pull'
-alias dcstart='docker-compose start'

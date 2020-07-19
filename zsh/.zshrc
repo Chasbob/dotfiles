@@ -1,71 +1,65 @@
 #!/bin/bash
 
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block, everything else may go below.
+. "$XDG_CONFIG_HOME"/zinit/zinit.zsh
 
-# Check if zplug is installed
-if [[ ! -d $ZPLUG_HOME ]]; then
-  git clone https://github.com/zplug/zplug $ZPLUG_HOME
-fi
+# Plugins
+zinit wait"1a" lucid for \
+    atinit"zicompinit; zicdreplay" \
+        zdharma/fast-syntax-highlighting \
+    atload"_zsh_autosuggest_start; bindkey '^e' autosuggest-accept; bindkey '^x' autosuggest-execute" \
+        zsh-users/zsh-autosuggestions \
+    blockf atpull'zinit creinstall -q .' \
+        zsh-users/zsh-completions \
+    atload"bindkey '^[[A' history-substring-search-up; bindkey '^[[B' history-substring-search-down" \
+        zsh-users/zsh-history-substring-search \
+    bindmap'^R -> ^F' \
+        zdharma/history-search-multi-word \
+        wfxr/forgit \
+        hlissner/zsh-autopair \
 
-. "$ZPLUG_HOME/init.zsh"
+# Programs
+zinit wait"1b" lucid from"gh-r" as"program" for \
+    junegunn/fzf-bin \
+    mv"**/fd -> fd" \
+    pick"fd" \
+        @sharkdp/fd \
+    mv"**/bat -> bat" \
+        @sharkdp/bat \
+    mv"exa* -> exa" \
+        ogham/exa \
+    atclone'./direnv hook zsh > zhook.zsh' \
+    atpull'%atclone' \
+    pick"direnv" \
+    src"zhook.zsh" \
+    mv"direnv* -> direnv" \
+        direnv/direnv \
+    mv"docker* -> docker-compose" \
+        docker/compose \
+    pick"yank" \
+    mv"yank* -> yank" \
+    make \
+        mptre/yank \
+    from"github" \
+    src"asdf.sh" \
+    atclone"ln -s ${ZINIT[PLUGINS_DIR]}/asdf-vm---asdf/completions/_asdf ${ZINIT[COMPLETIONS_DIR]}/_asdf" \
+        @asdf-vm/asdf
 
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
+# Completions
+zinit wait"1c" as"completion" lucid for \
+    OMZP::docker/_docker \
+    OMZP::docker-compose/_docker-compose \
+    OMZP::gradle/_gradle
 
-. "$ZDOTDIR/p10k.zsh"
+# Theme
+# Load within zshrc – for the instant prompt
+zinit ice wait'!' lucid atload"source $ZDOTDIR/p10k.zsh; _p9k_precmd" nocd
+zinit light romkatv/powerlevel10k
 
-zplug 'zplug/zplug', hook-build:'zplug --self-manage'
-
-# 'core' zsh plugins
-zstyle ":zplug:tag" defer 0
-zstyle ":zplug:tag" depth 1
-zstyle ":zplug:tag" as command
-zplug "zsh-users/zsh-completions", use:'src'
-zplug "zsh-users/zsh-autosuggestions", defer:2, on:"zsh-users/zsh-completions", lazy:false, as:plugin
-zplug "zdharma/fast-syntax-highlighting", defer:2, on:"zsh-users/zsh-autosuggestions", lazy:false, as:plugin
-zplug "zsh-users/zsh-history-substring-search", defer:3, lazy:false, as:plugin
-
-# theme - configured with p10k.zsh
-zplug "romkatv/powerlevel10k", as:theme, depth:1, lazy:false
-
-# extras that I find rather useful
-zplug 'wfxr/forgit', defer:2, as:plugin, lazy:false
-zplug "hlissner/zsh-autopair", defer:2, as:plugin, lazy:false
-
-# external aliases and completions
-zplug "docker/cli", use:'contrib/completion/zsh/_docker'
-zplug "plugins/docker-compose", from:oh-my-zsh, as:plugin
-zplug "plugins/docker", from:oh-my-zsh, as:plugin
-zplug "gradle/gradle-completion", use:_gradle
-zplug "smallstep/cli", use:'autocomplete/zsh_autocomplete', rename-to:'_step'
-
-zplug load
-# Add zsh-completions to completions path
-fpath=(
-  "${ASDF_DIR}/completions"
-  "$ZDOTDIR/completions"
-  "$ZPLUG_BIN"
-  "${fpath[@]}"
-)
-
-# # Setup completions
-autoload -Uz compinit
-autoload $ZDOTDIR/funcs/*
-
-# Load and initialize the completion system ignoring insecure directories with a
-# cache time of 20 hours, so it should almost always regenerate the first time a
-# shell is opened each day.
-autoload -Uz compinit
-_comp_files=(${ZDOTDIR:-$HOME}/.zcompdump(Nm-20))
-if (( $#_comp_files )); then
-  compinit -i -C
-else
-  compinit -i
-fi
-unset _comp_files
+# pretty colours
+zinit ice atclone"dircolors -b LS_COLORS > clrs.zsh" \
+    atpull'%atclone' pick"clrs.zsh" nocompile'!' \
+    atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”'
+zinit light trapd00r/ls_colors
 
 # Change this to reflect your username.
 export DEFAULT_USER='chasbob'
@@ -87,17 +81,6 @@ export DEFAULT_USER='chasbob'
 
 # Setup bindkeys
 . "$ZDOTDIR/bindkeys"
-
-# Setup asdf
-. "$ASDF_DIR/asdf.sh" 2>/dev/null
-
-ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
-
-# direnv hook
-# https://direnv.net/docs/installation.html
-type direnv >/dev/null 2>&1 && eval "$(direnv hook zsh)"
-
 
 [ -S "$GNUPGHOME"/S.gpg-agent.ssh ] || gpgconf --launch gpg-agent
 
