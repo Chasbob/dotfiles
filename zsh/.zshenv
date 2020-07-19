@@ -6,17 +6,12 @@ export XDG_CACHE_HOME="$HOME/.cache"
 
 export DOTDIR="$XDG_CONFIG_HOME/dotfiles"
 export ZDOTDIR="$XDG_CONFIG_HOME/dotfiles/zsh"
-export ZPLUG_HOME="$XDG_CONFIG_HOME/zplug"
 
 export ZSH_CACHE_DIR="$XDG_CACHE_HOME/zsh"
-export ZPLUG_CACHE_DIR="$XDG_CACHE_HOME/zplug"
 
 export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"
 export GPG_TTY="$(tty)"
 export STEPPATH="$XDG_CONFIG_HOME/step"
-
-export ASDF_DIR="$XDG_CONFIG_HOME/asdf"
-export ASDF_DATA_DIR="$XDG_DATA_HOME/asdf"
 
 export LC_ALL="en_GB.UTF-8"
 export LANG="en_GB.UTF-8"
@@ -28,6 +23,9 @@ export ENHANCD_FILTER="fzf"
 
 export FZF_CTRL_T_OPTS="--ansi --preview-window 'right:60%' --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
 export FZF_CTRL_T_COMMAND="fdd -I --type file"
+
+export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
 
 export COMPOSE_DOCKER_CLI_BUILD=1
 export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
