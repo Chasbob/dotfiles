@@ -1,6 +1,6 @@
 #!/bin/bash
 
-zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+# zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 zstyle ':completion:*' menu select
 
@@ -35,7 +35,7 @@ zstyle ':completion:*:*:*:*:*' menu select
 zstyle ':completion:*::::' _expand completer _complete _match _approximate
 
 zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path ~/.cache/zsh
+zstyle ':completion:*' cache-path $XDG_CACHE_HOME/zsh
 
 # insert all expansions for expand completer
 zstyle ':completion:*:expand:*' tag-order all-expansions
@@ -58,7 +58,6 @@ zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|=*' 'l:|=* r:|
 zstyle ':completion:*' special-dirs true
 
 # colors
-zstyle ':completion:*' list-colors ${(s.:.)GNU_LSCOLORS}
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
 
 # offer indices before parameters in array subscripts

@@ -7,14 +7,15 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-### Add zinit module
-# module_path+=( "/Users/chasbob/.config/dotfiles/zsh/.zinit/bin/zmodules/Src" )
-#     zmodload zdharma/zplugin
-
-declare -A ZINIT  # initial Zinit's hash definition, if configuring before loading Zinit, and then:
+declare -A ZINIT
 ZINIT[HOME_DIR]="$XDG_CONFIG_HOME"/zinit
 ZINIT[BIN_DIR]="$XDG_CONFIG_HOME"/zinit/bin
 ZINIT[ZCOMPDUMP_PATH]="$XDG_CACHE_HOME"/.zcompdump
+
+## Add zinit module
+module_path+=( "${ZINIT[BIN_DIR]}/zmodules/Src" )
+    zmodload zdharma/zplugin
+
 ### Added by Zinit's installer
 if [[ ! -f ${ZINIT[BIN_DIR]}/zinit.zsh ]]; then
     print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
@@ -39,24 +40,43 @@ zinit light-mode for \
 ### End of Zinit's installer chunk
 
 # Plugins
-zinit wait"1a" lucid for \
+zinit wait lucid for \
     atinit"zicompinit; zicdreplay" \
         zdharma/fast-syntax-highlighting \
     atload"_zsh_autosuggest_start; bindkey '^e' autosuggest-accept; bindkey '^x' autosuggest-execute" \
         zsh-users/zsh-autosuggestions \
-    blockf atpull'zinit creinstall -q .' \
-        zsh-users/zsh-completions \
     atload"bindkey '^[[A' history-substring-search-up; bindkey '^[[B' history-substring-search-down" \
         zsh-users/zsh-history-substring-search \
     bindmap'^R -> ^F' \
         zdharma/history-search-multi-word \
         wfxr/forgit \
         hlissner/zsh-autopair \
-        OMZP::docker-compose
+        OMZP::colored-man-pages \
+    atclone"$(type gdircolors >/dev/null && echo "g")dircolors -b LS_COLORS > clrs.zsh" \
+    atpull'%atclone' pick"clrs.zsh" nocompile'!' \
+    atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”; zstyle ":completion:*:default" list-colors ${(s.:.)LS_COLORS}' \
+        trapd00r/ls_colors
+
+# Completions
+zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
+        zsh-users/zsh-completions \
+        OMZP::kubectl \
+    as"completion" \
+        OMZP::gradle/_gradle \
+        OMZP::gradle \
+    as"completion" \
+        OMZP::docker-compose/_docker-compose \
+        OMZP::docker-compose \
+    as"completion" \
+        OMZP::docker/_docker \
+    as"completion" \
+    cp"contrib/completions.zsh -> _exa" \
+    id-as"exa-comp" \
+        ogham/exa \
 
 # Programs
-zinit wait"1b" lucid from"gh-r" as"program" for \
-    junegunn/fzf-bin \
+zinit wait lucid from"gh-r" as"program" for \
+        junegunn/fzf-bin \
     mv"**/fd -> fd" \
     pick"fd" \
         @sharkdp/fd \
@@ -81,20 +101,9 @@ zinit wait"1b" lucid from"gh-r" as"program" for \
     atclone"ln -s ${ZINIT[PLUGINS_DIR]}/asdf-vm---asdf/completions/_asdf ${ZINIT[COMPLETIONS_DIR]}/_asdf" \
         @asdf-vm/asdf
 
-# Completions
-zinit wait"1c" as"completion" lucid for \
-    OMZP::docker/_docker \
-    OMZP::docker-compose/_docker-compose \
-    OMZP::gradle/_gradle
-
 zinit depth=1 lucid atload"source $ZDOTDIR/p10k.zsh; _p9k_precmd" nocd for \
     romkatv/powerlevel10k
 
-# pretty colours
-zinit ice atclone"dircolors -b LS_COLORS > clrs.zsh" \
-    atpull'%atclone' pick"clrs.zsh" nocompile'!' \
-    atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”'
-zinit light trapd00r/ls_colors
 
 # Change this to reflect your username.
 export DEFAULT_USER='chasbob'
