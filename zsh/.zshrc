@@ -1,15 +1,30 @@
 #!/bin/bash
 
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+### Add zinit module
+# module_path+=( "/Users/chasbob/.config/dotfiles/zsh/.zinit/bin/zmodules/Src" )
+#     zmodload zdharma/zplugin
+
+declare -A ZINIT  # initial Zinit's hash definition, if configuring before loading Zinit, and then:
+ZINIT[HOME_DIR]="$XDG_CONFIG_HOME"/zinit
+ZINIT[BIN_DIR]="$XDG_CONFIG_HOME"/zinit/bin
+ZINIT[ZCOMPDUMP_PATH]="$XDG_CACHE_HOME"/.zcompdump
 ### Added by Zinit's installer
-if [[ ! -f $ZDOTDIR/.zinit/bin/zinit.zsh ]]; then
+if [[ ! -f ${ZINIT[BIN_DIR]}/zinit.zsh ]]; then
     print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
-    command mkdir -p "$ZDOTDIR/.zinit" && command chmod g-rwX "$ZDOTDIR/.zinit"
-    command git clone https://github.com/zdharma/zinit "$ZDOTDIR/.zinit/bin" && \
+    command mkdir -p "${ZINIT[BIN_DIR]}" && command chmod g-rwX "${ZINIT[BIN_DIR]}"
+    command git clone https://github.com/zdharma/zinit "${ZINIT[BIN_DIR]}" && \
         print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
         print -P "%F{160}▓▒░ The clone has failed.%f%b"
 fi
 
-source "$ZDOTDIR/.zinit/bin/zinit.zsh"
+source "${ZINIT[BIN_DIR]}/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
@@ -37,6 +52,7 @@ zinit wait"1a" lucid for \
         zdharma/history-search-multi-word \
         wfxr/forgit \
         hlissner/zsh-autopair \
+        OMZP::docker-compose
 
 # Programs
 zinit wait"1b" lucid from"gh-r" as"program" for \
@@ -71,10 +87,8 @@ zinit wait"1c" as"completion" lucid for \
     OMZP::docker-compose/_docker-compose \
     OMZP::gradle/_gradle
 
-# Theme
-# Load within zshrc – for the instant prompt
-zinit ice wait'!' lucid atload"source $ZDOTDIR/p10k.zsh; _p9k_precmd" nocd
-zinit light romkatv/powerlevel10k
+zinit depth=1 lucid atload"source $ZDOTDIR/p10k.zsh; _p9k_precmd" nocd for \
+    romkatv/powerlevel10k
 
 # pretty colours
 zinit ice atclone"dircolors -b LS_COLORS > clrs.zsh" \
@@ -103,5 +117,9 @@ export DEFAULT_USER='chasbob'
 # Setup bindkeys
 . "$ZDOTDIR/bindkeys"
 
+typeset -g ZSH_AUTOSUGGEST_USE_ASYNC=true
+typeset -g ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
+
 [ -S "$GNUPGHOME"/S.gpg-agent.ssh ] || gpgconf --launch gpg-agent
 
+(( ! ${+functions[p10k]} )) || p10k finalize

@@ -3,3 +3,4 @@
 zsh/zhistory
 zsh/.zinit
 zsh/.zcompcache
+**/*.zwc
