@@ -53,19 +53,20 @@ function shouldInstall {
 }
 
 if shouldInstall gnugp; then
-        prefixOutput "gnugp" "$SOURCE"/gnupg/install.sh "$DESTINATION"
+    prefixOutput "gnugp" "$SOURCE"/gnupg/install.sh "$DESTINATION"
 fi
 
 if shouldInstall git; then
-        prefixOutput "git" "$SOURCE"/git/install.sh "$SOURCE" "$DESTINATION"
+    prefixOutput "git" "$SOURCE"/git/install.sh "$SOURCE" "$DESTINATION"
 fi
 
 if shouldInstall zsh; then
-	prefixOutput "zsh" "$SOURCE"/zsh/install.sh "$SOURCE" "$DESTINATION" $INSTALL_PLUGINS
+    prefixOutput "zsh" "$SOURCE"/zsh/install.sh "$SOURCE" "$INSTALL_PLUGINS"
 fi
 
 if shouldInstall nvim; then
-	prefixOutput "nvim" "$SOURCE"/nvim/install.sh "$SOURCE"
+    # disabling INSTALL_PLUGINS for now
+    prefixOutput "nvim" "$SOURCE"/nvim/install.sh "$SOURCE" "$DESTINATION"
 fi
 
 if shouldInstall alacritty; then
@@ -73,11 +74,7 @@ if shouldInstall alacritty; then
 fi
 
 if shouldInstall tmux; then
-	prefixOutput "tmux" "$SOURCE"/tmux/install.sh "$SOURCE"
+    prefixOutput "tmux" "$SOURCE"/tmux/install.sh "$SOURCE"
 fi
 
-if shouldInstall asdf; then
-        prefixOutput "asdf" "$SOURCE"/asdf/install.sh "$SOURCE"
-fi
-
-echo "Done."
+echo "**** DONE ****"

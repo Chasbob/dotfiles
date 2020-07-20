@@ -3,6 +3,6 @@
 SOURCE=$1
 
 echo "Setup git..."
-test -e "$SOURCE"/git/.gitconfig && mv "$HOME"/.gitconfig{,.bak}
-ln -sf "$SOURCE"/git/.gitconfig "$HOME"/.gitconfig
+[ -e "$HOME"/.gitconfig ] && mv "$HOME"/.gitconfig{,.bak}
+ln -sfn "$SOURCE"/git/.gitconfig "$HOME"/.gitconfig
 
