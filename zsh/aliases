@@ -3,16 +3,8 @@
 # Setup open alias
 if [[ "$OSTYPE" == darwin* ]]; then
   alias o='open'
-  type rg >/dev/null && alias grep='rg'
-  if echo "$PATH" | grep gnubin >/dev/null; then
-    alias ls='ls --color'
-  else
-    alias ls='ls -G'
-  fi
-  type gsed >/dev/null && alias sed='gsed'
 else
   alias o='xdg-open'
-  alias ls='ls --color'
   # alias xclip to pbcopy and paste
   if [ $+commands[xclip] ]; then
     alias pbcopy='xclip -selection clipboard -in'
@@ -45,7 +37,6 @@ alias diffdir='diff -rq'
 if [ $+commands[nvim] ]; then
   alias vim='nvim'
 fi
-alias v='vim'
 
 alias inet='ifconfig | grep "inet "'
 alias inet6='ifconfig | grep "inet6 "'
@@ -58,14 +49,9 @@ alias gs='git status'
 alias lspath='echo "$PATH" | tr ":" "\n"'
 alias lsfpath='echo "$fpath" | tr " " "\n"'
 
+alias ls='exa'
+alias la='ls -la'
+alias ll='ls --tree'
 alias nsl='nslookup'
-alias l='ls -FAtrl'
-alias la='ls -FAl'
-alias l1='l -1'
-alias lh='l -H'
-alias lr='l -R'
-alias lk='la -l'
-
-
 alias cdt='pushd $(mktemp -d)'
 

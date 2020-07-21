@@ -27,6 +27,7 @@ fi
 
 source "${ZINIT[BIN_DIR]}/zinit.zsh"
 autoload -Uz _zinit
+autoload "$ZDOTDIR"/funcs/*
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
 # Load a few important annexes, without Turbo
@@ -39,67 +40,54 @@ zinit light-mode for \
 
 ### End of Zinit's installer chunk
 
+zinit wait"1b" lucid as"null" for \
+  has"gsed" id-as"gsed" sbin"$(which gsed) -> sed" zdharma/null \
+  has"ggrep" id-as"ggrep" sbin"$(which ggrep) -> grep" zdharma/null \
+  has"gdircolors" id-as"gdircolors" sbin"$(which gdircolors) -> dircolors" zdharma/null
+
 # Plugins
-zinit wait lucid for \
-    atinit"zicompinit; zicdreplay" \
-        zdharma/fast-syntax-highlighting \
-    atload"_zsh_autosuggest_start; bindkey '^e' autosuggest-accept; bindkey '^x' autosuggest-execute" \
-        zsh-users/zsh-autosuggestions \
-    atload"bindkey '^[[A' history-substring-search-up; bindkey '^[[B' history-substring-search-down" \
-        zsh-users/zsh-history-substring-search \
-    bindmap'^R -> ^F' \
-        zdharma/history-search-multi-word \
-        wfxr/forgit \
-        hlissner/zsh-autopair \
-        OMZP::colored-man-pages \
-    atclone"$(type gdircolors >/dev/null && echo "g")dircolors -b LS_COLORS > clrs.zsh" \
+zinit wait"1c" lucid for \
+    atinit"zicompinit; zicdreplay"                                         zdharma/fast-syntax-highlighting \
+    atload"_zsh_autosuggest_start; \
+            bindkey '^e' autosuggest-accept; \
+            bindkey '^x' autosuggest-execute"                              zsh-users/zsh-autosuggestions \
+    atload"bindkey '^[[A' history-substring-search-up;\
+            bindkey '^[[B' history-substring-search-down"                  zsh-users/zsh-history-substring-search \
+    bindmap'^R -> ^F'                                                      zdharma/history-search-multi-word \
+                                                                           wfxr/forgit \
+                                                                           hlissner/zsh-autopair \
+                                                                           OMZP::colored-man-pages \
+                                                                           darvid/zsh-poetry \
+    atclone"dircolors -b LS_COLORS > clrs.zsh" \
     atpull'%atclone' pick"clrs.zsh" nocompile'!' \
-    atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”; zstyle ":completion:*:default" list-colors ${(s.:.)LS_COLORS}' \
-        trapd00r/ls_colors
+    atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”; \
+            zstyle ":completion:*:default" list-colors ${(s.:.)LS_COLORS}' trapd00r/ls_colors
 
 # Completions
 zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
-        zsh-users/zsh-completions \
-        OMZP::kubectl \
-    as"completion" \
-        OMZP::gradle/_gradle \
-        OMZP::gradle \
-    as"completion" \
-        OMZP::docker-compose/_docker-compose \
-        OMZP::docker-compose \
-    as"completion" \
-        OMZP::docker/_docker \
-    as"completion" \
     cp"contrib/completions.zsh -> _exa" \
-    id-as"exa-comp" \
-        ogham/exa \
+    as"completion" id-as"exa-comp"        ogham/exa \
+                                          zsh-users/zsh-completions \
+                                          OMZP::kubectl \
+    as"completion"                        OMZP::gradle/_gradle \
+                                          OMZP::gradle \
+    as"completion"                        OMZP::docker-compose/_docker-compose \
+                                          OMZP::docker-compose \
+    as"completion"                        OMZP::docker/_docker
 
 # Programs
-zinit wait lucid from"gh-r" as"program" for \
-        junegunn/fzf-bin \
-    mv"**/fd -> fd" \
-    pick"fd" \
-        @sharkdp/fd \
-    mv"**/bat -> bat" \
-        @sharkdp/bat \
-    mv"exa* -> exa" \
-        ogham/exa \
-    atclone'./direnv hook zsh > zhook.zsh' \
-    atpull'%atclone' \
-    pick"direnv" \
-    src"zhook.zsh" \
-    mv"direnv* -> direnv" \
-        direnv/direnv \
-    mv"docker* -> docker-compose" \
-        docker/compose \
-    pick"yank" \
-    mv"yank* -> yank" \
-    make \
-        mptre/yank \
-    from"github" \
-    src"asdf.sh" \
-    atclone"ln -s ${ZINIT[PLUGINS_DIR]}/asdf-vm---asdf/completions/_asdf ${ZINIT[COMPLETIONS_DIR]}/_asdf" \
-        @asdf-vm/asdf
+zinit wait"1a" lucid from"gh-r" as"null" for \
+    sbin"fzf"                                  junegunn/fzf-bin \
+    sbin"**/fd"                                @sharkdp/fd \
+    sbin"**/bat"                               @sharkdp/bat \
+    sbin"exa* -> exa"                          ogham/exa \
+    sbin"docker* -> docker-compose"            docker/compose \
+    sbin"direnv* -> direnv" \
+      atclone'./direnv hook zsh > zhook.zsh' \
+      atpull'%atclone' \
+      src"zhook.zsh"                           direnv/direnv \
+    sbin"yank" from"github" make               mptre/yank \
+    from"github" src"asdf.sh"                  @asdf-vm/asdf
 
 zinit depth=1 lucid atload"source $ZDOTDIR/p10k.zsh; _p9k_precmd" nocd for \
     romkatv/powerlevel10k
@@ -129,6 +117,14 @@ export DEFAULT_USER='chasbob'
 typeset -g ZSH_AUTOSUGGEST_USE_ASYNC=true
 typeset -g ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 
-[ -S "$GNUPGHOME"/S.gpg-agent.ssh ] || gpgconf --launch gpg-agent
+# if gpg is installed
+# make sure the agent is running
+zinit \
+      wait \
+      lucid \
+      has"gpgconf" \
+      if"[ ! -S $GNUPGHOME/S.gpg-agent.ssh ]" \
+      atinit"gpgconf --launch gpg-agent" for \
+         zdharma/null
 
 (( ! ${+functions[p10k]} )) || p10k finalize

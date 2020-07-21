@@ -4,6 +4,46 @@
 
 These are my dotfiles.
 
+## Includes
+
+### ZSH
+
+> Loaded with zinit
+
+#### Plugins
+
+* [zdharma/fast-syntax-highlighting](https://github.com/zdharma/fast-syntax-highlighting)
+* [zsh-users/zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
+* [zsh-users/zsh-history-substring-search](https://github.com/zsh-users/zsh-history-substring-search)
+* [zdharma/history-search-multi-word](https://github.com/zdharma/history-search-multi-word)
+* [wfxr/forgit](https://github.com/wfxr/forgit)
+* [hlissner/zsh-autopair](https://github.com/hlissner/zsh-autopair)
+* [trapd00r/ls_colors](https://github.com/trapd00r/ls_colors)
+
+##### Plugins - Oh My Zsh
+https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/
+
+* [gradle](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/gradle)
+* [docker](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/docker)
+* [docker-compose](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/docker-compose)
+* [colored-man-pages](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/colored-man-pages)
+
+#### Programs - loaded with zinit
+
+* [junegunn/fzf-bin](https://github.com/junegunn/fzf-bin)
+* [sharkdp/fd](https://github.com/sharkdp/fd)
+* [sharkdp/bat](https://github.com/sharkdp/bat)
+* [ogham/exa](https://github.com/ogham/exa)
+* [direnv/direnv](https://github.com/direnv/direnv)
+* [docker/compose](https://github.com/docker/compose)
+* [mptre/yank](https://github.com/mptre/yank)
+* [asdf-vm/asdf](https://github.com/asdf-vm/asdf)
+
+
+#### Theme
+
+[powerlevel10k](https://github.com/romkatv/powerlevel10k)
+
 ## Install
 
 **Files that would have been overwriten are renamed with the suffix `.bak`**
