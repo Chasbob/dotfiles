@@ -75,7 +75,8 @@ zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
                                           OMZP::gradle \
     as"completion"                        OMZP::docker-compose/_docker-compose \
                                           OMZP::docker-compose \
-    as"completion"                        OMZP::docker/_docker
+    as"completion"                        OMZP::docker/_docker \
+    as"completion" id-as"asdf-comp"       @asdf-vm/asdf
 
 # Programs
 zinit wait"1a" lucid from"gh-r" as"null" for \
