@@ -1,6 +1,7 @@
 **/.zcompdump*
 **/.zsh_history
 zsh/zhistory
+zsh/.zsh_history
 zsh/.zinit
 zsh/.zcompcache
 **/*.zwc
