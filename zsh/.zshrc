@@ -84,7 +84,8 @@ zinit wait"1a" lucid from"gh-r" as"null" for \
     sbin"**/bat"                               @sharkdp/bat \
     sbin"exa* -> exa"                          ogham/exa \
     sbin"docker* -> docker-compose"            docker/compose \
-    sbin"direnv* -> direnv" \
+    sbin"direnv" \
+      mv"direnv* -> direnv" \
       atclone'./direnv hook zsh > zhook.zsh' \
       atpull'%atclone' \
       src"zhook.zsh"                           direnv/direnv \
