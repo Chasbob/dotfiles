@@ -80,8 +80,8 @@ $ ~/.config/dotfiles/install.sh zsh nvim alacritty tmux
 
 ## Preview
 
-You can use docker to view the set-up with:
+You can use this [docker image](https://hub.docker.com/r/chasbob/dotfiles) to view the set-up with:
 
 ```bash
-$ docker run --rm -ti chasbob/dotfiles:master
+$ docker run --rm -ti chasbob/dotfiles
 ```
