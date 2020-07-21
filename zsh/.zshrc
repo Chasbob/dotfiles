@@ -13,8 +13,10 @@ ZINIT[BIN_DIR]="$XDG_CONFIG_HOME"/zinit/bin
 ZINIT[ZCOMPDUMP_PATH]="$XDG_CACHE_HOME"/.zcompdump
 
 ## Add zinit module
-module_path+=( "${ZINIT[BIN_DIR]}/zmodules/Src" )
-    zmodload zdharma/zplugin
+if [[ -f "${ZINIT[BIN_DIR]}/zmodules/Src/zdharma/zplugin.so" ]]; then
+  module_path+=( "${ZINIT[BIN_DIR]}/zmodules/Src" )
+      zmodload zdharma/zplugin
+fi
 
 ### Added by Zinit's installer
 if [[ ! -f ${ZINIT[BIN_DIR]}/zinit.zsh ]]; then
