@@ -1,5 +1,6 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
+let mapleader = ","
 
 " enable syntax highlighting
 syntax on
@@ -32,16 +33,25 @@ Plug 'tpope/vim-commentary'
 " Oceanic Theme
 Plug 'mhartington/oceanic-next'
 " Wakatime tracking
-silent! Plug 'wakatime/vim-wakatime'
+Plug 'wakatime/vim-wakatime'
 " Gutter annotations for vim
 Plug 'airblade/vim-gitgutter'
 " TOML language support
 Plug 'cespare/vim-toml'
+" Completion
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Docker (compose) file syntax
 Plug 'ekalinin/dockerfile.vim'
+" Fancy linter
 Plug 'dense-analysis/ale'
-Plug 'Yggdroot/indentLine'
+" Nicer indentation indicators
+Plug 'yggdroot/indentline'
+" Live markdown preview in browser
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+" Use prettier from vim
+Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
+" syntax highlighting for zinit framework
+Plug 'zinit-zsh/zinit-vim-syntax'
 call plug#end()
 
 set bg=light
@@ -64,6 +74,9 @@ silent! colorscheme OceanicNext
 let g:gitgutter_highlight_linenrs = 1
 let g:gitgutter_preview_win_floating = 1
 
+" Allow deleting of untracked files from magit
+let g:magit_discard_untracked_do_delete = 1
+
 " gitgutter
 function! GitStatus()
   let [a,m,r] = GitGutterGetHunkSummary()
@@ -79,6 +92,8 @@ let g:airline#extensions#tabline#enabled = 1
 
 " indentLine
 let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+" indentLine - colour
+let g:indentLine_color_gui = '#A4E57E'
 
 
 " ALE

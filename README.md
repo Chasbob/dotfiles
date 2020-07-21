@@ -44,6 +44,13 @@ https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/
 
 [powerlevel10k](https://github.com/romkatv/powerlevel10k)
 
+### Neovim
+
+* COC requires `node`
+* wakatime needs an api key
+
+> Either make sure these are done or remove corresponding parts from [init.vim](./nvim/init.vim)
+
 ## Install
 
 **Files that would have been overwriten are renamed with the suffix `.bak`**
