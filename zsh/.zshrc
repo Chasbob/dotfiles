@@ -9,8 +9,12 @@ fi
 
 declare -A ZINIT
 ZINIT[HOME_DIR]="$XDG_CONFIG_HOME"/zinit
-ZINIT[BIN_DIR]="$XDG_CONFIG_HOME"/zinit/bin
+ZINIT[BIN_DIR]="$ZINIT[HOME_DIR]"/bin
+ZINIT[PLUGINS_DIR]="$ZINIT[HOME_DIR]"/plugins
+ZINIT[COMPLETIONS_DIR]="$ZINIT[HOME_DIR]"/completions
+ZINIT[SNIPPETS_DIR]="$ZINIT[HOME_DIR]"/snippets
 ZINIT[ZCOMPDUMP_PATH]="$XDG_CACHE_HOME"/.zcompdump
+ZPFX="$ZINIT[HOME_DIR]"/polaris
 
 ## Add zinit module
 if [[ -f "${ZINIT[BIN_DIR]}/zmodules/Src/zdharma/zplugin.so" ]]; then
@@ -35,64 +39,60 @@ autoload "$ZDOTDIR"/funcs/*
 # Load a few important annexes, without Turbo
 # (this is currently required for annexes)
 zinit light-mode for \
-    zinit-zsh/z-a-rust \
-    zinit-zsh/z-a-as-monitor \
-    zinit-zsh/z-a-patch-dl \
-    zinit-zsh/z-a-bin-gem-node
+    zinit-zsh/z-a-meta-plugins
+
+zinit bindmap'^R -> ^F' for \
+  annexes zsh-users+fast zdharma console-tools fuzzy
 
 ### End of Zinit's installer chunk
 
-zinit wait"1b" lucid as"null" for \
+zinit lucid as"null" for \
   has"gsed" id-as"gsed" sbin"$(which gsed) -> sed" zdharma/null \
   has"ggrep" id-as"ggrep" sbin"$(which ggrep) -> grep" zdharma/null \
   has"gdircolors" id-as"gdircolors" sbin"$(which gdircolors) -> dircolors" zdharma/null
 
-# Plugins
-zinit wait"1c" lucid for \
-    atinit"zicompinit; zicdreplay"                                         zdharma/fast-syntax-highlighting \
-    atload"_zsh_autosuggest_start; \
-            bindkey '^e' autosuggest-accept; \
-            bindkey '^x' autosuggest-execute"                              zsh-users/zsh-autosuggestions \
-    atload"bindkey '^[[A' history-substring-search-up;\
-            bindkey '^[[B' history-substring-search-down"                  zsh-users/zsh-history-substring-search \
-    bindmap'^R -> ^F'                                                      zdharma/history-search-multi-word \
-                                                                           wfxr/forgit \
-                                                                           hlissner/zsh-autopair \
-                                                                           OMZP::colored-man-pages \
-                                                                           darvid/zsh-poetry \
-    atclone"dircolors -b LS_COLORS > clrs.zsh" \
-    atpull'%atclone' pick"clrs.zsh" nocompile'!' \
-    atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”; \
-            zstyle ":completion:*:default" list-colors ${(s.:.)LS_COLORS}' trapd00r/ls_colors
+bindkey '^e' autosuggest-accept
+bindkey '^x' autosuggest-execute
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+zstyle :plugin:history-search-multi-word reset-prompt-protect 1
+
+# Programs
+zinit wait lucid from"gh-r" as"null" for \
+    from"github" src"asdf.sh" as"program" \
+    @asdf-vm/asdf \
+    sbin"docker* -> docker-compose" has"docker" \
+    docker/compose \
+    sbin"**/step -> step" \
+    smallstep/cli \
+    sbin"direnv" mv"direnv* -> direnv" atclone'./direnv hook zsh > zhook.zsh' atpull'%atclone' src"zhook.zsh" \
+    direnv/direnv \
+    sbin"yank" from"github" make \
+    mptre/yank \
+    sbin"shfmt* -> shfmt" \
+    @mvdan/sh \
+    from"github" as"program" src"forgit.plugin.zsh" \
+    wfxr/forgit
 
 # Completions
 zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
-    cp"contrib/completions.zsh -> _exa" \
-    as"completion" id-as"exa-comp"        ogham/exa \
-                                          zsh-users/zsh-completions \
-                                          OMZP::kubectl \
-    as"completion"                        OMZP::gradle/_gradle \
-                                          OMZP::gradle \
-    as"completion"                        OMZP::docker-compose/_docker-compose \
-                                          OMZP::docker-compose \
-    as"completion"                        OMZP::docker/_docker \
-    as"completion" id-as"asdf-comp"       @asdf-vm/asdf
+    svn \
+    as"completion" \
+      OMZP::docker \
+    svn has"kubectl" \
+      OMZP::kubectl \
+    svn \
+      OMZP::docker-compose \
+    svn \
+      OMZP::gradle \
+    svn \
+      OMZP::colored-man-pages \
+    as"completion" mv"contrib/completions.zsh -> _exa" id-as"exa-comp" \
+      ogham/exa \
+    as"completion" mv"autocomplete/zsh_autocomplete -> _step" id-as"step-comp" \
+      smallstep/cli
 
-# Programs
-zinit wait"1a" lucid from"gh-r" as"null" for \
-    sbin"fzf"                                  junegunn/fzf-bin \
-    sbin"**/fd"                                @sharkdp/fd \
-    sbin"**/bat"                               @sharkdp/bat \
-    sbin"exa* -> exa"                          ogham/exa \
-    sbin"docker* -> docker-compose"            docker/compose \
-    sbin"direnv" \
-      mv"direnv* -> direnv" \
-      atclone'./direnv hook zsh > zhook.zsh' \
-      atpull'%atclone' \
-      src"zhook.zsh"                           direnv/direnv \
-    sbin"yank" from"github" make               mptre/yank \
-    from"github" src"asdf.sh"                  @asdf-vm/asdf
-
+# Theme
 zinit depth=1 lucid atload"source $ZDOTDIR/p10k.zsh; _p9k_precmd" nocd for \
     romkatv/powerlevel10k
 
