@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export DEFAULT_USER=chasbob
+
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
@@ -29,3 +31,5 @@ export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
 
 export COMPOSE_DOCKER_CLI_BUILD=1
 export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
+
+export ASDF_DATA_DIR=$XDG_CONFIG_HOME/asdf
