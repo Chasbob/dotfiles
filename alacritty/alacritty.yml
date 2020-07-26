@@ -12,41 +12,35 @@ selection:
 
   # When set to `true`, selected text will be copied to the primary clipboard.
   save_to_clipboard: true
-# Colors (Monokai Dark)
 schemes:
-  oceanic-next: &oceanic-next
+  material: &material
   # Default colors
     primary:
-      background: '0x1b2b34'
-      foreground: '0xd8dee9'
-
-    # Colors the cursor will use if `custom_cursor_colors` is true
-    cursor:
-      text: '0x1b2b34'
-      cursor: '0xffffff'
+      background: '#263238'
+      foreground: '#eeffff'
 
     # Normal colors
     normal:
-      black:   '0x343d46'
-      red:     '0xEC5f67'
-      green:   '0x99C794'
-      yellow:  '0xFAC863'
-      blue:    '0x6699cc'
-      magenta: '0xc594c5'
-      cyan:    '0x5fb3b3'
-      white:   '0xd8dee9'
+      black:   '#000000'  # Arbitrary
+      red:     '#e53935'
+      green:   '#91b859'
+      yellow:  '#ffb62c'
+      blue:    '#6182b8'
+      magenta: '#ff5370'  # Dark pink of the original material theme
+      cyan:    '#39adb5'
+      white:   '#a0a0a0'  # Arbitrary
 
     # Bright colors
     bright:
-      black:   '0x343d46'
-      red:     '0xEC5f67'
-      green:   '0x99C794'
-      yellow:  '0xFAC863'
-      blue:    '0x6699cc'
-      magenta: '0xc594c5'
-      cyan:    '0x5fb3b3'
-      white:   '0xd8dee9'
-colors: *oceanic-next
+      black:   '#4e4e4e'  # Arbitrary
+      red:     '#ff5370'
+      green:   '#c3e88d'
+      yellow:  '#ffcb6b'
+      blue:    '#82aaff'
+      magenta: '#f07178'  # Pink of the original material theme
+      cyan:    '#89ddff'
+      white:   '#ffffff'  # Arbitrary
+colors: *material
 window:
   dynamic_padding: false
   decorations: buttonless
