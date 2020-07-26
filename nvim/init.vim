@@ -28,10 +28,6 @@ Plug 'scrooloose/nerdtree'
 Plug 'jreybert/vimagit'
 " Makes the status line nice
 Plug 'bling/vim-airline'
-" Commenting plugin, gcc / gcgc
-Plug 'tpope/vim-commentary'
-" Oceanic Theme
-Plug 'mhartington/oceanic-next'
 " Wakatime tracking
 Plug 'wakatime/vim-wakatime'
 " Gutter annotations for vim
@@ -48,17 +44,22 @@ Plug 'dense-analysis/ale'
 Plug 'yggdroot/indentline'
 " Live markdown preview in browser
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
-" Use prettier from vim
-Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 " syntax highlighting for zinit framework
 Plug 'zinit-zsh/zinit-vim-syntax'
+" Theme
+Plug 'hzchirs/vim-material'
 call plug#end()
 
-set bg=light
+" Theme
+syntax enable
+set background=dark
+colorscheme vim-material
+
 set go=a
 set mouse=a
 set nohlsearch
 set clipboard+=unnamedplus
+set ignorecase
 
 " For Neovim 0.1.3 and 0.1.4
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
@@ -66,10 +67,6 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 if (has("termguicolors"))
  set termguicolors
 endif
-
-" Theme
-syntax enable
-silent! colorscheme OceanicNext
 
 let g:gitgutter_highlight_linenrs = 1
 let g:gitgutter_preview_win_floating = 1
@@ -88,6 +85,7 @@ set statusline+=%{GitStatus()}
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#ale#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
+let g:airline_theme='material'
 
 
 " indentLine
@@ -108,6 +106,8 @@ let g:ale_fixers = {
 
 " Add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
+
+let g:NERDDefaultAlign = 'left'
 
 " Use compact syntax for prettified multi-line comments
 let g:NERDCompactSexyComs = 1
