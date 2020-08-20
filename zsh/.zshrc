@@ -72,7 +72,9 @@ zinit wait lucid from"gh-r" as"null" for \
     sbin"shfmt* -> shfmt" \
     @mvdan/sh \
     from"github" as"program" src"forgit.plugin.zsh" \
-    wfxr/forgit
+    wfxr/forgit \
+    from"github" sbin"bin/*" atclone"alias ripgrep=rg && ./build.sh --minify=all" atpull'%atclone' \
+    eth-p/bat-extras
 
 # Completions
 zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
@@ -96,7 +98,25 @@ zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
 zinit depth=1 lucid atload"source $ZDOTDIR/p10k.zsh; _p9k_precmd" nocd for \
     romkatv/powerlevel10k
 
-# Setup history
+zinit wait lucid for \
+  darvid/zsh-poetry
+
+# if gpg is installed
+# make sure the agent is running
+zinit \
+      wait \
+      lucid \
+      has"gpgconf" \
+      if"[ ! -S $GNUPGHOME/S.gpg-agent.ssh ]" \
+      atinit"gpgconf --launch gpg-agent" for \
+       id-as"gpg-agent" zdharma/null
+
+zinit wait lucid has"java" \
+      if"[ -f $ASDF_DATA_DIR/plugins/java/set-java-home.zsh ]" \
+      atinit"source $ASDF_DATA_DIR/plugins/java/set-java-home.zsh" for \
+        id-as"asdf-vm/java-home" zdharma/null
+
+#### Setup history
 
 HISTSIZE=99999
 HISTFILESIZE=999999
@@ -257,9 +277,8 @@ alias inet='ifconfig | grep "inet "'
 alias inet6='ifconfig | grep "inet6 "'
 alias o='open .'
 alias wanip='dig @resolver1.opendns.com ANY myip.opendns.com +short'
-alias bat='bat --theme="Monokai Extended Origin" --color=always'
 alias dots='pushd $DOTDIR/'
-alias zdots='cd $ZDOTDIR'
+alias zdots='pushd $ZDOTDIR'
 alias gs='git status'
 alias lspath='echo "$PATH" | tr ":" "\n"'
 alias lsfpath='echo "$fpath" | tr " " "\n"'
@@ -270,10 +289,13 @@ alias ll='ls --tree'
 alias nsl='nslookup'
 alias cdt='pushd $(mktemp -d)'
 
-alias dps='docker ps'
-alias dip="docker inspect --format '{{ .NetworkSettings.IPAddress }}'"
+alias dps="docker ps --format='table | {{.ID}} ~ {{.Names}} |'"
+alias dpsi="docker inspect --format='| {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}} |'"
+alias dpsp="docker ps --format='table | {{.ID}} ~ {{.Names}} ~ {{ .Ports }} |'"
 alias drm="docker ps -aq | xargs docker rm"
 alias dstop="docker ps -aq | xargs docker stop"
+
+alias restart-dns-macos='sudo killall -HUP mDNSResponder;sudo killall mDNSResponderHelper;sudo dscacheutil -flushcache'
 
 alias ...='../..'
 alias ....='../../..'
@@ -304,19 +326,6 @@ bindkey -v
 bindkey '^w' backward-kill-word
 bindkey '^r' history-incremental-search-backward
 export KEYTIMEOUT=1
-
-# typeset -g ZSH_AUTOSUGGEST_USE_ASYNC=true
-# typeset -g ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
-
-# if gpg is installed
-# make sure the agent is running
-# zinit \
-#       wait \
-#       lucid \
-#       has"gpgconf" \
-#       if"[ ! -S $GNUPGHOME/S.gpg-agent.ssh ]" \
-#       atinit"gpgconf --launch gpg-agent" for \
-#          zdharma/null
 
 (( ! ${+functions[p10k]} )) || p10k finalize
 

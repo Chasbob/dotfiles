@@ -1,2 +1,17 @@
-**/*.env
-**/.envrc
+### Macos
+**/.DS_Store
+### JetBrains
+.idea/
+
+### direnv
+.direnv
+.envrc
+
+### VS Code
+.vscode
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+

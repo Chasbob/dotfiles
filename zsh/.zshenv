@@ -23,8 +23,13 @@ export VISUAL="nvim"
 export ENHANCD_COMMAND="ecd"
 export ENHANCD_FILTER="fzf"
 
-export FZF_CTRL_T_OPTS="--ansi --preview-window 'right:60%' --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
-export FZF_CTRL_T_COMMAND="fdd -I --type file"
+export FORGIT_FZF_DEFAULT_OPTS="
+--exact
+--border
+--cycle
+--reverse
+--height '80%'
+"
 
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
