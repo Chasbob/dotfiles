@@ -7,6 +7,10 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# - - - - - - - - - - - - - - - - - - - -
+# Zinit Configuration
+# - - - - - - - - - - - - - - - - - - - -
+
 declare -A ZINIT
 ZINIT[HOME_DIR]="$XDG_CONFIG_HOME"/zinit
 ZINIT[BIN_DIR]="$ZINIT[HOME_DIR]"/bin
@@ -15,8 +19,9 @@ ZINIT[COMPLETIONS_DIR]="$ZINIT[HOME_DIR]"/completions
 ZINIT[SNIPPETS_DIR]="$ZINIT[HOME_DIR]"/snippets
 ZINIT[ZCOMPDUMP_PATH]="$XDG_CACHE_HOME"/.zcompdump
 ZPFX="$ZINIT[HOME_DIR]"/polaris
+__ZINIT="${ZINIT[BIN_DIR]}/zinit.zsh"
 
-## Add zinit module
+### Add zinit module
 if [[ -f "${ZINIT[BIN_DIR]}/zmodules/Src/zdharma/zplugin.so" ]]; then
   module_path+=( "${ZINIT[BIN_DIR]}/zmodules/Src" )
       zmodload zdharma/zplugin
@@ -31,7 +36,7 @@ if [[ ! -f ${ZINIT[BIN_DIR]}/zinit.zsh ]]; then
         print -P "%F{160}▓▒░ The clone has failed.%f%b"
 fi
 
-source "${ZINIT[BIN_DIR]}/zinit.zsh"
+. "$__ZINIT"
 autoload -Uz _zinit
 autoload "$ZDOTDIR"/funcs/*
 (( ${+_comps} )) && _comps[zinit]=_zinit
@@ -39,10 +44,54 @@ autoload "$ZDOTDIR"/funcs/*
 # Load a few important annexes, without Turbo
 # (this is currently required for annexes)
 zinit light-mode for \
-    zinit-zsh/z-a-meta-plugins
+  zinit-zsh/z-a-patch-dl \
+  zinit-zsh/z-a-bin-gem-node \
+  zinit-zsh/z-a-bin-gem-node \
+  zinit-zsh/z-a-meta-plugins
 
-zinit bindmap'^R -> ^F' for \
-  annexes zsh-users+fast zdharma console-tools fuzzy
+
+# - - - - - - - - - - - - - - - - - - - -
+# Theme
+# - - - - - - - - - - - - - - - - - - - -
+
+setopt promptsubst
+
+POWERLEVEL9K_SHORTEN_STRATEGY=truncate_to_last
+POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
+POWERLEVEL9K_SHORTEN_DELIMITER=""
+zinit depth=1 lucid nocd \
+      atload"source $ZDOTDIR/p10k.zsh; _p9k_precmd" for romkatv/powerlevel10k
+
+
+# - - - - - - - - - - - - - - - - - - - -
+# Meta Plugins
+# - - - - - - - - - - - - - - - - - - - -
+
+zinit bindmap'^R -> ^F' for zdharma
+zinit skip'fzy lotabout/skim peco/peco' for fuzzy
+zinit skip'sharkdp/hexyl sharkdp/hyperfine' for console-tools
+zinit skip'molovo/zunit' for molovo
+zinit for \
+  zsh-users+fast \
+  ext-git
+
+zinit wait lucid for \
+  darvid/zsh-poetry
+
+# if gpg is installed
+# make sure the agent is running
+zinit \
+      wait \
+      lucid \
+      has"gpgconf" \
+      if"[ ! -S $GNUPGHOME/S.gpg-agent.ssh ]" \
+      atinit"gpgconf --launch gpg-agent" for \
+       id-as"gpg-agent" zdharma/null
+
+zinit wait lucid has"java" \
+      if"[ -f $ASDF_DATA_DIR/plugins/java/set-java-home.zsh ]" \
+      atinit"source $ASDF_DATA_DIR/plugins/java/set-java-home.zsh" for \
+        id-as"asdf-vm/java-home" zdharma/null
 
 ### End of Zinit's installer chunk
 
@@ -51,12 +100,7 @@ zinit lucid as"null" for \
   has"ggrep" id-as"ggrep" sbin"$(which ggrep) -> grep" zdharma/null \
   has"gdircolors" id-as"gdircolors" sbin"$(which gdircolors) -> dircolors" zdharma/null
 
-bindkey '^e' autosuggest-accept
-bindkey '^x' autosuggest-execute
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
-zstyle :plugin:history-search-multi-word reset-prompt-protect 1
-
+# Programs
 # Programs
 zinit wait lucid from"gh-r" as"null" for \
     from"github" src"asdf.sh" as"program" \
@@ -78,43 +122,17 @@ zinit wait lucid from"gh-r" as"null" for \
 
 # Completions
 zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
-    svn \
     as"completion" \
-      OMZP::docker \
-    svn has"kubectl" \
+      OMZP::docker/_docker \
+    has"kubectl" \
       OMZP::kubectl \
-    svn \
-      OMZP::docker-compose \
-    svn \
-      OMZP::gradle \
-    svn \
-      OMZP::colored-man-pages \
-    as"completion" mv"contrib/completions.zsh -> _exa" id-as"exa-comp" \
+    OMZP::docker-compose \
+    OMZP::gradle \
+    OMZP::colored-man-pages \
+    as"completion" mv"contrib/completions.zsh -> _exa" id-as"ogham/exa-comp" \
       ogham/exa \
-    as"completion" mv"autocomplete/zsh_autocomplete -> _step" id-as"step-comp" \
+    as"completion" mv"autocomplete/zsh_autocomplete -> _step" id-as"smallstep/cli-comp" \
       smallstep/cli
-
-# Theme
-zinit depth=1 lucid atload"source $ZDOTDIR/p10k.zsh; _p9k_precmd" nocd for \
-    romkatv/powerlevel10k
-
-zinit wait lucid for \
-  darvid/zsh-poetry
-
-# if gpg is installed
-# make sure the agent is running
-zinit \
-      wait \
-      lucid \
-      has"gpgconf" \
-      if"[ ! -S $GNUPGHOME/S.gpg-agent.ssh ]" \
-      atinit"gpgconf --launch gpg-agent" for \
-       id-as"gpg-agent" zdharma/null
-
-zinit wait lucid has"java" \
-      if"[ -f $ASDF_DATA_DIR/plugins/java/set-java-home.zsh ]" \
-      atinit"source $ASDF_DATA_DIR/plugins/java/set-java-home.zsh" for \
-        id-as"asdf-vm/java-home" zdharma/null
 
 #### Setup history
 
@@ -129,6 +147,7 @@ setopt hist_ignore_space      # ignore commands that start with space
 setopt hist_verify            # show command with history expansion to user before running it
 setopt inc_append_history     # add commands to HISTFILE in order of execution
 setopt share_history          # share command history data
+
 
 # Setup zsh styles
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
@@ -267,6 +286,7 @@ else
 fi
 
 alias grep='grep --color=always --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
+alias lanip="ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'"
 
 # Alias NeoVim for Vim
 if [ $+commands[nvim] ]; then
@@ -308,6 +328,14 @@ alias ........='../../../../../../..'
 autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey "^x^e" edit-command-line
+
+bindkey '^e' autosuggest-accept
+bindkey '^x' autosuggest-execute
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+zstyle :plugin:history-search-multi-word reset-prompt-protect 1
+zstyle ":history-search-multi-word" page-size "LINES/4"
+
 
 # Place cursor at the end of the line when searching history
 autoload -U history-search-end
