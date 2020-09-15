@@ -84,6 +84,7 @@
     # battery               # internal battery
     # wifi                  # wifi speed
     # example               # example user-defined segment (see prompt_example function below)
+    context
   )
 
   # Basic style options that define the overall prompt look.
