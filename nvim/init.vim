@@ -28,8 +28,6 @@ Plug 'scrooloose/nerdtree'
 Plug 'jreybert/vimagit'
 " Makes the status line nice
 Plug 'bling/vim-airline'
-" Wakatime tracking
-Plug 'wakatime/vim-wakatime'
 " Gutter annotations for vim
 Plug 'airblade/vim-gitgutter'
 " TOML language support
