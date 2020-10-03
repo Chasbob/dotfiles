@@ -82,6 +82,8 @@ zinit for marlonrichert/zsh-autocomplete
 zinit wait lucid for \
   darvid/zsh-poetry
 
+zinit wait lucid from"gh-r"  mv"delta* -> delta" sbin"delta/delta" as"null" for dandavison/delta
+
 ### asdf-vm
 zinit wait lucid as"null" \
     from"github" src"asdf.sh" as"program" for \
