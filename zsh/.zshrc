@@ -44,7 +44,6 @@ autoload "$ZDOTDIR"/funcs/*
 # Load a few important annexes, without Turbo
 # (this is currently required for annexes)
 zinit light-mode for \
-  zinit-zsh/z-a-patch-dl \
   zinit-zsh/z-a-bin-gem-node \
   zinit-zsh/z-a-meta-plugins
 
@@ -61,58 +60,48 @@ POWERLEVEL9K_SHORTEN_DELIMITER=""
 zinit depth=1 lucid nocd \
       atload"source $ZDOTDIR/p10k.zsh; _p9k_precmd" for romkatv/powerlevel10k
 
-
 # - - - - - - - - - - - - - - - - - - - -
 # Meta Plugins
 # - - - - - - - - - - - - - - - - - - - -
 
-zinit bindmap'^R -> ^F' for zdharma
+zinit bindmap'^R -> ^F' skip'zdharma/zsh-diff-so-fancy' for zdharma
 zinit skip'fzy lotabout/skim peco/peco' for fuzzy
-zinit skip'sharkdp/hexyl sharkdp/hyperfine sharkdp/vivid' for console-tools
-zinit skip'molovo/zunit' for molovo
-zinit for \
-  zsh-users+fast # ext-git
+zinit skip'sharkdp/hexyl sharkdp/hyperfine sharkdp/vivid jonas/tig dircolors-material' for console-tools
+zinit for ext-git
+
+zinit lucid pick'/dev/null' for zsh-users/zsh-completions
+zinit for marlonrichert/zsh-autocomplete
+
+# - - - - - - - - - - - - - - - - - - - -
+# Tools
+# - - - - - - - - - - - - - - - - - - - -
+
+### python poetry
 
 zinit wait lucid for \
   darvid/zsh-poetry
 
-# if gpg is installed
-# make sure the agent is running
-zinit \
-      wait \
-      lucid \
-      has"gpgconf" \
-      if"[ ! -S $GNUPGHOME/S.gpg-agent.ssh ]" \
-      atinit"gpgconf --launch gpg-agent" for \
-       id-as"gpg-agent" zdharma/null
+### asdf-vm
+zinit wait lucid as"null" \
+    from"github" src"asdf.sh" as"program" for \
+    @asdf-vm/asdf
+
+# Source plugin specific scripts
 
 zinit wait lucid has"java" \
       if"[ -f $ASDF_DATA_DIR/plugins/java/set-java-home.zsh ]" \
       atinit"source $ASDF_DATA_DIR/plugins/java/set-java-home.zsh" for \
         id-as"asdf-vm/java-home" zdharma/null
 
-### End of Zinit's installer chunk
 
-zinit lucid as"null" for \
-  has"gsed" id-as"gsed" sbin"$(which gsed) -> sed" zdharma/null \
-  has"ggrep" id-as"ggrep" sbin"$(which ggrep) -> grep" zdharma/null \
-  has"gdircolors" id-as"gdircolors" sbin"$(which gdircolors) -> dircolors" zdharma/null
-
-# Programs
-# Programs
-zinit wait lucid from"gh-r" as"null" for \
-    from"github" src"asdf.sh" as"program" \
-    @asdf-vm/asdf \
-    sbin"docker* -> docker-compose" has"docker" \
-    docker/compose \
-    sbin"**/step -> step" \
-    smallstep/cli \
-    sbin"direnv" mv"direnv* -> direnv" atclone'./direnv hook zsh > zhook.zsh' atpull'%atclone' src"zhook.zsh" \
-    direnv/direnv \
-    from"github" as"program" src"forgit.plugin.zsh" \
-    wfxr/forgit
+### direnv
+zinit wait lucid \
+  from"gh-r" as"null" sbin"direnv" mv"direnv* -> direnv" \
+  atclone'./direnv hook zsh > zhook.zsh' atpull'%atclone' src"zhook.zsh" for \
+    direnv/direnv
 
 # Completions
+setopt complete_aliases
 zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
     as"completion" \
       OMZP::docker/_docker \
@@ -142,6 +131,11 @@ setopt hist_verify            # show command with history expansion to user befo
 setopt inc_append_history     # add commands to HISTFILE in order of execution
 setopt share_history          # share command history data
 
+# zsh-autocomplete
+zstyle ':autocomplete:list-choices:*' min-input 3
+zstyle ':autocomplete:*' groups always
+zstyle ':autocomplete:tab:*' completion select
+zstyle ':autocomplete:list-choices:*' max-lines 100%
 
 # Setup zsh styles
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
@@ -152,7 +146,7 @@ zstyle ':completion:*' menu select
 # https://archive.emily.st/2013/05/03/zsh-vi-cursor/
 function zle-keymap-select zle-line-init
 {
-    # change cursor shape in iTerm2
+    # change cursor shape in iTerm2 / alacritty
     case $KEYMAP in
         vicmd)      print -n -- "\E]50;CursorShape=0\C-G";;  # block cursor
         viins|main) print -n -- "\E]50;CursorShape=1\C-G";;  # line cursor
@@ -218,7 +212,7 @@ zstyle ':completion:*:*:-command-:*:*' tag-order 'functions:-non-comp *' functio
 zstyle ':completion:*:functions-non-comp' ignored-patterns '_*'
 
 # why doesn't this do anything?
-# zstyle ':completion:*:*:-command-:*:*' tag-order - path-directories directory-stack
+zstyle ':completion:*:*:-command-:*:*' tag-order - path-directories directory-stack
 
 # split options into groups
 zstyle ':completion:*' tag-order \
@@ -232,18 +226,12 @@ zstyle ':completion:*:options-single-letter' ignored-patterns '???*'
 # Setup PATH
 PATH=$HOME/.local/bin:$XDG_CONFIG_HOME/poetry/bin:$PATH
 # PATH=$HOME/.local/bin:$(find $XDG_CONFIG_HOME -mindepth 1 -maxdepth 2 -type d -name bin | tr '\n' ':' | sed 's/:*$//'):$PATH
-#
-#
-# if [[ "$OSTYPE" == darwin* ]]; then
-#   [ -d /usr/local/opt/coreutils/libexec/gnubin ] && PATH="/usr/local/opt/coreutils/libexec/gnubin":$PATH
-# fi
 
 export PATH
 
-
 # Setup CDPATH for directory completion
 setopt autocd
-#setopt autopushd
+setopt autopushd
 
 CDPATH=.:$HOME/Projects
 #
