@@ -46,7 +46,6 @@ autoload "$ZDOTDIR"/funcs/*
 zinit light-mode for \
   zinit-zsh/z-a-patch-dl \
   zinit-zsh/z-a-bin-gem-node \
-  zinit-zsh/z-a-bin-gem-node \
   zinit-zsh/z-a-meta-plugins
 
 
@@ -69,11 +68,10 @@ zinit depth=1 lucid nocd \
 
 zinit bindmap'^R -> ^F' for zdharma
 zinit skip'fzy lotabout/skim peco/peco' for fuzzy
-zinit skip'sharkdp/hexyl sharkdp/hyperfine' for console-tools
+zinit skip'sharkdp/hexyl sharkdp/hyperfine sharkdp/vivid' for console-tools
 zinit skip'molovo/zunit' for molovo
 zinit for \
-  zsh-users+fast \
-  ext-git
+  zsh-users+fast # ext-git
 
 zinit wait lucid for \
   darvid/zsh-poetry
@@ -111,14 +109,8 @@ zinit wait lucid from"gh-r" as"null" for \
     smallstep/cli \
     sbin"direnv" mv"direnv* -> direnv" atclone'./direnv hook zsh > zhook.zsh' atpull'%atclone' src"zhook.zsh" \
     direnv/direnv \
-    sbin"yank" from"github" make \
-    mptre/yank \
-    sbin"shfmt* -> shfmt" \
-    @mvdan/sh \
     from"github" as"program" src"forgit.plugin.zsh" \
-    wfxr/forgit \
-    from"github" sbin"bin/*" atclone"alias ripgrep=rg && ./build.sh --minify=all" atpull'%atclone' \
-    eth-p/bat-extras
+    wfxr/forgit
 
 # Completions
 zinit wait lucid atload"zicompinit; zicdreplay" blockf for \

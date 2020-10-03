@@ -20,8 +20,7 @@ export LANG="en_GB.UTF-8"
 
 export EDITOR="nvim"
 export VISUAL="nvim"
-export ENHANCD_COMMAND="ecd"
-export ENHANCD_FILTER="fzf"
+export LS_COLORS=$(cat $ZDOTDIR/LS_COLORS)
 
 export FORGIT_FZF_DEFAULT_OPTS="
 --exact

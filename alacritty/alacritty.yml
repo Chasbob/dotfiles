@@ -5,7 +5,7 @@ font:
     family: CaskaydiaCove Nerd Font Mono
     # Style can be specified to pick a specific face.
     style: Book
-  size: 16.0
+  size: 12.0
 
 selection:
   semantic_escape_chars: ",│`|:\"' ()[]{}<>"
@@ -41,9 +41,13 @@ schemes:
       cyan:    '#89ddff'
       white:   '#ffffff'  # Arbitrary
 colors: *material
+
 window:
   dynamic_padding: false
-  decorations: buttonless
+  decorations: none
+
+scrolling:
+  history: 10000
 
 key_bindings:
   - { key: N,    mods: Command, action: SpawnNewInstance }
