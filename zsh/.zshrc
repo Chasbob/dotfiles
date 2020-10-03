@@ -101,7 +101,6 @@ zinit wait lucid \
     direnv/direnv
 
 # Completions
-setopt complete_aliases
 zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
     as"completion" \
       OMZP::docker/_docker \
@@ -273,6 +272,10 @@ alias lanip="ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '
 # Alias NeoVim for Vim
 if [ $+commands[nvim] ]; then
   alias vim='nvim'
+fi
+
+if [ $+commands[step-cli] ]; then
+  alias step='step-cli'
 fi
 
 alias inet='ifconfig | grep "inet "'
