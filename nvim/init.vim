@@ -33,7 +33,9 @@ Plug 'airblade/vim-gitgutter'
 " TOML language support
 Plug 'cespare/vim-toml'
 " Completion
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+if executable('node --version')
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
+endif
 " Docker (compose) file syntax
 Plug 'ekalinin/dockerfile.vim'
 " Fancy linter
@@ -170,9 +172,7 @@ let g:NERDToggleCheckAllLines = 1
 
 
 
-
-" COC things...
-
+if executable('node --version')
 " TextEdit might fail if hidden is not set.
 set hidden
 
@@ -312,7 +312,9 @@ nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+endif
 
 set expandtab
 set shiftwidth=2
 set softtabstop=2
+
