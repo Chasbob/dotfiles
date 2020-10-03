@@ -127,6 +127,8 @@ zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
     has"kubectl" \
       OMZP::kubectl \
     OMZP::docker-compose \
+    as"completion" \
+      OMZP::docker-compose/_docker-compose \
     OMZP::gradle \
     OMZP::colored-man-pages \
     as"completion" mv"contrib/completions.zsh -> _exa" id-as"ogham/exa-comp" \
