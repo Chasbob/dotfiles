@@ -45,7 +45,8 @@ autoload "$ZDOTDIR"/funcs/*
 # (this is currently required for annexes)
 zinit light-mode for \
   zinit-zsh/z-a-bin-gem-node \
-  zinit-zsh/z-a-meta-plugins
+  zinit-zsh/z-a-meta-plugins \
+  zinit-zsh/z-a-patch-dl
 
 
 # - - - - - - - - - - - - - - - - - - - -

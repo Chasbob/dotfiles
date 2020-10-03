@@ -17,6 +17,7 @@ export STEPPATH="$XDG_CONFIG_HOME/step"
 
 export LC_ALL="en_GB.UTF-8"
 export LANG="en_GB.UTF-8"
+export TERM=xterm-256color
 
 export EDITOR="nvim"
 export VISUAL="nvim"
