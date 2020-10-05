@@ -71,14 +71,13 @@ zinit skip'sharkdp/hexyl sharkdp/hyperfine sharkdp/vivid jonas/tig dircolors-mat
 zinit for ext-git
 
 zinit lucid pick'/dev/null' for zsh-users/zsh-completions
-zinit for marlonrichert/zsh-autocomplete
+zinit lucid for marlonrichert/zsh-autocomplete
 
 # - - - - - - - - - - - - - - - - - - - -
 # Tools
 # - - - - - - - - - - - - - - - - - - - -
 
 ### python poetry
-
 zinit wait lucid for \
   darvid/zsh-poetry
 
@@ -133,16 +132,6 @@ setopt hist_verify            # show command with history expansion to user befo
 setopt inc_append_history     # add commands to HISTFILE in order of execution
 setopt share_history          # share command history data
 
-# zsh-autocomplete
-zstyle ':autocomplete:list-choices:*' min-input 3
-zstyle ':autocomplete:*' groups always
-zstyle ':autocomplete:tab:*' completion select
-zstyle ':autocomplete:list-choices:*' max-lines 100%
-
-# Setup zsh styles
-zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
-zstyle ':completion:*' menu select
 
 # create vim style cursor
 # https://archive.emily.st/2013/05/03/zsh-vi-cursor/
@@ -171,6 +160,18 @@ zle -N zle-keymap-select
 # https://github.com/emilyst/home/blob/dfd57e6a753d7d15e97015dea7ef175944550343/.zshrc#L69
 
 zmodload -i zsh/complist
+
+# zsh-autocomplete
+zstyle ':autocomplete:list-choices:*' min-input 3
+zstyle ':autocomplete:*' groups always
+zstyle ':autocomplete:tab:*' completion cycle
+zstyle ':autocomplete:list-choices:*' max-lines 100%
+
+# Setup zsh styles
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+zstyle ':completion:*' menu select
+
 zstyle ':completion:*:*:*:*:*' menu select
 zstyle ':completion:*::::' _expand completer _complete _match _approximate
 
