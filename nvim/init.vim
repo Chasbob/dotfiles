@@ -33,7 +33,7 @@ Plug 'airblade/vim-gitgutter'
 " TOML language support
 Plug 'cespare/vim-toml'
 " Completion
-if executable('node --version')
+if executable('node')
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
 endif
 " Docker (compose) file syntax
@@ -48,6 +48,8 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': 
 Plug 'zinit-zsh/zinit-vim-syntax'
 " Theme
 Plug 'hzchirs/vim-material'
+
+Plug 'uiiaoo/java-syntax.vim'
 call plug#end()
 
 " Theme
@@ -172,7 +174,7 @@ let g:NERDToggleCheckAllLines = 1
 
 
 
-if executable('node --version')
+if executable('node')
 " TextEdit might fail if hidden is not set.
 set hidden
 
