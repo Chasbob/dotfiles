@@ -294,7 +294,7 @@ alias lsfpath='echo "$fpath" | tr " " "\n"'
 
 alias ls='exa'
 alias la='ls -la'
-alias ll='ls --tree'
+alias ll='ls --tree --git-ignore'
 alias nsl='nslookup'
 alias cdt='pushd $(mktemp -d)'
 
