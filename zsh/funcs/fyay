@@ -1,0 +1,4 @@
+### YAY + FZF
+# install package from aur with yay and fzf
+# mnemonic [F]zf [YAY]
+yay -Slq | fzf -m --preview 'cat <(yay -Si {1}) <(yay -Fl {1} | awk "{print \$2}")' | xargs -ro  yay -S
