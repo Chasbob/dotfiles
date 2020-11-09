@@ -38,3 +38,5 @@ export COMPOSE_DOCKER_CLI_BUILD=1
 export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
 export ASDF_DATA_DIR=$XDG_CONFIG_HOME/asdf
+
+export COMPOSE_DOCKER_CLI_BUILD=1

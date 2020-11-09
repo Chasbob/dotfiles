@@ -1,3 +1,10 @@
 
+<<<<<<< HEAD
 IFS=$'\n' files=($(fzf-tmux --query="$1" --multi --select-1 --exit-0))
 [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
+=======
+fe() {
+  IFS=$'\n' files=($(fzf-tmux --query="$1" --multi --select-1 --exit-0))
+  [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
+}
+>>>>>>> ca9691c (Add [F]ind & [E]dit function using fzf)

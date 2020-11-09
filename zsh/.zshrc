@@ -111,6 +111,9 @@ zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
     OMZP::docker-compose \
     as"completion" \
       OMZP::docker-compose/_docker-compose \
+    OMZP::docker-machine \
+    as"completion" \
+      OMZP::docker-machine/_docker-machine \
     OMZP::gradle \
     OMZP::colored-man-pages \
     as"completion" mv"contrib/completions.zsh -> _exa" id-as"ogham/exa-comp" \
@@ -156,16 +159,14 @@ zle -N zle-line-init
 zle -N zle-line-finish
 zle -N zle-keymap-select
 
-# Some completion fancy stuff from
-# https://github.com/emilyst/home/blob/dfd57e6a753d7d15e97015dea7ef175944550343/.zshrc#L69
-
 zmodload -i zsh/complist
 
 # zsh-autocomplete
-zstyle ':autocomplete:list-choices:*' min-input 3
-zstyle ':autocomplete:*' groups always
-zstyle ':autocomplete:tab:*' completion cycle
-zstyle ':autocomplete:list-choices:*' max-lines 100%
+zstyle ':autocomplete:*' min-input 3
+zstyle ':autocomplete:tab:*' insert-unambiguous yes
+zstyle ':autocomplete:tab:*' widget-style menu-complete
+zstyle ':autocomplete:tab:*' fzf-completion yes
+zstyle ':autocomplete:*' max-lines 100%
 
 # Setup zsh styles
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
@@ -194,37 +195,6 @@ zstyle -e ':completion:*:approximate:*' max-errors 'reply=( $(( ($#PREFIX+$#SUFF
 
 # case- and hyphen-insensitive completion
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|=*' 'l:|=* r:|=*'
-
-# complete .. and .
-zstyle ':completion:*' special-dirs true
-
-# colors
-zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
-
-# offer indices before parameters in array subscripts
-zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
-
-# offer completions for directories from all these groups
-zstyle ':completion:*::*:(cd|pushd):*' tag-order path-directories directory-stack
-
-# never offer the parent directory (e.g.: cd ../<TAB>)
-zstyle ':completion:*:cd:*' ignore-parents parent pwd
-
-# don't complete things which aren't available
-zstyle ':completion:*:*:-command-:*:*' tag-order 'functions:-non-comp *' functions
-zstyle ':completion:*:functions-non-comp' ignored-patterns '_*'
-
-# why doesn't this do anything?
-zstyle ':completion:*:*:-command-:*:*' tag-order - path-directories directory-stack
-
-# split options into groups
-zstyle ':completion:*' tag-order \
-    'options:-long:long\ options
-     options:-short:short\ options
-     options:-single-letter:single\ letter\ options'
-zstyle ':completion:*:options-long' ignored-patterns '[-+](|-|[^-]*)'
-zstyle ':completion:*:options-short' ignored-patterns '--*' '[-+]?'
-zstyle ':completion:*:options-single-letter' ignored-patterns '???*'
 
 # Setup PATH
 PATH=$HOME/.local/bin:$XDG_CONFIG_HOME/poetry/bin:$PATH
@@ -255,6 +225,8 @@ fi
 
 alias pbc='pbcopy'
 alias pbp='pbpaste'
+alias gcurl='curl --header "Authorization: Bearer $(gcloud auth print-identity-token)"'
+
 
 # Add get aliase for downloading with progress
 if [ $+commands[curl] ]; then
@@ -303,6 +275,9 @@ alias dpsi="docker inspect --format='| {{range .NetworkSettings.Networks}}{{.IPA
 alias dpsp="docker ps --format='table | {{.ID}} ~ {{.Names}} ~ {{ .Ports }} |'"
 alias drm="docker ps -aq | xargs docker rm"
 alias dstop="docker ps -aq | xargs docker stop"
+
+alias dm='docker-machine'
+alias dlf='docker logs -f'
 
 alias restart-dns-macos='sudo killall -HUP mDNSResponder;sudo killall mDNSResponderHelper;sudo dscacheutil -flushcache'
 
