@@ -256,7 +256,6 @@ fi
 
 alias inet='ifconfig | grep "inet "'
 alias inet6='ifconfig | grep "inet6 "'
-alias o='open .'
 alias wanip='dig @resolver1.opendns.com ANY myip.opendns.com +short'
 alias dots='pushd $DOTDIR/'
 alias zdots='pushd $ZDOTDIR'
