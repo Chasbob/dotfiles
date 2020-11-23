@@ -5,7 +5,6 @@
 
 [core]
 	pager = delta --plus-color="#012800" --minus-color="#340001" --theme='Monokai Extended'
-	sshCommand = SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket) ssh
 	excludesfile = ~/.gitignore
 
 [interactive]
