@@ -18,6 +18,7 @@ ZINIT[PLUGINS_DIR]="$ZINIT[HOME_DIR]"/plugins
 ZINIT[COMPLETIONS_DIR]="$ZINIT[HOME_DIR]"/completions
 ZINIT[SNIPPETS_DIR]="$ZINIT[HOME_DIR]"/snippets
 ZINIT[ZCOMPDUMP_PATH]="$XDG_CACHE_HOME"/.zcompdump
+ZINIT[COMPINIT_OPTS]="-C"
 ZPFX="$ZINIT[HOME_DIR]"/polaris
 __ZINIT="${ZINIT[BIN_DIR]}/zinit.zsh"
 
@@ -67,7 +68,7 @@ zinit depth=1 lucid nocd \
 
 zinit bindmap'^R -> ^F' skip'zdharma/zsh-diff-so-fancy' for zdharma
 zinit skip'fzy lotabout/skim peco/peco' for fuzzy
-zinit skip'sharkdp/hexyl sharkdp/hyperfine sharkdp/vivid jonas/tig dircolors-material' for console-tools
+zinit skip'jonas/tig dircolors-material' for console-tools
 zinit for ext-git
 
 zinit lucid pick'/dev/null' for zsh-users/zsh-completions
@@ -119,82 +120,13 @@ zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
     as"completion" mv"contrib/completions.zsh -> _exa" id-as"ogham/exa-comp" \
       ogham/exa \
     as"completion" mv"autocomplete/zsh_autocomplete -> _step" id-as"smallstep/cli-comp" \
-      smallstep/cli
+      smallstep/cli \
+    as"completion" mv"autocompletion/autocomplete.zsh -> _tldr" id-as"mstruebing/tldr-comp" \
+      mstruebing/tldr \
+    as"completion" has"poetry" atclone"poetry completion zsh > _poetry" atpull"%atclone" id-as"poetry/completion" \
+      zdharma/null
 
-#### Setup history
-
-HISTSIZE=99999
-HISTFILESIZE=999999
-SAVEHIST=$HISTSIZE
-HISTFILE=$ZDOTDIR/zhistory
-setopt extended_history       # record timestamp of command in HISTFILE
-setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
-setopt hist_ignore_dups       # ignore duplicated commands history list
-setopt hist_ignore_space      # ignore commands that start with space
-setopt hist_verify            # show command with history expansion to user before running it
-setopt inc_append_history     # add commands to HISTFILE in order of execution
-setopt share_history          # share command history data
-
-
-# create vim style cursor
-# https://archive.emily.st/2013/05/03/zsh-vi-cursor/
-function zle-keymap-select zle-line-init
-{
-    # change cursor shape in iTerm2 / alacritty
-    case $KEYMAP in
-        vicmd)      print -n -- "\E]50;CursorShape=0\C-G";;  # block cursor
-        viins|main) print -n -- "\E]50;CursorShape=1\C-G";;  # line cursor
-    esac
-
-    zle reset-prompt
-    zle -R
-}
-
-function zle-line-finish
-{
-    print -n -- "\E]50;CursorShape=0\C-G"  # block cursor
-}
-
-zle -N zle-line-init
-zle -N zle-line-finish
-zle -N zle-keymap-select
-
-zmodload -i zsh/complist
-
-# zsh-autocomplete
-zstyle ':autocomplete:*' min-input 3
-zstyle ':autocomplete:tab:*' insert-unambiguous yes
-zstyle ':autocomplete:tab:*' widget-style menu-complete
-zstyle ':autocomplete:tab:*' fzf-completion yes
-zstyle ':autocomplete:*' max-lines 100%
-
-# Setup zsh styles
-zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
-zstyle ':completion:*' menu select
-
-zstyle ':completion:*:*:*:*:*' menu select
-zstyle ':completion:*::::' _expand completer _complete _match _approximate
-
-zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path $XDG_CACHE_HOME/zsh
-
-# insert all expansions for expand completer
-zstyle ':completion:*:expand:*' tag-order all-expansions
-
-zstyle ':completion:*' extra-verbose yes
-zstyle ':completion:*:descriptions' format '%B%d%b'
-zstyle ':completion:*:messages' format '%d'
-zstyle ':completion:*:warnings' format 'No matches for: %d'
-zstyle ':completion:*:corrections' format '%B%d (errors: %e)%b'
-zstyle ':completion:*' group-name '' # completion in distinct groups
-
-# allow one error for every four characters typed in approximate completer
-zstyle ':completion:*:match:*' original only
-zstyle -e ':completion:*:approximate:*' max-errors 'reply=( $(( ($#PREFIX+$#SUFFIX)/4 )) numeric )'
-
-# case- and hyphen-insensitive completion
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|=*' 'l:|=* r:|=*'
+zinit add-fpath $ZDOTDIR/ffuncs
 
 # Setup PATH
 PATH=$HOME/.local/bin:$XDG_CONFIG_HOME/poetry/bin:$PATH
@@ -202,121 +134,22 @@ PATH=$HOME/.local/bin:$XDG_CONFIG_HOME/poetry/bin:$PATH
 
 export PATH
 
+source "$ZDOTDIR/aliases"
+source "$ZDOTDIR/bindkeys"
+source "$ZDOTDIR/history"
+source "$ZDOTDIR/zstyles"
+
 # Setup CDPATH for directory completion
 setopt autocd
 setopt autopushd
 
-CDPATH=.:$HOME/Projects
-#
-# export CDPATH
-
-# Setup aliases
-# Setup open alias
-if [[ "$OSTYPE" == darwin* ]]; then
-  alias o='open'
-else
-  alias o='xdg-open'
-  # alias xclip to pbcopy and paste
-  if [ $+commands[xclip] ]; then
-    alias pbcopy='xclip -selection clipboard -in'
-    alias pbpaste='xclip -selection clipboard -out'
-  fi
-fi
-
-alias pbc='pbcopy'
-alias pbp='pbpaste'
-alias gcurl='curl --header "Authorization: Bearer $(gcloud auth print-identity-token)"'
+CDPATH=.:$HOME/git
 
 
-# Add get aliase for downloading with progress
-if [ $+commands[curl] ]; then
-  alias get='curl --continue-at - --location --progress-bar --remote-name --remote-time'
-elif [ $+commands[wget] ]; then
-  alias get='wget --continue --progress=bar --timestamping'
-fi
 
-# Serve PWD over http
-if [ $+commands[python3] ]; then
-  alias http-serve='python3 -m http.server'
-else
-  alias http-serve='python -m SimpleHTTPServer'
-fi
-
-alias grep='grep --color=always --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
-alias lanip="ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'"
-
-# Alias NeoVim for Vim
-if [ $+commands[nvim] ]; then
-  alias vim='nvim'
-fi
-
-if [ $+commands[step-cli] ]; then
-  alias step='step-cli'
-fi
-
-alias inet='ifconfig | grep "inet "'
-alias inet6='ifconfig | grep "inet6 "'
-alias wanip='dig @resolver1.opendns.com ANY myip.opendns.com +short'
-alias dots='pushd $DOTDIR/'
-alias zdots='pushd $ZDOTDIR'
-alias gs='git status'
-alias lspath='echo "$PATH" | tr ":" "\n"'
-alias lsfpath='echo "$fpath" | tr " " "\n"'
-
-alias ls='exa'
-alias la='ls -la'
-alias ll='ls --tree --git-ignore'
-alias nsl='nslookup'
-alias cdt='pushd $(mktemp -d)'
-
-alias dps="docker ps --format='table | {{.ID}} ~ {{.Names}} |'"
-alias dpsi="docker inspect --format='| {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}} |'"
-alias dpsp="docker ps --format='table | {{.ID}} ~ {{.Names}} ~ {{ .Ports }} |'"
-alias drm="docker ps -aq | xargs docker rm"
-alias dstop="docker ps -aq | xargs docker stop"
-
-alias dm='docker-machine'
-alias dlf='docker logs -f'
-
-alias restart-dns-macos='sudo killall -HUP mDNSResponder;sudo killall mDNSResponderHelper;sudo dscacheutil -flushcache'
-
-alias ...='../..'
-alias ....='../../..'
-alias .....='../../../..'
-alias ......='../../../../..'
-alias .......='../../../../../..'
-alias ........='../../../../../../..'
-
-# Setup bindkeys
-autoload -Uz edit-command-line
-zle -N edit-command-line
-bindkey "^x^e" edit-command-line
-
-bindkey '^e' autosuggest-accept
-bindkey '^x' autosuggest-execute
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
-zstyle :plugin:history-search-multi-word reset-prompt-protect 1
-zstyle ":history-search-multi-word" page-size "LINES/4"
-
-
-# Place cursor at the end of the line when searching history
-autoload -U history-search-end
-zle -N history-beginning-search-backward-end history-search-end
-zle -N history-beginning-search-forward-end history-search-end
+## Place cursor at the end of the line when searching history
+#autoload -U history-search-end
+#zle -N history-beginning-search-backward-end history-search-end
+#zle -N history-beginning-search-forward-end history-search-end
 # bind up and down arrows to search history
-bindkey "^[[A" history-beginning-search-backward-end
-bindkey "^[[B" history-beginning-search-forward-end
-
-# Bind home and end keys to start and end of line
-bindkey  "^[[1~"   beginning-of-line
-bindkey  "^[[4~"   end-of-line
-
-# Enable Vi mode in ZSH
-bindkey -v
-bindkey '^w' backward-kill-word
-bindkey '^r' history-incremental-search-backward
-export KEYTIMEOUT=1
-
 (( ! ${+functions[p10k]} )) || p10k finalize
-
