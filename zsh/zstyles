@@ -58,4 +58,7 @@ zstyle ':completion:*:expand:*' tag-order all-expansions
 # case- and hyphen-insensitive completion
 #zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|=*' 'l:|=* r:|=*'
 
-#zstyle ':plugin:history-search-multi-word' reset-prompt-protect 1
+zstyle ':plugin:history-search-multi-word' reset-prompt-protect 1
+
+# completions for 'sudo' commands
+zstyle ':completion::complete:*' gain-privileges 1

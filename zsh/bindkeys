@@ -1,5 +1,7 @@
-#bindkey "^[[A" history-beginning-search-backward-end
-#bindkey "^[[B" history-beginning-search-forward-end
+bindkey "^[[A" history-substring-search-up
+bindkey "^[[B" history-substring-search-down
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
 
 # Bind home and end keys to start and end of line
 bindkey  "^[[1~"   beginning-of-line

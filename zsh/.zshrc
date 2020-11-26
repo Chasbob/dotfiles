@@ -66,13 +66,14 @@ zinit depth=1 lucid nocd \
 # Meta Plugins
 # - - - - - - - - - - - - - - - - - - - -
 
-zinit bindmap'^R -> ^F' skip'zdharma/zsh-diff-so-fancy' for zdharma
 zinit skip'fzy lotabout/skim peco/peco' for fuzzy
 zinit skip'jonas/tig dircolors-material' for console-tools
 zinit for ext-git
+zinit skip'zsh-users/zsh-autosuggestions' for zsh-users
+zinit bindmap'^R -> ^F' skip'zdharma/zsh-diff-so-fancy zdharma/fast-syntax-highlighting' for zdharma
 
-zinit lucid pick'/dev/null' for zsh-users/zsh-completions
 zinit lucid for marlonrichert/zsh-autocomplete
+zinit lucid for zsh-users/zsh-history-substring-search
 
 # - - - - - - - - - - - - - - - - - - - -
 # Tools
@@ -130,7 +131,6 @@ zinit add-fpath $ZDOTDIR/ffuncs
 
 # Setup PATH
 PATH=$HOME/.local/bin:$XDG_CONFIG_HOME/poetry/bin:$PATH
-# PATH=$HOME/.local/bin:$(find $XDG_CONFIG_HOME -mindepth 1 -maxdepth 2 -type d -name bin | tr '\n' ':' | sed 's/:*$//'):$PATH
 
 export PATH
 
