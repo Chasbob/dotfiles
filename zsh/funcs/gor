@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# Open remote of current git repository in browser
+# Supports git/ssh paths
+# Mnemonic [G]it [O]pen [R]emote
+
+git remote -v | sed -E 's#(git|ssh)\@([-a-z0-9.]*):#https://\2//#g' | rg --color=never -o 'https?://[^ ]+' | uniq | fzf | xargs xdg-open 2>&1 >/dev/null
