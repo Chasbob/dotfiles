@@ -130,9 +130,11 @@ zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
 zinit add-fpath $ZDOTDIR/ffuncs
 
 # Setup PATH
-PATH=$HOME/.local/bin:$XDG_CONFIG_HOME/poetry/bin:$PATH
+PATH=$HOME/.local/bin:$PATH
 
 export PATH
+
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 
 source "$ZDOTDIR/aliases"
 source "$ZDOTDIR/bindkeys"

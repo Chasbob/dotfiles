@@ -13,7 +13,6 @@ export ZSH_CACHE_DIR="$XDG_CACHE_HOME/zsh"
 
 export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"
 export GPG_TTY="$(tty)"
-export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 
 export STEPPATH="$XDG_CONFIG_HOME/step"
 
