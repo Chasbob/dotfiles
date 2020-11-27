@@ -83,7 +83,12 @@ zinit lucid for zsh-users/zsh-history-substring-search
 zinit wait lucid for \
   darvid/zsh-poetry
 
-zinit wait lucid from"gh-r"  mv"delta* -> delta" sbin"delta/delta" as"null" for dandavison/delta
+zinit wait lucid from"gh-r" as"command" for \
+  mv"delta* -> delta" sbin"delta/delta" dandavison/delta \
+  mv"tldr* -> tldr" sbin"tldr" mstruebing/tldr \
+  mv"direnv* -> direnv" sbin"direnv" src"zhook.zsh" \
+  atclone"./direnv hook zsh > zhook.zsh" atpull"%atclone" direnv/direnv
+
 
 ### asdf-vm
 zinit wait lucid as"null" \
@@ -97,14 +102,9 @@ zinit wait lucid has"java" \
       atinit"source $ASDF_DATA_DIR/plugins/java/set-java-home.zsh" for \
         id-as"asdf-vm/java-home" zdharma/null
 
-
-### direnv
-zinit wait lucid \
-  from"gh-r" as"null" sbin"direnv" mv"direnv* -> direnv" \
-  atclone'./direnv hook zsh > zhook.zsh' atpull'%atclone' src"zhook.zsh" for \
-    direnv/direnv
-
+# - - - - - - - - - - - - - - - - - - - -
 # Completions
+# - - - - - - - - - - - - - - - - - - - -
 zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
     as"completion" \
       OMZP::docker/_docker \
@@ -122,7 +122,8 @@ zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
       ogham/exa \
     as"completion" mv"autocomplete/zsh_autocomplete -> _step" id-as"smallstep/cli-comp" \
       smallstep/cli \
-    as"completion" mv"autocompletion/autocomplete.zsh -> _tldr" id-as"mstruebing/tldr-comp" \
+    as"completion" mv"autocompletion/autocomplete.zsh -> _tldr" \ 
+      id-as"mstruebing/tldr-comp" \
       mstruebing/tldr \
     as"completion" has"poetry" atclone"poetry completion zsh > _poetry" atpull"%atclone" id-as"poetry/completion" \
       zdharma/null
@@ -147,11 +148,4 @@ setopt autopushd
 
 CDPATH=.:$HOME/git
 
-
-
-## Place cursor at the end of the line when searching history
-#autoload -U history-search-end
-#zle -N history-beginning-search-backward-end history-search-end
-#zle -N history-beginning-search-forward-end history-search-end
-# bind up and down arrows to search history
 (( ! ${+functions[p10k]} )) || p10k finalize
