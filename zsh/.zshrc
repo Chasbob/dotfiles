@@ -122,8 +122,7 @@ zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
       ogham/exa \
     as"completion" mv"autocomplete/zsh_autocomplete -> _step" id-as"smallstep/cli-comp" \
       smallstep/cli \
-    as"completion" mv"autocompletion/autocomplete.zsh -> _tldr" \ 
-      id-as"mstruebing/tldr-comp" \
+    as"completion" mv"autocompletion/autocomplete.zsh -> _tldr" id-as"mstruebing/tldr-comp" \
       mstruebing/tldr \
     as"completion" has"poetry" atclone"poetry completion zsh > _poetry" atpull"%atclone" id-as"poetry/completion" \
       zdharma/null
@@ -141,11 +140,6 @@ source "$ZDOTDIR/aliases"
 source "$ZDOTDIR/bindkeys"
 source "$ZDOTDIR/history"
 source "$ZDOTDIR/zstyles"
-
-# Setup CDPATH for directory completion
-setopt autocd
-setopt autopushd
-
-CDPATH=.:$HOME/git
+source "$ZDOTDIR/cdpath"
 
 (( ! ${+functions[p10k]} )) || p10k finalize
