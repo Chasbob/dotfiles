@@ -3,7 +3,7 @@
 SOURCE=$1
 
 echo "Setup SpaceVim..."
-mkdir -p "$HOME"/autoload
+mkdir -p "$HOME"/.SpaceVim.d/autoload
 echo "**** init.toml ****"
 [ -e "$HOME"/.SpaceVim.d/init.toml ] && mv "$HOME"/.SpaceVim.d/init.toml{,.bak}
 ln -sfn "$SOURCE"/SpaceVim/init.toml "$HOME"/.SpaceVim.d/init.toml
