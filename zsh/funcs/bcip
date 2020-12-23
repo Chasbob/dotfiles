@@ -6,6 +6,6 @@ local inst=$(brew search --cask| eval "fzf ${FZF_DEFAULT_OPTS} -m --header='[bre
 
 if [[ $inst ]]; then
   for prog in $(echo $inst)
-  do brew cask install $prog
+  do brew install --cask $prog
   done
 fi

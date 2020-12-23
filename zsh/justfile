@@ -1,0 +1,8 @@
+set shell := ["zsh", "-ci"]
+
+clean:
+  zinit delete --clean --yes
+  zinit cclear
+
+update:
+  zinit update
