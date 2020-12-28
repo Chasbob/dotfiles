@@ -1,7 +1,8 @@
 if [[ "$OSTYPE" == darwin* ]]; then
   alias o='open'
 else
-  alias o='xdg-open'
+  alias open='xdg-open'
+  alias o='open'
   # alias xclip to pbcopy and paste
   if [ $+commands[xclip] ]; then
     alias pbcopy='xclip -selection clipboard -in'
@@ -40,8 +41,13 @@ if [ $+commands[step-cli] ]; then
   alias step='step-cli'
 fi
 
-alias inet='ifconfig | grep "inet "'
-alias inet6='ifconfig | grep "inet6 "'
+if type ifconfig >/dev/null ; then
+  alias inet='ifconfig | grep "inet "'
+  alias inet6='ifconfig | grep "inet6 "'
+else
+  alias inet='ip addr | grep "inet " | tr -s " " | cut -d " " -f3'
+  alias inet6='ip addr | grep "inet6 " | tr -s " " | cut -d " " -f3'
+fi
 alias wanip='dig @resolver1.opendns.com ANY myip.opendns.com +short'
 alias dots='pushd $DOTDIR/'
 alias zdots='pushd $ZDOTDIR'
