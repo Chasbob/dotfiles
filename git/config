@@ -14,6 +14,3 @@
 	ff = only
 [init]
 	defaultBranch = main
-
-[url "ssh://git@github.com/chasbob"]
-	insteadOf = https://github.com/chasbob
