@@ -64,6 +64,7 @@ alias cdt='pushd $(mktemp -d)'
 alias dps="docker ps --format='table | {{.ID}} ~ {{.Names}} |'"
 alias dpsi="docker inspect --format='| {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}} |'"
 alias dpsp="docker ps --format='table | {{.ID}} ~ {{.Names}} ~ {{ .Ports }} |'"
+alias dstop="docker ps -aq | xargs docker stop"
 
 alias dm='docker-machine'
 alias dlf='docker logs -f'
