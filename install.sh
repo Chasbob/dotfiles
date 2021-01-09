@@ -64,11 +64,6 @@ if shouldInstall zsh; then
     prefixOutput "zsh" "$SOURCE"/zsh/install.sh "$SOURCE" "$INSTALL_PLUGINS"
 fi
 
-if shouldInstall spacevim; then
-    # disabling INSTALL_PLUGINS for now
-    prefixOutput "SpaceVim" "$SOURCE"/SpaceVim/install.sh "$SOURCE" "$DESTINATION"
-fi
-
 if shouldInstall alacritty; then
     prefixOutput "alacritty" "$SOURCE"/alacritty/install.sh "$SOURCE" "$DESTINATION"
 fi
