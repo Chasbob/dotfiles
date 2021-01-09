@@ -1,0 +1,10 @@
+# caniuse for quick access to global support list
+cani() {
+  local feats=$(~/dotfiles/bin/ciu | sort -rn | fzf -m | sed -e 's/^.*%\ *//g' | sed -e 's/   .*//g')
+
+  if [[ $feats ]]; then
+    for feat in $(echo $feats)
+    do caniuse $feat
+    done
+  fi
+}
