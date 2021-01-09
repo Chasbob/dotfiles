@@ -150,3 +150,4 @@ source "$ZDOTDIR/zstyles"
 source "$ZDOTDIR/cdpath"
 
 (( ! ${+functions[p10k]} )) || p10k finalize
+
