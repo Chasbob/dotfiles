@@ -21,10 +21,19 @@ function! bootstrap#after() abort
 
   let g:neoformat_enabled_javascript = ['npxprettier']
   let g:neoformat_verbose = 1
+  let g:python3_host_prog = '/usr/bin/python3'
+  if exists("did_load_filetypes")
+    finish
+  endif
+  
+  augroup filetypedetect
+    au BufNewFile,BufRead justfile setf make
+  augroup END
 endfunction
 
 function! bootstrap#before() abort
   let g:github_dashboard = { 'username': 'chasbob', 'password': $GITHUB_TOKEN }
   let g:gista#client#default_username = 'chasbob'
   set timeoutlen=600
+  let g:coc_global_extensions = ['coc-json', 'coc-git', 'coc-prettier', 'coc-css', 'coc-jedi', 'coc-html', 'coc-snippets', 'coc-ultisnips', 'coc-vimtex', 'coc-docker']
 endfunction
