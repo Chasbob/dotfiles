@@ -100,7 +100,7 @@ class FilePairs:
             src_file = source / src
             os.makedirs(dest_file.parent, exist_ok=True)
 
-            yield dest_file, src_file
+            yield dest_file.absolute(), src_file.absolute()
 
 
 class Hook:
