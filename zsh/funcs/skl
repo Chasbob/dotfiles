@@ -1,0 +1,6 @@
+### skim + rg
+
+# fuzzy view lines
+# mnemonic [S][K]im [L]ines
+
+sk --ansi -i -c 'rg --color=always --line-number "{}"'

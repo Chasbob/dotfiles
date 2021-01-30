@@ -1,0 +1,6 @@
+#!/bin/bash
+
+ARGS=$(find . -maxdepth 1 -mindepth 1 -name "docker-compose*.yml" -exec printf '-f %s ' {} +)
+echo "$ARGS"
+docker-compose $ARGS $@
+exit $?
