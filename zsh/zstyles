@@ -24,39 +24,19 @@ zle -N zle-keymap-select
 zmodload -i zsh/complist
 
 # zsh-autocomplete
-zstyle ':autocomplete:*' min-input 3
-zstyle ':autocomplete:tab:*' insert-unambiguous yes
-zstyle ':autocomplete:tab:*' widget-style menu-complete
-zstyle ':autocomplete:tab:*' fzf-completion yes
-zstyle ':autocomplete:*' max-lines 100%
+zstyle ':completion:*:complete:*:' group-order \
+  options arguments values local-directories files builtins history-words
 
 #Setup zsh styles
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 zstyle ':completion:*' menu select
 
-zstyle ':completion:*:*:*:*:*' menu select
-zstyle ':completion:*::::' _expand completer _complete _match _approximate
-
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path $XDG_CACHE_HOME/zsh
 
 # insert all expansions for expand completer
 zstyle ':completion:*:expand:*' tag-order all-expansions
-
-#zstyle ':completion:*' extra-verbose yes
-#zstyle ':completion:*:descriptions' format '%B%d%b'
-#zstyle ':completion:*:messages' format '%d'
-#zstyle ':completion:*:warnings' format 'No matches for: %d'
-#zstyle ':completion:*:corrections' format '%B%d (errors: %e)%b'
-#zstyle ':completion:*' group-name '' # completion in distinct groups
-
-# allow one error for every four characters typed in approximate completer
-#zstyle ':completion:*:match:*' original only
-#zstyle -e ':completion:*:approximate:*' max-errors 'reply=( $(( ($#PREFIX+$#SUFFIX)/4 )) numeric )'
-
-# case- and hyphen-insensitive completion
-#zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|=*' 'l:|=* r:|=*'
 
 zstyle ':plugin:history-search-multi-word' reset-prompt-protect 1
 

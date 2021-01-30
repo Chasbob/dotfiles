@@ -34,6 +34,7 @@ export FORGIT_FZF_DEFAULT_OPTS="
 
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
+export ZSH_AUTOSUGGEST_USE_ASYNC=yee
 
 export COMPOSE_DOCKER_CLI_BUILD=1
 export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
@@ -42,3 +43,5 @@ export ASDF_DATA_DIR=$XDG_CONFIG_HOME/asdf
 
 export COMPOSE_DOCKER_CLI_BUILD=1
 export ZSH_AUTOSUGGEST_USE_ASYNC=1
+
+export MAKEFLAGS="-j$(nproc)"

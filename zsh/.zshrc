@@ -1,12 +1,5 @@
 #!/bin/bash
 
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 # - - - - - - - - - - - - - - - - - - - -
 # Zinit Configuration
 # - - - - - - - - - - - - - - - - - - - -
@@ -51,28 +44,16 @@ zinit light-mode for \
 
 
 # - - - - - - - - - - - - - - - - - - - -
-# Theme
-# - - - - - - - - - - - - - - - - - - - -
-
-setopt promptsubst
-
-POWERLEVEL9K_SHORTEN_STRATEGY=truncate_to_last
-POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
-POWERLEVEL9K_SHORTEN_DELIMITER=""
-zinit depth=1 lucid nocd \
-      atload"source $ZDOTDIR/p10k.zsh; _p9k_precmd" for romkatv/powerlevel10k
-
-# - - - - - - - - - - - - - - - - - - - -
 # Meta Plugins
 # - - - - - - - - - - - - - - - - - - - -
 
-zinit skip'fzy lotabout/skim peco/peco' for fuzzy
+zinit skip'fzy peco/peco' for fuzzy
 zinit skip'jonas/tig dircolors-material' for console-tools
-zinit for ext-git
-zinit skip'zsh-users/zsh-autosuggestions' for zsh-users
+zinit for ext-git molovo
+zinit for zsh-users
 zinit bindmap'^R -> ^F' skip'zdharma/zsh-diff-so-fancy zdharma/fast-syntax-highlighting' for zdharma
 
-zinit lucid for marlonrichert/zsh-autocomplete
+# zinit lucid for marlonrichert/zsh-autocomplete
 zinit lucid for zsh-users/zsh-history-substring-search
 
 # - - - - - - - - - - - - - - - - - - - -
@@ -118,7 +99,7 @@ zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
       OMZP::docker-machine/_docker-machine \
     OMZP::gradle \
     OMZP::colored-man-pages \
-    as"completion" mv"contrib/completions.zsh -> _exa" id-as"ogham/exa-comp" \
+    as"completion" mv"completions/completions.zsh -> _exa" id-as"ogham/exa-comp" \
       ogham/exa \
     as"completion" mv"autocomplete/zsh_autocomplete -> _step" id-as"smallstep/cli-comp" \
       smallstep/cli \
@@ -127,10 +108,14 @@ zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
     as"completion" has"poetry" atclone"poetry completion zsh > _poetry" atpull"%atclone" id-as"poetry/completion" \
       zdharma/null
 
-zinit add-fpath $ZDOTDIR/ffuncs
+zinit add-fpath $HOME/.local/ffuncs
 
 # Setup PATH
 PATH=$HOME/.local/bin:$PATH
+PATH=$HOME/.yarn/bin:$PATH
+PATH=$HOME/.poetry/bin:$PATH
+PATH=$HOME/.emacs.d/bin:$PATH
+PATH=$HOME/go/bin:$PATH
 
 export PATH
 
@@ -142,4 +127,5 @@ source "$ZDOTDIR/history"
 source "$ZDOTDIR/zstyles"
 source "$ZDOTDIR/cdpath"
 
-(( ! ${+functions[p10k]} )) || p10k finalize
+eval "$(starship init zsh)"
+
