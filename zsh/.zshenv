@@ -44,4 +44,5 @@ export ASDF_DATA_DIR=$XDG_CONFIG_HOME/asdf
 export COMPOSE_DOCKER_CLI_BUILD=1
 export ZSH_AUTOSUGGEST_USE_ASYNC=1
 
-export MAKEFLAGS="-j$(nproc)"
+export PATH="/usr/local/bin:$PATH"
+export MAKEFLAGS="-j`nproc`"
