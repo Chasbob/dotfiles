@@ -1,7 +1,7 @@
 # Select a docker container to remove
-function drm() {
+function dstop() {
   local cid
   cid=$(docker ps -a | sed 1d | fzf -m | awk '{print $1}')
 
-  [ -n "$cid" ] && echo "$cid" | xargs docker rm "$@"
+  [ -n "$cid" ] && echo "$cid" | xargs docker stop "$@"
 }
