@@ -1,4 +1,10 @@
 ### PACMAN + FZF
 # install package with pacman and fzf
 # mnemonic [F]zf [PAC]man
-pacman -Slq | fzf --multi --preview 'cat <(pacman -Si {1}) <(pacman -Fl {1} | awk "{print \$2}")' | xargs -ro sudo pacman -S
+
+# lazy way of using paru if it is installed
+if ! [ -x "$(command -v paru)" ]; then
+    pacman -Slq | fzf --multi --preview 'cat <(pacman -Si {1}) <(pacman -Fl {1} | awk "{print \$2}")' | xargs -ro sudo pacman -S
+else
+    paru -Slq | fzf --multi --preview 'cat <(paru -Si {1}) <(paru -Fl {1} | awk "{print \$2}")' | xargs -ro sudo paru -S
+fi
