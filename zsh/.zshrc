@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+
 # - - - - - - - - - - - - - - - - - - - -
 # Zinit Configuration
 # - - - - - - - - - - - - - - - - - - - -
@@ -41,6 +49,20 @@ zinit light-mode for \
   zinit-zsh/z-a-bin-gem-node \
   zinit-zsh/z-a-meta-plugins \
   zinit-zsh/z-a-patch-dl
+
+
+
+# - - - - - - - - - - - - - - - - - - - -
+# Theme
+# - - - - - - - - - - - - - - - - - - - -
+
+setopt promptsubst
+
+POWERLEVEL9K_SHORTEN_STRATEGY=truncate_to_last
+POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
+POWERLEVEL9K_SHORTEN_DELIMITER=""
+zinit depth=1 lucid nocd \
+      atload"source $ZDOTDIR/p10k.zsh; _p9k_precmd" for romkatv/powerlevel10k
 
 
 # - - - - - - - - - - - - - - - - - - - -
@@ -127,5 +149,4 @@ source "$ZDOTDIR/history"
 source "$ZDOTDIR/zstyles"
 source "$ZDOTDIR/cdpath"
 
-eval "$(starship init zsh)"
-
+(( ! ${+functions[p10k]} )) || p10k finalize
