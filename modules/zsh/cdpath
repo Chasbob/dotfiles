@@ -1,0 +1,5 @@
+# Setup CDPATH for directory completion
+setopt autocd
+setopt autopushd
+
+CDPATH=.:$HOME/git

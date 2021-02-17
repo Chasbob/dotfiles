@@ -1,0 +1,151 @@
+#!/bin/bash
+
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# - - - - - - - - - - - - - - - - - - - -
+# Zinit Configuration
+# - - - - - - - - - - - - - - - - - - - -
+
+declare -A ZINIT
+ZINIT[HOME_DIR]="$XDG_CONFIG_HOME"/zinit
+ZINIT[BIN_DIR]="$ZINIT[HOME_DIR]"/bin
+ZINIT[PLUGINS_DIR]="$ZINIT[HOME_DIR]"/plugins
+ZINIT[COMPLETIONS_DIR]="$ZINIT[HOME_DIR]"/completions
+ZINIT[SNIPPETS_DIR]="$ZINIT[HOME_DIR]"/snippets
+ZINIT[ZCOMPDUMP_PATH]="$XDG_CACHE_HOME"/.zcompdump
+ZINIT[COMPINIT_OPTS]="-C"
+ZPFX="$ZINIT[HOME_DIR]"/polaris
+__ZINIT="${ZINIT[BIN_DIR]}/zinit.zsh"
+
+### Add zinit module
+if [[ -f "${ZINIT[BIN_DIR]}/zmodules/Src/zdharma/zplugin.so" ]]; then
+  module_path+=( "${ZINIT[BIN_DIR]}/zmodules/Src" )
+      zmodload zdharma/zplugin
+fi
+
+### Added by Zinit's installer
+if [[ ! -f ${ZINIT[BIN_DIR]}/zinit.zsh ]]; then
+    print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
+    command mkdir -p "${ZINIT[BIN_DIR]}" && command chmod g-rwX "${ZINIT[BIN_DIR]}"
+    command git clone https://github.com/zdharma/zinit "${ZINIT[BIN_DIR]}" && \
+        print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
+        print -P "%F{160}▓▒░ The clone has failed.%f%b"
+fi
+
+. "$__ZINIT"
+autoload -Uz _zinit
+autoload "$ZDOTDIR"/funcs/*
+(( ${+_comps} )) && _comps[zinit]=_zinit
+
+# Load a few important annexes, without Turbo
+# (this is currently required for annexes)
+zinit light-mode for \
+  zinit-zsh/z-a-bin-gem-node \
+  zinit-zsh/z-a-meta-plugins \
+  zinit-zsh/z-a-patch-dl
+
+
+
+# - - - - - - - - - - - - - - - - - - - -
+# Theme
+# - - - - - - - - - - - - - - - - - - - -
+
+setopt promptsubst
+
+POWERLEVEL9K_SHORTEN_STRATEGY=truncate_to_last
+POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
+POWERLEVEL9K_SHORTEN_DELIMITER=""
+zinit depth=1 lucid nocd \
+      atload"source $ZDOTDIR/p10k.zsh; _p9k_precmd" for romkatv/powerlevel10k
+
+# - - - - - - - - - - - - - - - - - - - -
+# Meta Plugins
+# - - - - - - - - - - - - - - - - - - - -
+
+zinit skip'fzy peco/peco' for fuzzy
+zinit skip'jonas/tig dircolors-material' for console-tools
+zinit for ext-git molovo
+zinit for zsh-users
+zinit bindmap'^R -> ^F' skip'zdharma/zsh-diff-so-fancy zdharma/fast-syntax-highlighting' for zdharma
+
+# zinit lucid for marlonrichert/zsh-autocomplete
+zinit lucid for zsh-users/zsh-history-substring-search
+
+# - - - - - - - - - - - - - - - - - - - -
+# Tools
+# - - - - - - - - - - - - - - - - - - - -
+
+### python poetry
+zinit wait lucid for \
+  darvid/zsh-poetry
+
+zinit wait lucid from"gh-r" as"command" for \
+  mv"delta* -> delta" sbin"delta/delta" dandavison/delta \
+  mv"tldr* -> tldr" sbin"tldr" mstruebing/tldr \
+  mv"direnv* -> direnv" sbin"direnv" src"zhook.zsh" \
+  atclone"./direnv hook zsh > zhook.zsh" atpull"%atclone" direnv/direnv
+
+
+### asdf-vm
+zinit wait lucid as"null" \
+    from"github" src"asdf.sh" as"program" for \
+    @asdf-vm/asdf
+
+# Source plugin specific scripts
+
+zinit wait lucid has"java" \
+      if"[ -f $ASDF_DATA_DIR/plugins/java/set-java-home.zsh ]" \
+      atinit"source $ASDF_DATA_DIR/plugins/java/set-java-home.zsh" for \
+        id-as"asdf-vm/java-home" zdharma/null
+
+# - - - - - - - - - - - - - - - - - - - -
+# Completions
+# - - - - - - - - - - - - - - - - - - - -
+zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
+    as"completion" \
+      OMZP::docker/_docker \
+    has"kubectl" \
+      OMZP::kubectl \
+    OMZP::docker-compose \
+    as"completion" \
+      OMZP::docker-compose/_docker-compose \
+    OMZP::docker-machine \
+    as"completion" \
+      OMZP::docker-machine/_docker-machine \
+    OMZP::gradle \
+    OMZP::colored-man-pages \
+    as"completion" mv"completions/completions.zsh -> _exa" id-as"ogham/exa-comp" \
+      ogham/exa \
+    as"completion" mv"autocomplete/zsh_autocomplete -> _step" id-as"smallstep/cli-comp" \
+      smallstep/cli \
+    as"completion" mv"autocompletion/autocomplete.zsh -> _tldr" id-as"mstruebing/tldr-comp" \
+      mstruebing/tldr \
+    as"completion" has"poetry" atclone"poetry completion zsh > _poetry" atpull"%atclone" id-as"poetry/completion" \
+      zdharma/null
+
+zinit add-fpath $HOME/.local/ffuncs
+
+# Setup PATH
+PATH=$HOME/.local/bin:$PATH
+PATH=$HOME/.yarn/bin:$PATH
+PATH=$HOME/.poetry/bin:$PATH
+PATH=$HOME/.emacs.d/bin:$PATH
+PATH=$HOME/go/bin:$PATH
+
+export PATH
+
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+
+source "$ZDOTDIR/aliases"
+source "$ZDOTDIR/bindkeys"
+source "$ZDOTDIR/history"
+source "$ZDOTDIR/zstyles"
+source "$ZDOTDIR/cdpath"
+
+(( ! ${+functions[p10k]} )) || p10k finalize
+
