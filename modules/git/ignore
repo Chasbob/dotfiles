@@ -1,0 +1,19 @@
+### Macos
+**/.DS_Store
+### JetBrains
+.idea/
+
+### direnv
+.direnv
+.env
+.envrc
+
+### VS Code
+.vscode
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+.chpwd-recent-dirs
