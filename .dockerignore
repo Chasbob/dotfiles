@@ -1,8 +1,0 @@
-.git
-.github
-Dockerfile
-zsh/.zinit
-zsh/zhistory
-zsh/.zcompdump
-**/*.zwc
-
