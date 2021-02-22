@@ -1,0 +1,6 @@
+# [D]ocker [I]mage [R]egistry [CP] copy
+function dircp() {
+  local cid
+  cid=$1
+  [ -n "$cid" ] && echo "$cid" | xargs -I IMAGE skopeo copy docker://IMAGE docker://registry.chasbob.dev/IMAGE
+}

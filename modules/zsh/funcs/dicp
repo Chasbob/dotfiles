@@ -1,0 +1,5 @@
+function dicp() {
+  local cid
+  cid=$(docker image ls | sed 1d | fzf -m | awk '{printf "%s:%s\n", $1, $2}')
+  [ -n "$cid" ] && echo "$cid" | xargs -I IMAGE sh -c "echo IMAGE && skopeo copy docker-daemon:IMAGE docker://registry.chasbob.dev/IMAGE"
+}
