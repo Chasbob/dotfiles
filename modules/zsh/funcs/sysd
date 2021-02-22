@@ -1,0 +1,7 @@
+# [SYSD] systemd list units
+function sysd() {
+  local uid
+    echo "$@"
+  uid=$(systemctl "$@" list-unit-files | fzf -m | awk '{printf "%s\n", $1}')
+  [ -n "$uid" ] && echo "$uid"
+}

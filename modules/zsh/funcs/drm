@@ -1,6 +1,6 @@
 # Select a docker container to remove
 function drm() {
   local cid
-  cid=$(docker ps -a | sed 1d | fzf -m -q "$1" | awk '{print $1}')
+  cid=$(docker ps -a | sed 1d | fzf -m | awk '{print $1}')
   [ -n "$cid" ] && echo "$cid" | xargs docker rm "$@"
 }
