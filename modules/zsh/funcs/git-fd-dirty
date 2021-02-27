@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Search for repositories with changes
+# $1=depth limit of search
+function git-fd-dirty() {
+  local gitcmd="git --git-dir={} --work-tree={}/.. status -s --untracked-files=no"
+  if [ $# -ne 1 ]; then
+    echo "[USAGE] git-fd-dirty <depth>"
+  fi
+  fd \
+    --type=d --no-ignore --hidden '\.git$' --max-depth="$1" \
+    --exec sh -c "echo {} && $gitcmd" | rg -B 1 '^ '
+}
