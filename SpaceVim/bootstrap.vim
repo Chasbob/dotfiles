@@ -22,9 +22,3 @@ function! bootstrap#after() abort
   let g:neoformat_enabled_javascript = ['npxprettier']
   let g:neoformat_verbose = 1
 endfunction
-
-function! bootstrap#before() abort
-  let g:github_dashboard = { 'username': 'chasbob', 'password': $GITHUB_TOKEN }
-  let g:gista#client#default_username = 'chasbob'
-  set timeoutlen=600
-endfunction
