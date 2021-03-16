@@ -1,0 +1,7 @@
+# [Q]uiet [C]url
+
+qc () {
+  curl $@ 2>/dev/null
+}
+
+compdef qc=curl

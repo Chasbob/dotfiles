@@ -1,0 +1,6 @@
+# [Q]uiet [C]url [J]q
+
+
+function qcj() {
+  curl $@ 2>/dev/null | jq
+}

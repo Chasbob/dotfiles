@@ -1,0 +1,7 @@
+
+# [D]ocker-[C]ompose [UP] [D]etach [L]ogs [F]ollow
+
+
+function dcupdlf() {
+  docker-compose up -d "$@" ; docker-compose logs -f "$@"
+}

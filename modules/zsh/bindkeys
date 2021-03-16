@@ -4,7 +4,7 @@ bindkey -M vicmd 'k' history-substring-search-up
 bindkey -M vicmd 'j' history-substring-search-down
 
 bindkey '^ ' autosuggest-execute
-bindkey '^E' autosuggest-accept
+bindkey '^A' autosuggest-accept
 
 # Bind home and end keys to start and end of line
 bindkey  "^[[1~"   beginning-of-line
