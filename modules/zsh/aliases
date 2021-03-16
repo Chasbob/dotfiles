@@ -1,3 +1,4 @@
+#!/bin/bash
 if [[ "$OSTYPE" == darwin* ]]; then
   alias o='open'
 else
@@ -58,6 +59,7 @@ alias lsfpath='echo "$fpath" | tr " " "\n"'
 alias ls='exa'
 alias la='ls -la'
 alias ll='ls --tree --git-ignore'
+alias cll='clear && ll'
 alias nsl='nslookup'
 alias cdt='pushd $(mktemp -d)'
 
@@ -65,6 +67,12 @@ alias dps="docker ps --format='table | {{.ID}} ~ {{.Names}} |'"
 alias dpsi="docker inspect --format='| {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}} |'"
 alias dpsp="docker ps --format='table | {{.ID}} ~ {{.Names}} ~ {{ .Ports }} |'"
 alias dstop="docker ps -aq | xargs docker stop"
+
+if [ $+commands[yh] ]; then
+  alias dcc="docker-compose config | yh"
+else
+  alias dcc="docker-compose config"
+fi
 
 alias dm='docker-machine'
 alias dlf='docker logs -f'

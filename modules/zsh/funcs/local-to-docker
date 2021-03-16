@@ -1,0 +1,4 @@
+# use skopeo to copy from docker-daemon to containers-storage
+function local-to-docker() {
+  skopeo copy containers-storage:"$1" docker-daemon:"$1"
+}

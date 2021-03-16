@@ -1,0 +1,6 @@
+# [SYSD] systemd [R]estart a unit
+function sysdr() {
+  local uid
+  uid=$(systemctl list-units | fzf -m | awk '{printf "%s\n", $1}')
+  [ -n "$uid" ] && echo "$uid" | xargs -I UNIT sh -c "echo UNIT && sudo systemctl restart UNIT"
+}
