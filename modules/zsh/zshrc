@@ -107,6 +107,7 @@ zinit wait lucid has"java" \
 # Completions
 # - - - - - - - - - - - - - - - - - - - -
 zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
+    OMZP::ssh-agent \
     as"completion" \
       OMZP::docker/_docker \
     has"kubectl" \
@@ -139,7 +140,7 @@ PATH=$HOME/go/bin:$PATH
 
 export PATH
 
-export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+# export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 
 source "$ZDOTDIR/aliases"
 source "$ZDOTDIR/bindkeys"
