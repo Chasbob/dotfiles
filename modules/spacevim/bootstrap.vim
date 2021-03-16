@@ -35,5 +35,17 @@ function! bootstrap#before() abort
   let g:github_dashboard = { 'username': 'chasbob', 'password': $GITHUB_TOKEN }
   let g:gista#client#default_username = 'chasbob'
   set timeoutlen=600
-  let g:coc_global_extensions = ['coc-json', 'coc-git', 'coc-prettier', 'coc-css', 'coc-jedi', 'coc-html', 'coc-snippets', 'coc-ultisnips', 'coc-vimtex', 'coc-docker']
+  let g:coc_global_extensions = [
+        \'coc-json',
+        \'coc-git',
+        \'coc-prettier',
+        \'coc-css',
+        \'coc-jedi',
+        \'coc-html',
+        \'coc-snippets',
+        \'coc-ultisnips',
+        \'coc-vimtex',
+        \'coc-docker',
+        \'coc-go',
+        \'coc-java']
 endfunction
