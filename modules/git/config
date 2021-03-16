@@ -10,6 +10,7 @@
 	diffFilter = delta --color-only
 [commit]
 	gpgsign = true
+  template = ~/.config/git/message
 [pull]
 	ff = only
 [init]
