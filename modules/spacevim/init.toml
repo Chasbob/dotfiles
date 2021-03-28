@@ -75,3 +75,7 @@
 [[custom_plugins]]
     repo = 'mxw/vim-jsx'
     merged = false
+
+[[custom_plugins]]
+    repo = 'nathanaelkane/vim-indent-guides'
+    merged = false

@@ -1,12 +1,4 @@
 function! bootstrap#after() abort
-  let g:neomake_javascript_eslint_maker =  {
-        \ 'exe': 'npx',
-        \ 'args': ['--quiet', 'eslint', '--format=compact'],
-        \ 'errorformat': '%E%f: line %l\, col %c\, Error - %m,' .
-        \   '%W%f: line %l\, col %c\, Warning - %m,%-G,%-G%*\d problems%#',
-        \ 'cwd': '%:p:h',
-        \ 'output_stream': 'stdout',
-        \ }
   let g:vimtex_compiler_latexmk = { 
         \ 'executable' : 'latexmk',
         \ 'options' : [ 
@@ -18,14 +10,12 @@ function! bootstrap#after() abort
         \}
 
   let g:neomake_javascript_jsx_enabled_makers = ['eslint']
-
-  let g:neoformat_enabled_javascript = ['npxprettier']
-  let g:neoformat_verbose = 1
+  let g:neomake_javascript_eslint_exe = $PWD .'/node_modules/.bin/eslint'
   let g:python3_host_prog = '/usr/bin/python3'
   if exists("did_load_filetypes")
     finish
   endif
-  
+
   augroup filetypedetect
     au BufNewFile,BufRead justfile setf make
   augroup END
@@ -48,4 +38,6 @@ function! bootstrap#before() abort
         \'coc-docker',
         \'coc-go',
         \'coc-java']
+
+  let g:indent_guides_enable_on_vim_startup = 1
 endfunction
