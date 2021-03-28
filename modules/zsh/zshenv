@@ -28,6 +28,7 @@ export EDITOR="nvim"
 export VISUAL="nvim"
 export LS_COLORS=$(cat $ZDOTDIR/LS_COLORS)
 
+export FZF_DEFAULT_OPTS='--layout=reverse --border --inline-info --height=40%'
 export FORGIT_FZF_DEFAULT_OPTS="
 --exact
 --border

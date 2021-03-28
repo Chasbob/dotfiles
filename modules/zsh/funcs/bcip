@@ -2,7 +2,7 @@
 # update multiple packages at once
 # mnemonic [B]rew [C]ask [I]nstall [P]ackage
 
-local inst=$(brew search --cask| eval "fzf ${FZF_DEFAULT_OPTS} -m --header='[brew:cask:install]'")
+local inst=$(brew search --cask | fzf -m --header='[brew:cask:install]')
 
 if [[ $inst ]]; then
   for prog in $(echo $inst)

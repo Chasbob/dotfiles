@@ -34,12 +34,17 @@ alias grep='grep --color=always --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
 alias lanip="ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'"
 
 # Alias NeoVim for Vim
-if [ $+commands[nvim] ]; then
+if command -v nvim &> /dev/null
+then
   alias vim='nvim'
 fi
 
-if [ $+commands[step-cli] ]; then
-  alias step='step-cli'
+if command -v step-cli &> /dev/null
+then
+  if ! command -v step &> /dev/null
+  then
+    alias step='step-cli'
+  fi
 fi
 
 if type ifconfig >/dev/null ; then
