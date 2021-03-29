@@ -51,3 +51,5 @@ export COMPOSE_DOCKER_CLI_BUILD=1
 
 export PATH="/usr/local/bin:$PATH"
 export MAKEFLAGS="-j`nproc`"
+
+export SPACEVIMDIR=$XDG_CONFIG_HOME/spacevim

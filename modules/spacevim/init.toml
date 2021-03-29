@@ -17,6 +17,8 @@
 
     bootstrap_before = 'bootstrap#before'
     bootstrap_after = 'bootstrap#after'
+    automatic_update = true
+
 
 
 [[layers]]
@@ -40,6 +42,11 @@
 [[layers]]
     name = 'ui'
     enable_scrollbar = true
+
+[[layers]]
+  name = "checkers"
+  lint_engine = "ale"
+  lint_on_the_fly = true
 
 [[layers]]
     name = "lsp"
