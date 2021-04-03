@@ -1,0 +1,8 @@
+# [fd] find [git] repos with changes
+
+fd \
+     --type=d \
+     --no-ignore \
+     --max-depth=3 \
+     --hidden '\.git$' \
+     --exec sh -c "echo {} && git --git-dir={} --work-tree={}/.. status -s --untracked-files=no" | rg -B 1 '^ '
