@@ -1,0 +1,6 @@
+# [Q]uiet [C]url [J]q [L]ength
+
+
+function qcjl() {
+  curl $@ 2>/dev/null | jq length
+}
