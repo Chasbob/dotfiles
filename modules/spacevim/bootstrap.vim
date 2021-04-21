@@ -16,6 +16,8 @@ function! bootstrap#after() abort
     finish
   endif
 
+  " autocmd FileType make setlocal noexpandtab
+  autocmd FileType make set noexpandtab shiftwidth=2 softtabstop=0
   augroup filetypedetect
     au BufNewFile,BufRead justfile setf make
   augroup END
