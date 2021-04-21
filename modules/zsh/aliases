@@ -41,10 +41,7 @@ fi
 
 if command -v step-cli &> /dev/null
 then
-  if ! command -v step &> /dev/null
-  then
-    alias step='step-cli'
-  fi
+  alias -g step='step-cli'
 fi
 
 if type ifconfig >/dev/null ; then

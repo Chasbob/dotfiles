@@ -82,7 +82,8 @@ zinit lucid for zsh-users/zsh-history-substring-search
 
 ### python poetry
 zinit wait lucid for \
-  darvid/zsh-poetry
+  darvid/zsh-poetry \
+  reegnz/jq-zsh-plugin
 
 zinit wait lucid from"gh-r" as"command" for \
   mv"delta* -> delta" sbin"delta/delta" dandavison/delta \
@@ -137,7 +138,7 @@ PATH=$HOME/.yarn/bin:$PATH
 PATH=$HOME/.poetry/bin:$PATH
 PATH=$HOME/.emacs.d/bin:$PATH
 PATH=$HOME/go/bin:$PATH
-PATH=node_modules/.bin:$PATH
+# PATH=node_modules/.bin:$PATH
 
 if [[ $OSTYPE == darwin* ]]; then
   PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
