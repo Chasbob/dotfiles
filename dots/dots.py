@@ -13,6 +13,8 @@ def main():
     parser_install = subparsers.add_parser("install")
     parser_install.add_argument("-d", "--dest", default=Path.home())
     parser_install.add_argument("targets", nargs="+")
+    parser_install.add_argument("-y", "--yes", default=True)
+    parser_install.add_argument("-s", "--skip-hooks", default=True)
     parser_install.set_defaults(action=action_install)
 
     parser_list = subparsers.add_parser("list")
@@ -31,7 +33,7 @@ def action_list(args):
     """
 
     module_root = Path("modules/")
-    modules = load_modules(module_root)
+    modules = load_modules(module_root, not args.skip_hooks)
 
     print("Available modules:")
     for module in modules:
@@ -46,7 +48,7 @@ def action_install(args):
     dest = Path(args.dest)
 
     module_root = Path("modules/")
-    modules = load_modules(module_root)
+    modules = load_modules(module_root, not args.skip_hooks)
 
     try:
         candidates = {modules[target] for target in args.targets}
@@ -60,7 +62,7 @@ def action_install(args):
         sys.exit(1)
 
     print(f"Will install: {', '.join(c.name for c in candidates)}")
-    if not confirm("install?"):
+    if not args.yes and not confirm("install?"):
         return
 
     for mod in candidates:

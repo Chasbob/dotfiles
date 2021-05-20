@@ -189,7 +189,7 @@ class Hook:
             raise RuntimeError("integrity check failed")
 
 
-def load_modules(root: Path) -> Dict[str, Module]:
+def load_modules(root: Path, hooks: bool) -> Dict[str, Module]:
     """
     Load all modules found in the specified path.
     """
@@ -199,6 +199,9 @@ def load_modules(root: Path) -> Dict[str, Module]:
         module = Module(config)
         if module.name in modules:
             raise RuntimeError(f"{module.name} exists in two places!")
+        if not hooks:
+            module.pre_hook = None
+            module.post_hook = None
 
         modules[module.name] = module
     return modules
