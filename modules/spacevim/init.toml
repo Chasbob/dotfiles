@@ -1,8 +1,10 @@
 [options]
     autocomplete_method = 'coc'
     snippet_engine = 'ultisnips'
+    guifont = "SauceCodePro\ Nerd\ Font\ Mono:h11"
 
-    colorscheme = 'material'
+    colorscheme = 'onedark'
+    # colorscheme = 'bogster'
     colorscheme_bg = 'dark'
     enable_guicolors = true
 
@@ -13,11 +15,13 @@
     statusline_iseparator = 'arrow'
     buffer_index_type = 4
     enable_tabline_filetype_icon = true
-    enable_statusline_mode = false
+    enable_statusline_mode = true 
 
     bootstrap_before = 'bootstrap#before'
     bootstrap_after = 'bootstrap#after'
     automatic_update = true
+    filemanager = 'nerdtree'
+    filetree_direction = "left"
 
 
 
@@ -41,17 +45,29 @@
     name = 'tools'
 [[layers]]
     name = 'ui'
-    enable_scrollbar = true
+    # enable_scrollbar = true
+
+[[layers]]
+    name = "incsearch"
+
 
 [[layers]]
   name = "checkers"
-  lint_engine = "ale"
+  # lint_engine = "ale"
   lint_on_the_fly = true
+  lint_on_save = true
+  show_cursor_error = true
 
 [[layers]]
     name = "lsp"
 [[layers]]
     name = 'lang#java'
+    format_on_save = true
+    java_formatter_jar = '/usr/share/java/google-java-format/google-java-format.jar'
+
+[[layers]]
+  name = "lang#haskell"
+
 [[layers]]
     name = 'lang#sh'
 [[layers]]
@@ -85,4 +101,32 @@
 
 [[custom_plugins]]
     repo = 'nathanaelkane/vim-indent-guides'
+    merged = false
+
+[[custom_plugins]]
+    repo = 'ludovicchabant/vim-gutentags'
+    merged = false
+
+[[custom_plugins]]
+    repo = 'folke/todo-comments.nvim'
+    merged = false
+
+[[custom_plugins]]
+    repo = 'matze/vim-tex-fold'
+    merged = false
+
+[[custom_plugins]]
+    repo = 'Xuyuanp/nerdtree-git-plugin'
+    merged = false
+
+[[custom_plugins]]
+    repo = 'ryanoasis/vim-devicons'
+    merged = false
+
+[[custom_plugins]]
+    repo = 'vim-scripts/gitignore'
+    merged = false
+
+[[custom_plugins]]
+    repo = 'wojciechkepka/bogster'
     merged = false
