@@ -13,8 +13,8 @@ def main():
     parser_install = subparsers.add_parser("install")
     parser_install.add_argument("-d", "--dest", default=Path.home())
     parser_install.add_argument("targets", nargs="+")
-    parser_install.add_argument("-y", "--yes", default=True)
-    parser_install.add_argument("-s", "--skip-hooks", default=True)
+    parser_install.add_argument("-y", "--yes", action='store_true', default=False)
+    parser_install.add_argument("-s", "--skip-hooks", action='store_true', default=False)
     parser_install.set_defaults(action=action_install)
 
     parser_list = subparsers.add_parser("list")
