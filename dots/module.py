@@ -148,7 +148,8 @@ class Hook:
             script = response.read()
         self._integrity_check(script)
         if not self._user_check(script.decode(), self.url):
-            return
+            if not confirm("Continue anyway?"):
+                return
 
         # TODO: find better temporary file
         fname = "/tmp/dots.sh"
