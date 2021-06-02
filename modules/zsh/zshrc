@@ -93,7 +93,7 @@ zinit wait lucid from"gh-r" as"command" for \
 
 
 ### asdf-vm
-zinit wait lucid as"null" \
+zinit lucid as"null" \
     from"github" src"asdf.sh" as"program" for \
     @asdf-vm/asdf
 
