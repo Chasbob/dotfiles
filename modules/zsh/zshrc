@@ -87,7 +87,7 @@ zinit wait lucid for \
 
 zinit wait lucid from"gh-r" as"command" for \
   mv"delta* -> delta" sbin"delta/delta" dandavison/delta \
-  mv"tldr* -> tldr" sbin"tldr" mstruebing/tldr \
+  mv"bin/tldr* -> tldr" sbin"tldr" mstruebing/tldr \
   mv"direnv* -> direnv" sbin"direnv" src"zhook.zsh" \
   atclone"./direnv hook zsh > zhook.zsh" atpull"%atclone" direnv/direnv
 
