@@ -1,15 +1,16 @@
 [options]
     autocomplete_method = 'coc'
     snippet_engine = 'ultisnips'
-    guifont = "SauceCodePro\ Nerd\ Font\ Mono:h11"
+    lint_engine = 'ale'
 
     colorscheme = 'onedark'
     # colorscheme = 'bogster'
     colorscheme_bg = 'dark'
+
+    guifont = 'JetBrainsMono\ Nerd\ Font\ Mono:h15'
     enable_guicolors = true
 
-    enable_vimfiler_gitstatus = true
-    windows_smartclose = 'Q'
+    windows_smartclose = 'Z'
 
     statusline_separator = 'arrow'
     statusline_iseparator = 'arrow'
@@ -21,7 +22,7 @@
     bootstrap_after = 'bootstrap#after'
     automatic_update = true
     filemanager = 'nerdtree'
-    filetree_direction = "left"
+    filetree_direction = 'left'
 
 
 
@@ -30,43 +31,44 @@
     default_position = 'bottom'
     default_height = 30
 [[layers]]
-    name = "autocomplete"
-    auto_completion_return_key_behavior = "complete"
-    auto_completion_tab_key_behavior = "smart"
+    name = 'autocomplete'
+    auto_completion_return_key_behavior = 'complete'
+    auto_completion_tab_key_behavior = 'smart'
 [[layers]]
     name = 'colorscheme'
 [[layers]]
     name = 'fzf'
 [[layers]]
     name = 'git'
+    git_plugin = 'fugitive'
+[[layers]]
+    name = 'VersionControl'
 [[layers]]
     name = 'sudo'
 [[layers]]
     name = 'tools'
 [[layers]]
     name = 'ui'
-    # enable_scrollbar = true
+
+# [[layers]]
+    # name = 'incsearch'
+
+
+# [[layers]]
+  # name = 'checkers'
+  # lint_on_the_fly = true
+  # lint_on_save = true
+  # show_cursor_error = true
 
 [[layers]]
-    name = "incsearch"
-
-
-[[layers]]
-  name = "checkers"
-  # lint_engine = "ale"
-  lint_on_the_fly = true
-  lint_on_save = true
-  show_cursor_error = true
-
-[[layers]]
-    name = "lsp"
+    name = 'lsp'
 [[layers]]
     name = 'lang#java'
     format_on_save = true
     java_formatter_jar = '/usr/share/java/google-java-format/google-java-format.jar'
 
 [[layers]]
-  name = "lang#haskell"
+  name = 'lang#haskell'
 
 [[layers]]
     name = 'lang#sh'
@@ -80,7 +82,7 @@
     name = 'lang#c'
 [[layers]]
   name = 'lang#markdown'
-  enabled_formater = 'prettier'
+  enabled_formater = ['prettier']
 [[layers]]
     name = 'lang#python'
     enable_typeinfo = true
@@ -101,10 +103,6 @@
 
 [[custom_plugins]]
     repo = 'nathanaelkane/vim-indent-guides'
-    merged = false
-
-[[custom_plugins]]
-    repo = 'ludovicchabant/vim-gutentags'
     merged = false
 
 [[custom_plugins]]
@@ -129,4 +127,49 @@
 
 [[custom_plugins]]
     repo = 'wojciechkepka/bogster'
+    merged = false
+
+[[custom_plugins]]
+    repo = 'scrooloose/nerdtree-project-plugin'
+    merged = false
+
+[[custom_plugins]]
+    repo = 'PhilRunninger/nerdtree-visual-selection'
+    merged = false
+
+[[custom_plugins]]
+    repo = 'liuchengxu/graphviz.vim'
+    merged = false
+
+[[custom_plugins]]
+    repo = 'NoahTheDuke/vim-just'
+    merged = false
+
+[[custom_plugins]]
+    repo = 'stephpy/vim-yaml'
+    merged = false
+
+[[custom_plugins]]
+    repo = 'bufbuild/vim-buf'
+    merged = false
+
+[[custom_plugins]]
+    repo = 'hashivim/vim-hashicorp-tools'
+    merged = false
+
+# [[custom_plugins]]
+    # repo = 'hashivim/vim-terraform'
+    # merged = false
+
+
+[[custom_plugins]]
+    repo = 'jvirtanen/vim-hcl'
+    merged = false
+
+[[custom_plugins]]
+    repo = 'martinda/Jenkinsfile-vim-syntax'
+    merged = false
+
+[[custom_plugins]]
+    repo = 'jupyter-vim/jupyter-vim'
     merged = false
