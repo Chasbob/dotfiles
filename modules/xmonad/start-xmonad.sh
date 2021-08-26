@@ -2,7 +2,15 @@
 
 rm -f ~/.xmonad/xmonad.state
 
-gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh
+if [[ -e ~/.zshenv ]]; then
+  source ~/.zshenv
+fi
+
+eval $(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
+# eval $(gnome-keyring-daemon --start)
+# export GNOME_KEYRING_SOCKET
+# export GNOME_KEYRING_PID
+
 
 xsetroot -cursor_name left_ptr
 
