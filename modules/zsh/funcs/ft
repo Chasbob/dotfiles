@@ -1,0 +1,12 @@
+# Fuzzy TLDR
+# Using https://github.com/mstruebing/tldr client and fzf
+
+# mnemonic [F]zf [T]ldr
+
+local inst=$(tldr -list-all | fzf -m --header='[tldr]')
+
+if [[ $inst ]]; then
+  for prog in $(echo $inst)
+  do tldr $prog
+  done
+fi

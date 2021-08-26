@@ -26,16 +26,11 @@ export TERM=xterm-256color
 
 export EDITOR="nvim"
 export VISUAL="nvim"
+export DMEDITOR=$VISUAL
 export LS_COLORS=$(cat $ZDOTDIR/LS_COLORS)
 
-export FZF_DEFAULT_OPTS='--layout=reverse --border --inline-info --height=40%'
-export FORGIT_FZF_DEFAULT_OPTS="
---exact
---border
---cycle
---reverse
---height '80%'
-"
+export FZF_DEFAULT_OPTS='--layout=reverse --border --inline-info --height=80%'
+export FZF_DEFAULT_COMMAND='fd --type=file --hidden --follow --exclude=.git'
 
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 # export ZSH_AUTOSUGGEST_STRATEGY=(completion)
@@ -43,13 +38,40 @@ export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 export ZSH_AUTOSUGGEST_USE_ASYNC=yee
 
 export COMPOSE_DOCKER_CLI_BUILD=1
-export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
 export ASDF_DATA_DIR=$XDG_CONFIG_HOME/asdf
 
 export COMPOSE_DOCKER_CLI_BUILD=1
 
-export PATH="/usr/local/bin:$PATH"
+PATH="/usr/local/bin:$PATH"
+PATH=/home/chasbob/bin:$PATH
+export FPATH=$HOME/.zfuncs:$FPATH
+export PATH=$DOTDIR/bin:$PATH
+
 export MAKEFLAGS="-j`nproc`"
 
-export SPACEVIMDIR=$XDG_CONFIG_HOME/spacevim
+# export SPACEVIMDIR=$XDG_CONFIG_HOME/spacevim
+
+
+export JAVA_HOME=/usr/lib/jvm/default
+export JDK_HOME=/usr/lib/jvm/default
+
+export QT_QPA_PLATFORMTHEME=qt5ct
+
+export KUBECONFIG=$XDG_CONFIG_HOME/kube/kube.config
+export NeovideMultiGrid='true'
+
+# export GNOME_SSH_KEYRING="/run/user/$(id -u)/keyring/ssh"
+# if [ -S "$GNOME_SSH_KEYRING" ]; then
+  # export SSH_AUTH_SOCK="$GNOME_SSH_KEYRING"
+# fi
+if [ -n "$DESKTOP_SESSION" ];then
+    eval $(gnome-keyring-daemon --start)
+    export SSH_AUTH_SOCK
+fi
+
+export EMOJI_CLI_USE_EMOJI=true
+
+# export DOCKER_HOST=unix:///run/user/1000/docker.sock
+
+export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'

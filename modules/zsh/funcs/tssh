@@ -2,5 +2,5 @@
 # SSH and connect to tmux in one step
 # mnemonic [T]mux SSH
 
-ssh "$1" -t 'tmux has-session && tmux attach -t dhruva || tmux new -s dhruva'
+ssh "$1" -t 'tmux has-session && tmux attach -t tssh || tmux new -s tssh'
 

@@ -1,15 +1,16 @@
 #!/bin/bash
-if [[ "$OSTYPE" == darwin* ]]; then
-  alias o='open'
-else
+if [[ "$OSTYPE" != darwin* ]]; then
   alias open='xdg-open'
-  alias o='open'
   # alias xclip to pbcopy and paste
   if [ $+commands[xclip] ]; then
     alias pbcopy='xclip -selection clipboard -in'
     alias pbpaste='xclip -selection clipboard -out'
   fi
 fi
+
+function o(){
+  nohup bash -c "$(whence open) $@" >/dev/null 2>&1 & disown
+}
 
 alias pbc='pbcopy'
 alias pbp='pbpaste'
@@ -58,10 +59,22 @@ alias gs='git status'
 alias lspath='echo "$PATH" | tr ":" "\n"'
 alias lsfpath='echo "$fpath" | tr " " "\n"'
 
-alias ls='exa'
-alias la='ls -la'
+
+alias fce='emoji::emoji_get|pbc'
+
+# alias ls='exa -al --color=always --group-directories-first' # my preferred listing
+# alias la='exa -a --color=always --group-directories-first'  # all files and dirs
+# alias ll='exa -l --color=always --group-directories-first'  # long format
+# alias lt='exa -aT --color=always --group-directories-first' # tree listing
+
+alias ls='exa --group-directories-first'
+alias la='ls -la --git-ignore'
 alias ll='ls --tree --git-ignore'
+alias laa='ls -la'
+alias lla='ls --tree'
 alias cll='clear && ll'
+alias l.='ls -a .*'
+
 alias nsl='nslookup'
 alias cdt='pushd $(mktemp -d)'
 
@@ -81,10 +94,10 @@ alias dlf='docker logs -f'
 
 alias restart-dns-macos='sudo killall -HUP mDNSResponder;sudo killall mDNSResponderHelper;sudo dscacheutil -flushcache'
 
-alias ...='../..'
-alias ....='../../..'
-alias .....='../../../..'
-alias ......='../../../../..'
-alias .......='../../../../../..'
-alias ........='../../../../../../..'
-
+# alias ...='../..'
+# alias ....='../../..'
+# alias .....='../../../..'
+# alias ......='../../../../..'
+# alias .......='../../../../../..'
+# alias ........='../../../../../../..'
+#

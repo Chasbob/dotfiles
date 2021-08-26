@@ -73,8 +73,15 @@ zinit for ext-git molovo
 zinit for zsh-users
 zinit bindmap'^R -> ^F' skip'zdharma/zsh-diff-so-fancy zdharma/fast-syntax-highlighting' for zdharma
 
+zinit for b4b4r07/emoji-cli
+
+zinit autoload'#manydots-magic' for knu/zsh-manydots-magic
+
 # zinit lucid for marlonrichert/zsh-autocomplete
 zinit lucid for zsh-users/zsh-history-substring-search
+
+zinit snippet OMZ::lib/completion.zsh
+complete -C '/usr/bin/aws_completer' aws
 
 # - - - - - - - - - - - - - - - - - - - -
 # Tools
@@ -82,14 +89,19 @@ zinit lucid for zsh-users/zsh-history-substring-search
 
 ### python poetry
 zinit wait lucid for \
-  darvid/zsh-poetry \
   reegnz/jq-zsh-plugin
 
 zinit wait lucid from"gh-r" as"command" for \
   mv"delta* -> delta" sbin"delta/delta" dandavison/delta \
-  mv"bin/tldr* -> tldr" sbin"tldr" mstruebing/tldr \
-  mv"direnv* -> direnv" sbin"direnv" src"zhook.zsh" \
-  atclone"./direnv hook zsh > zhook.zsh" atpull"%atclone" direnv/direnv
+  mv"bin/tldr* -> tldr" sbin"tldr" mstruebing/tldr 
+  # mv"direnv* -> direnv" sbin"direnv" src"zhook.zsh" \
+  # atclone"./direnv hook zsh > zhook.zsh" atpull"%atclone" direnv/direnv
+
+zinit from"gh-r" as"program" mv"direnv* -> direnv" \
+    atclone'./direnv hook zsh > zhook.zsh' atpull'%atclone' \
+    pick"direnv" src="zhook.zsh" for \
+        direnv/direnv
+
 
 
 ### asdf-vm
@@ -107,8 +119,8 @@ zinit wait lucid has"java" \
 # - - - - - - - - - - - - - - - - - - - -
 # Completions
 # - - - - - - - - - - - - - - - - - - - -
+    # OMZP::ssh-agent \
 zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
-    OMZP::ssh-agent \
     as"completion" \
       OMZP::docker/_docker \
     has"kubectl" \
@@ -121,24 +133,26 @@ zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
       OMZP::docker-machine/_docker-machine \
     OMZP::gradle \
     OMZP::colored-man-pages \
-    as"completion" mv"completions/completions.zsh -> _exa" id-as"ogham/exa-comp" \
+    as"completion" mv"completions/zsh/_exa -> _exa" id-as"ogham/exa-comp" \
       ogham/exa \
     as"completion" mv"autocomplete/zsh_autocomplete -> _step" id-as"smallstep/cli-comp" \
       smallstep/cli \
-    as"completion" mv"autocompletion/autocomplete.zsh -> _tldr" id-as"mstruebing/tldr-comp" \
-      mstruebing/tldr \
-    as"completion" has"poetry" atclone"poetry completion zsh > _poetry" atpull"%atclone" id-as"poetry/completion" \
+    as"completion" atclone"~/.poetry/bin/poetry completions zsh > _poetry" atpull"%atclone" id-as"poetry/completion" \
       zdharma/null
 
-zinit add-fpath $HOME/.local/ffuncs
+    # as"completion" mv"autocompletion/autocomplete.zsh -> _tldr" id-as"mstruebing/tldr-comp" \
+      # mstruebing/tldr
+# zinit add-fpath $HOME/.zfuncs
 
+# FPATH=$HOME/.zfuncs:$FPATH
 # Setup PATH
 PATH=$HOME/.local/bin:$PATH
 PATH=$HOME/.yarn/bin:$PATH
 PATH=$HOME/.poetry/bin:$PATH
 PATH=$HOME/.emacs.d/bin:$PATH
 PATH=$HOME/go/bin:$PATH
-# PATH=node_modules/.bin:$PATH
+PATH=$HOME/.SpaceVim/bin:$PATH
+PATH=/usr/bin/vendor_perl:$PATH
 
 if [[ $OSTYPE == darwin* ]]; then
   PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
