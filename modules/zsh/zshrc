@@ -183,3 +183,4 @@ esac
 myprmptcmd() { eval "$PROMPT_COMMAND" }
 autoload -Uz add-zsh-hook
 add-zsh-hook precmd myprmptcmd
+export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>|'
