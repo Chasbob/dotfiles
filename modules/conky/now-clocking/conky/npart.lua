@@ -30,9 +30,9 @@ conky.config = {
 conky.text = [[
 ${if_running spotify}${exec ~/.config/conky/now-clocking/scripts/fetch-art spotify}
 	${image ~/.config/conky/now-clocking/data/spotify.png -p 0,0 -s 125x125 -n}
-${else}${if_match "" != "${exec playerctl -p vlc status}"}${exec ./scripts/fetch-art vlc}
+${else}${if_match "" != "${exec playerctl -p vlc status}"}${exec ~/.config/conky/now-clocking/scripts/fetch-art vlc}
 	${image ~/.config/conky/now-clocking/data/vlc.png -p 0,0 -s 125x125 -n}
-${else}${if_running cmus}${exec ./scripts/fetch-art cmus}
+${else}${if_running cmus}${exec ~/.config/conky/now-clocking/scripts/fetch-art cmus}
 	${image ~/.config/conky/now-clocking/data/cmus.png -p 0,0 -s 125x125 -n}
 ${endif}
 ${endif}
