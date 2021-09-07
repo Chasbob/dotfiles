@@ -8,6 +8,7 @@ export XDG_CACHE_HOME="$HOME/.cache"
 
 export DOTDIR="$XDG_CONFIG_HOME/dotfiles"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgreprc"
 
 export HISTORY_IGNORE="(ls|cd|pwd|exit|sudo reboot|history|cd -|cd ..)"
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
