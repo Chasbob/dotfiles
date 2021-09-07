@@ -1,0 +1,3 @@
+emojicp() {
+  emoji::emoji_get | xclip -selection clipboard -in; zle redisplay
+}
