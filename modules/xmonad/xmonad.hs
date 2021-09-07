@@ -659,7 +659,8 @@ myKeys =
         , ("M-<Tab>", sendMessage NextLayout)           -- Switch to next layout
         , ("M-C-M1-<Up>", sendMessage Arrange)
         , ("M-C-M1-<Down>", sendMessage DeArrange)
-        , ("M-<Space>", sendMessage (MT.Toggle NBFULL) >> sendMessage ToggleStruts) -- Toggles noborder/full
+        , ("M-<Space>", sendMessage (MT.Toggle NBFULL)) -- Toggles noborder/full 
+        -- >> sendMessage ToggleStruts -- added to ^^ will also hide xmobar
         , ("M-C-<Space>", sendMessage ToggleStruts)     -- Toggles struts
         , ("M-S-n", sendMessage $ MT.Toggle NOBORDERS)  -- Toggles noborder
 
