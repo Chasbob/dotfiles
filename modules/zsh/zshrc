@@ -73,6 +73,8 @@ zinit lucid for zsh-users/zsh-history-substring-search
 
 zinit snippet OMZ::lib/completion.zsh
 test -f /usr/bin/aws_completer && complete -C '/usr/bin/aws_completer' aws
+complete -C '/usr/bin/aws_completer' aws
+export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>|'
 
 # - - - - - - - - - - - - - - - - - - - -
 # Tools
@@ -130,6 +132,17 @@ zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
 
 # FPATH=$HOME/.zfunc:$FPATH
 # Setup PATH
+PATH=$HOME/.local/bin:$PATH
+PATH=$HOME/.yarn/bin:$PATH
+PATH=$HOME/.poetry/bin:$PATH
+PATH=$HOME/.emacs.d/bin:$PATH
+PATH=$HOME/go/bin:$PATH
+PATH=$HOME/.SpaceVim/bin:$PATH
+PATH=/usr/bin/vendor_perl:$PATH
+
+if [[ $OSTYPE == darwin* ]]; then
+  PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
+fi
 
 export PATH
 
@@ -156,4 +169,3 @@ esac
 myprmptcmd() { eval "$PROMPT_COMMAND" }
 autoload -Uz add-zsh-hook
 add-zsh-hook precmd myprmptcmd
-export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>|'
