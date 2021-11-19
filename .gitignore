@@ -5,5 +5,3 @@ zsh/.zsh_history
 zsh/.zinit
 zsh/.zcompcache
 **/*.zwc
-
-dots/__pycache__
