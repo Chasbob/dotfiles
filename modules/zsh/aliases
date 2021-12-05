@@ -93,6 +93,8 @@ alias dlf='docker logs -f'
 
 alias restart-dns-macos='sudo killall -HUP mDNSResponder;sudo killall mDNSResponderHelper;sudo dscacheutil -flushcache'
 
+alias icat="kitty +kitten icat"
+
 # alias ...='../..'
 # alias ....='../../..'
 # alias .....='../../../..'
