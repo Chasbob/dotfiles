@@ -25,14 +25,14 @@ __ZINIT="${ZINIT[BIN_DIR]}/zinit.zsh"
 ### Add zinit module
 if [[ -f "${ZINIT[BIN_DIR]}/zmodules/Src/zdharma/zplugin.so" ]]; then
   module_path+=( "${ZINIT[BIN_DIR]}/zmodules/Src" )
-      zmodload zdharma/zplugin
+      zmodload zdharma-continuum/zplugin
 fi
 
 ### Added by Zinit's installer
 if [[ ! -f ${ZINIT[BIN_DIR]}/zinit.zsh ]]; then
     print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
     command mkdir -p "${ZINIT[BIN_DIR]}" && command chmod g-rwX "${ZINIT[BIN_DIR]}"
-    command git clone https://github.com/zdharma/zinit "${ZINIT[BIN_DIR]}" && \
+    command git clone https://github.com/zdharma-continuum/zinit "${ZINIT[BIN_DIR]}" && \
         print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
         print -P "%F{160}▓▒░ The clone has failed.%f%b"
 fi
@@ -41,15 +41,6 @@ fi
 autoload -Uz _zinit
 autoload "$ZDOTDIR"/funcs/*
 (( ${+_comps} )) && _comps[zinit]=_zinit
-
-# Load a few important annexes, without Turbo
-# (this is currently required for annexes)
-zinit light-mode for \
-  zinit-zsh/z-a-bin-gem-node \
-  zinit-zsh/z-a-meta-plugins \
-  zinit-zsh/z-a-patch-dl
-
-
 
 # - - - - - - - - - - - - - - - - - - - -
 # Theme
@@ -67,13 +58,13 @@ zinit depth=1 lucid nocd \
 # Meta Plugins
 # - - - - - - - - - - - - - - - - - - - -
 
-zinit skip'fzy peco/peco' for fuzzy
-zinit skip'jonas/tig dircolors-material' for console-tools
-zinit for ext-git molovo
-zinit for zsh-users
-zinit bindmap'^R -> ^F' skip'zdharma/zsh-diff-so-fancy zdharma/fast-syntax-highlighting' for zdharma
+zinit load wfxr/forgit
+zinit lucid atload'_zsh_autosuggest_start;' for zsh-users/zsh-autosuggestions
+zinit lucid atinit'ZINIT[COMPINIT_OPTS]=-C; zpcompinit; zpcdreplay;' for zdharma-continuum/fast-syntax-highlighting
+zinit lucid pick'/dev/null' for zsh-users/zsh-completions
+zinit lucid bindmap'^R -> ^F' atinit'zstyle :history-search-multi-word page-size 7;' for zdharma-continuum/history-search-multi-word
 
-zinit for b4b4r07/emoji-cli
+# zinit for b4b4r07/emoji-cli
 
 zinit autoload'#manydots-magic' for knu/zsh-manydots-magic
 
@@ -81,21 +72,11 @@ zinit autoload'#manydots-magic' for knu/zsh-manydots-magic
 zinit lucid for zsh-users/zsh-history-substring-search
 
 zinit snippet OMZ::lib/completion.zsh
-complete -C '/usr/bin/aws_completer' aws
+test -f /usr/bin/aws_completer && complete -C '/usr/bin/aws_completer' aws
 
 # - - - - - - - - - - - - - - - - - - - -
 # Tools
 # - - - - - - - - - - - - - - - - - - - -
-
-### python poetry
-zinit wait lucid for \
-  reegnz/jq-zsh-plugin
-
-zinit wait lucid from"gh-r" as"command" for \
-  mv"delta* -> delta" sbin"delta/delta" dandavison/delta \
-  mv"bin/tldr* -> tldr" sbin"tldr" mstruebing/tldr 
-  # mv"direnv* -> direnv" sbin"direnv" src"zhook.zsh" \
-  # atclone"./direnv hook zsh > zhook.zsh" atpull"%atclone" direnv/direnv
 
 zinit from"gh-r" as"program" mv"direnv* -> direnv" \
     atclone'./direnv hook zsh > zhook.zsh' atpull'%atclone' \
@@ -103,6 +84,13 @@ zinit from"gh-r" as"program" mv"direnv* -> direnv" \
         direnv/direnv
 
 
+PATH=$HOME/.local/bin:$PATH
+PATH=$HOME/.yarn/bin:$PATH
+PATH=$HOME/.emacs.d/bin:$PATH
+PATH=$HOME/go/bin:$PATH
+PATH=$HOME/.SpaceVim/bin:$PATH
+PATH=/usr/bin/vendor_perl:$PATH
+PATH="$PATH:$FORGIT_INSTALL_DIR/bin"
 
 ### asdf-vm
 zinit lucid as"null" \
@@ -114,49 +102,34 @@ zinit lucid as"null" \
 zinit wait lucid has"java" \
       if"[ -f $ASDF_DATA_DIR/plugins/java/set-java-home.zsh ]" \
       atinit"source $ASDF_DATA_DIR/plugins/java/set-java-home.zsh" for \
-        id-as"asdf-vm/java-home" zdharma/null
+        id-as"asdf-vm/java-home" zdharma-continuum/null
 
 # - - - - - - - - - - - - - - - - - - - -
 # Completions
 # - - - - - - - - - - - - - - - - - - - -
     # OMZP::ssh-agent \
 zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
+    has"docker" \
     as"completion" \
       OMZP::docker/_docker \
     has"kubectl" \
       OMZP::kubectl \
-    OMZP::docker-compose \
+    has"docker-compose" \
+      OMZP::docker-compose \
     as"completion" \
       OMZP::docker-compose/_docker-compose \
-    OMZP::docker-machine \
-    as"completion" \
-      OMZP::docker-machine/_docker-machine \
-    OMZP::gradle \
-    OMZP::colored-man-pages \
-    as"completion" mv"completions/zsh/_exa -> _exa" id-as"ogham/exa-comp" \
-      ogham/exa \
-    as"completion" mv"autocomplete/zsh_autocomplete -> _step" id-as"smallstep/cli-comp" \
-      smallstep/cli \
-    as"completion" atclone"~/.poetry/bin/poetry completions zsh > _poetry" atpull"%atclone" id-as"poetry/completion" \
-      zdharma/null
+    has"gradle" \
+      OMZP::gradle \
+    OMZP::colored-man-pages
+    # as"completion" mv"completions/zsh/_exa -> _exa" id-as"ogham/exa-comp" \
+      # ogham/exa \
 
     # as"completion" mv"autocompletion/autocomplete.zsh -> _tldr" id-as"mstruebing/tldr-comp" \
       # mstruebing/tldr
-# zinit add-fpath $HOME/.zfuncs
+# zinit add-fpath $HOME/.zfunc
 
-# FPATH=$HOME/.zfuncs:$FPATH
+# FPATH=$HOME/.zfunc:$FPATH
 # Setup PATH
-PATH=$HOME/.local/bin:$PATH
-PATH=$HOME/.yarn/bin:$PATH
-PATH=$HOME/.poetry/bin:$PATH
-PATH=$HOME/.emacs.d/bin:$PATH
-PATH=$HOME/go/bin:$PATH
-PATH=$HOME/.SpaceVim/bin:$PATH
-PATH=/usr/bin/vendor_perl:$PATH
-
-if [[ $OSTYPE == darwin* ]]; then
-  PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
-fi
 
 export PATH
 

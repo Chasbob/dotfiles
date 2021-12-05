@@ -10,7 +10,8 @@ export DOTDIR="$XDG_CONFIG_HOME/dotfiles"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgreprc"
 
-export HISTORY_IGNORE="(ls|cd|pwd|exit|sudo reboot|history|cd -|cd ..)"
+# export HISTORY_IGNORE="(ls|cd|pwd|exit|sudo reboot|history|cd -|cd ..)"
+export HISTORY_SUBSTRING_SEARCH_PREFIXED='yes'
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 
@@ -46,7 +47,7 @@ export COMPOSE_DOCKER_CLI_BUILD=1
 
 PATH="/usr/local/bin:$PATH"
 PATH=/home/chasbob/bin:$PATH
-export FPATH=$HOME/.zfuncs:$FPATH
+export FPATH=$HOME/.zfunc:$FPATH
 export PATH=$DOTDIR/bin:$PATH
 
 export MAKEFLAGS="-j`nproc`"
