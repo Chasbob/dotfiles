@@ -1,15 +1,12 @@
 [user]
 	name = Charles de Freitas
-	email = me@chasbob.dev
-	signingKey = 4166401A
+	email = cdf@risq.uk
 
 [core]
 	pager = delta --plus-color="#012800" --minus-color="#340001" --theme='Monokai Extended'
 
 [interactive]
 	diffFilter = delta --color-only
-[commit]
-	gpgsign = true
   template = ~/.config/git/message
 [pull]
 	ff = only
