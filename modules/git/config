@@ -3,12 +3,28 @@
 	email = cdf@risq.uk
 
 [core]
-	pager = delta --plus-color="#012800" --minus-color="#340001" --theme='Monokai Extended'
+	pager = delta
 
 [interactive]
-	diffFilter = delta --color-only
-  template = ~/.config/git/message
+    diffFilter = delta --color-only
+    template = ~/.config/git/message
+
+[delta]
+    navigate = true  # use n and N to move between diff sections
+
+[merge]
+    conflictstyle = diff3
+
+[diff]
+    colorMoved = default
+
 [pull]
 	ff = only
 [init]
 	defaultBranch = main
+
+[url "ssh://git@github.com/"]
+	insteadOf = https://github.com/
+
+[alias]
+	tldr = show --stat --oneline
