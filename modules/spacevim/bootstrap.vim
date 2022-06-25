@@ -4,6 +4,7 @@ function! bootstrap#after() abort
   \}
   let g:ale_lint_on_text_changed = 'never'
   let g:ale_linters_explicit = 1
+  let g:ale_fix_on_save = 1
   
   " let g:yaml_limit_spell = 1
   if exists('g:spacevim_guifont') && !empty(g:spacevim_guifont)
@@ -14,7 +15,7 @@ function! bootstrap#after() abort
   " neomake
   let g:neomake_javascript_jsx_enabled_makers = ['eslint']
   let g:neomake_javascript_eslint_exe = $PWD .'/node_modules/.bin/eslint'
-  " let g:python3_host_prog = '/usr/bin/python3'
+  " let g:python3_host_prog = '/home/cfreitas/.SpaceVim.d/venv/bin/python'
 
   """"""""
   " vimtex
@@ -86,30 +87,17 @@ function! bootstrap#before() abort
   set secure
   set timeoutlen=400
 
-  let g:coc_global_extensions = [
-        \'coc-json',
-        \'coc-git',
-        \'coc-prettier',
-        \'coc-css',
-        \'coc-jedi',
-        \'coc-html',
-        \'coc-snippets',
-        \'coc-ultisnips',
-        \'coc-vimtex',
-        \'coc-docker',
-        \'coc-go',
-        \'coc-java']
-
   call SpaceVim#custom#SPCGroupName(['k'], '+Mine')
   call SpaceVim#custom#SPC('nore', ['k', 'f'], 'normal gqip', 'format para', 1)
   nmap <silent> <leader>sb ysis*gvS*
 
+  " let g:python3_host_prog = '~/.SpaceVim.d/venv/bin/python'
   let g:neoformat_python_black = {
     \ 'exe': 'black',
     \ 'stdin': 1,
     \ 'args': ['-q', '-'],
     \ }
-  let g:neoformat_enabled_python = ['black', 'autoflake']
+  " let g:neoformat_enabled_python = ['black', 'autoflake']
 
 
 

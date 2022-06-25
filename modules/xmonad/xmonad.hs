@@ -97,7 +97,9 @@ myTerminal :: String
 myTerminal = "kitty"   -- Sets default terminal
 
 myBrowser :: String
-myBrowser = "firefox-developer-edition -- "               
+-- myBrowser = "firefox-developer-edition -- "
+myBrowser = "firefox -- "
+-- myBrowser = "brave -- "
 -- myBrowser = myTerminal ++ " -e lynx " -- Sets lynx as browser for tree select
 
 myEditor :: String
@@ -126,16 +128,17 @@ myStartupHook = do
           spawnOnce "nm-applet &"
           spawnOnce "blueman-applet &"
           spawnOnce "pcmanfm -d &"
-          -- spawnOnce "xrandr --output DP-1 --primary --right-of HDMI-1"
-          spawnOnce "xrandr --output DP-3 --auto -d :0"
-          -- spawnOnce "xrandr --output DP-1 --mode 2560x1440 --primary --right-of HDMI-1"
-          -- spawnOnce "xrandr --output DP-1 --mode 2560x1440"
+          spawnOnce "xrandr --output DP-3 --primary --auto --right-of HDMI-1 --output HDMI-2 --right-of DP-3"
           spawnOnce "xsetroot -cursor_name left_ptr"
           spawnOnce "volumeicon &"
           spawnOnce "trayer --edge top --align right --widthtype request --padding 6 --SetDockType true --SetPartialStrut true --expand true --monitor 1 --transparent true --alpha 0 --tint 0x282c34  --height 20 &"
           spawnOnce "/usr/bin/emacs --daemon &" -- emacs daemon for the emacsclient
           spawnOnce "conky -c $HOME/.config/conky/xmonad.conkyrc &>/dev/null"
           spawnOnce "~/.config/conky/now-clocking/start.sh"
+          spawnOnce "slack"
+          spawnOnce "pavucontrol"
+          spawnOnce "easyeffects"
+          spawnOnce "blueman-manager"
           -- spawnOnce "conky -c $HOME/.config/conky/now-clocking/conky/np.lua &>/dev/null"
           -- spawnOnce "conky -c $HOME/.config/conky/now-clocking/conky/npart.lua &>/dev/null"
           setWMName "LG3D"
@@ -404,9 +407,10 @@ myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm
                  w = 0.4
                  t = 0.45 -h
                  l = 0.45 -w
-    spawnConky  = "conky -c $HOME/.config/conky/scratchpad.conkyrc" 
-    findConky   = title =? "conky-scratchpad"
+    spawnConky  = "zsh -li -c 'conky -c $HOME/.config/conky/xmonad.conkyrc &>/dev/null'" 
+    findConky   = title =? "Conky"
     manageConky = defaultFloating
+
     spawnFirefox  = "firefox -P scratchpad --class scratchpad" 
     findFirefox   = className =? "scratchpad"
     manageFirefox = customFloating $ W.RationalRect l t w h
@@ -479,13 +483,13 @@ threeCol = renamed [Replace "threeCol"]
            $ limitWindows 7
            $ mySpacing 8
            $ ThreeColMid 1 (3/100) (1/2)
-threeCol2 = renamed [Replace "threeCol2"]
-           $ windowNavigation
-           $ addTabs shrinkText myTabTheme
-           $ subLayout [] (smartBorders Simplest)
-           $ limitWindows 7
-           $ mySpacing 8
-           $ ThreeColMid 2 (3/100) (1/2)
+-- threeCol2 = renamed [Replace "threeCol2"]
+           -- $ windowNavigation
+           -- $ addTabs shrinkText myTabTheme
+           -- $ subLayout [] (smartBorders Simplest)
+           -- $ limitWindows 7
+           -- $ mySpacing 8
+           -- $ ThreeColMid 2 (3/100) (1/2)
 -- this is very much setup for my ultrawide display and for having space for floats and conky windows
 myGaps   = renamed [Replace "gaps"]
            $ windowNavigation
@@ -546,19 +550,19 @@ myLayoutHook = avoidStruts $ mouseResize $ windowArrange
                $ T.toggleLayouts monocle
                $ myDefaultLayout
              where
-               myDefaultLayout =     threeCol
-                                 ||| threeCol2
+               myDefaultLayout =     myMultCol
+                                 -- ||| threeCol2
                                  -- ||| gapsAcc
                                  -- ||| myGaps
                                  -- ||| tall
                                  -- ||| columns
-                                 ||| myMultCol
+                                 ||| threeCol
                                  ||| grid
                                  -- ||| threeRow
                                  ||| wideAccordion
 
-myWorkspaces = [" 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 ", " 8 ", " 9 "]
--- myWorkspaces = [" dev ", " www ", " sys ", " doc ", " vbox ", " chat ", " mus ", " vid ", " mail "]
+-- myWorkspaces = [" 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 ", " 8 ", " 9 "]
+myWorkspaces = [" 1 dev ", " 2 slack ", " 3 sys ", " 4 doc ", " 5 vbox ", " 6 chat ", " 7 mus ", " 8 vid ", " 9 audio "]
 -- myWorkspaces = [" dev ", " www ", " chat ", " mus ", " mail ", " sys "]
 myWorkspaceIndices = M.fromList $ zipWith (,) myWorkspaces [1..] -- (,) == \x y -> (x,y)
 
@@ -569,8 +573,11 @@ myManageHook :: XMonad.Query (Data.Monoid.Endo WindowSet)
 myManageHook = composeAll
      [ className =? "mpv"     --> doShift ( myWorkspaces !! 7 )
      , className =? "Gimp"    --> doShift ( myWorkspaces !! 8 )
-     , className =? "EasyEffects"    --> doShift ( myWorkspaces !! 8 )
-     , className =? "Volume Control"    --> doShift ( myWorkspaces !! 8 )
+     , className =? "easyeffects"    --> doShift ( myWorkspaces !! 8 )
+     -- , className =? "Volume Control"    --> doShift ( myWorkspaces !! 8 )
+     , className =? "Pavucontrol"    --> doShift ( myWorkspaces !! 8 )
+     , className =? "Blueman-manager"    --> doShift ( myWorkspaces !! 8 )
+     , className =? "Slack"    --> doShift ( myWorkspaces !! 1 )
      -- , className =? "Spotify"     --> doFloat
      , className =? "Gimp"    --> doFloat
      , title =? "Oracle VM VirtualBox Manager"     --> doFloat
@@ -598,6 +605,7 @@ myKeys =
 
     -- Useful programs to have a keybinding for launch
         , ("M-<Return>", spawn (myTerminal ++ " -e zsh"))
+        , ("M-e", spawn (myEditor))
         , ("M-b", spawn (myBrowser))
         , ("M-C-p", spawn ("dmproject"))
         , ("M-C-n", spawn ("dm-note"))
@@ -703,8 +711,10 @@ myKeys =
         , ("M3-<XF86AudioLowerVolume>", spawn "v4l2-ctl -d /dev/video0 -c zoom_absolute=\"$(v4l2-ctl -d /dev/video0 -C zoom_absolute|awk '{sum = $2 - 5; print sum}')\"")
         , ("M3-<XF86AudioRaiseVolume>", spawn "v4l2-ctl -d /dev/video0 -c zoom_absolute=\"$(v4l2-ctl -d /dev/video0 -C zoom_absolute|awk '{sum = $2 + 5; print sum}')\"")
     -- Screenshots
-        , ("M-C-4", spawn "maim -s | xclip -selection clipboard -t image/png")
-        , ("M-C-3", spawn "maim -st 9999999 | convert - \'(' +clone -background black -shadow 80x3+5+5 \')' +swap -background none -layers merge +repage | xclip -selection clipboard -t image/png")
+        -- , ("M-C-1", spawn "maim --window $(xdotool getactivewindow) | xclip -selection clipboard -t image/png")
+        , ("M-C-1", spawn "maim --hidecursor -t 9999999 --window $(xdotool getactivewindow) | convert - \'(' +clone -background black -shadow 80x3+5+5 \')' +swap -background none -layers merge +repage - | xclip -selection clipboard -t image/png")
+        , ("M-C-2", spawn "maim --hidecursor -s | convert - \'(' +clone -background black -shadow 80x3+5+5 \')' +swap -background none -layers merge +repage - | xclip -selection clipboard -t image/png")
+        -- , ("M-C-4", spawn "maim -s | xclip -selection clipboard -t image/png")
         ]
     -- Appending search engine prompts to keybindings list.
     -- Look at "search engines" section of this config for values for "k".
@@ -737,9 +747,17 @@ main = do
         , logHook = dynamicLogWithPP $ namedScratchpadFilterOutWorkspacePP $ xmobarPP
               -- the following variables beginning with 'pp' are settings for xmobar.
               { ppOutput = \x -> hPutStrLn xmproc0 x                          -- xmobar on monitor 1
-              , ppCurrent = xmobarColor "#98be65" "" . wrap "[" "]"           -- Current workspace
-              , ppVisible = xmobarColor "#98be65" ""              -- Visible but not current workspace
-              , ppHidden = xmobarColor "#82AAFF" "" . wrap "*" "" -- Hidden workspaces
+              -- , ppCurrent = xmobarColor "#98be65" "" . wrap "[" "]"           -- Current workspace
+              , ppCurrent = xmobarColor "#98be65" "" . wrap "<box type=Bottom width=2 mb=2 color=#98be65>" "</box>"         -- Current workspace
+              , ppVisible = xmobarColor "#98be65" "" . clickable              -- Visible but not current workspace
+              -- , ppVisible = xmobarColor "#c792ea" "" . clickable              -- Visible but not current workspace
+
+              -- , ppHidden = xmobarColor "#82AAFF" "" . wrap "*" "" -- Hidden workspaces
+              , ppHidden = xmobarColor "#82AAFF" "" . wrap "<box type=Bottom width=2 mt=2 color=#82AAFF>" "</box>" . clickable -- Hidden workspaces
+              , ppHiddenNoWindows = xmobarColor "#c792ea" "" . clickable       -- Hidden workspaces (no windows)
+              -- , ppCurrent = xmobarColor "#98be65" "" . wrap "[" "]"           -- Current workspace
+              -- , ppVisible = xmobarColor "#98be65" "" . clickable              -- Visible but not current workspace
+              -- , ppHidden = xmobarColor "#82AAFF" "" . wrap "*" "" -- Hidden workspaces
               -- , ppHiddenNoWindows = xmobarColor "#c792ea" ""       -- Hidden workspaces (no windows)
               , ppTitle = xmobarColor "#b3afc2" "" . shorten 60               -- Title of active window
               , ppSep =  "<fc=#666666> <fn=1>|</fn> </fc>"                    -- Separator character

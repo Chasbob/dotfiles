@@ -56,7 +56,7 @@ alias dots='pushd $DOTDIR/'
 alias zdots='pushd $ZDOTDIR'
 alias gs='git status'
 alias lspath='echo "$PATH" | tr ":" "\n"'
-alias lsfpath='echo "$fpath" | tr " " "\n"'
+alias lsfpath='echo "$FPATH" | tr ":" "\n"'
 
 
 alias fce='emoji::emoji_get|pbc'
@@ -75,17 +75,19 @@ alias cll='clear && ll'
 alias l.='ls -a .*'
 
 alias nsl='nslookup'
-alias cdt='pushd $(mktemp -d)'
+alias cdt='mkdir -p "/tmp/$(id -u)" && pushd $(mktemp -p "/tmp/$(id -u)" -d)'
 
 alias dps="docker ps --format='table | {{.ID}} ~ {{.Names}} |'"
 alias dpsi="docker inspect --format='| {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}} |'"
 alias dpsp="docker ps --format='table | {{.ID}} ~ {{.Names}} ~ {{ .Ports }} |'"
 alias dstop="docker ps -aq | xargs docker stop"
 
+(( ${+commands[docker-compose]} )) && dccmd='docker-compose' || dccmd='docker compose'
+
 if [ $+commands[yh] ]; then
-  alias dcc="docker-compose config | yh"
+  alias dcc="$dccmd config | yh"
 else
-  alias dcc="docker-compose config"
+  alias dcc="$dccmd config"
 fi
 
 alias dm='docker-machine'
@@ -95,10 +97,4 @@ alias restart-dns-macos='sudo killall -HUP mDNSResponder;sudo killall mDNSRespon
 
 alias icat="kitty +kitten icat"
 
-# alias ...='../..'
-# alias ....='../../..'
-# alias .....='../../../..'
-# alias ......='../../../../..'
-# alias .......='../../../../../..'
-# alias ........='../../../../../../..'
-#
+alias dh='dirs -v'

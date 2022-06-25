@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+TS_1="$(echo $1 | awk -F':' '{print $1}')"
+TS_1_ID="$(echo $1 | awk -F':' '{print $2}')"
+
+TS_2="$(echo $2 | awk -F':' '{print $1}')"
+TS_2_ID="$(echo $2 | awk -F':' '{print $2}')"
+
+DIFF_PATH="${3:-environment.d/*}"
+
+set -x
+diff -u <(ssh $TS_1 "cat /srv/hydrogen_$TS_1_ID/$DIFF_PATH" | grep -E -v '^#' | sort) <(ssh $TS_2 "cat /srv/hydrogen_$TS_2_ID/$DIFF_PATH" | grep -E -v '^#' | sort) | delta --side-by-side

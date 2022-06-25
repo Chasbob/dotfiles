@@ -1,0 +1,10 @@
+#!/bin/bash
+
+URL='https://jenkins-2.risq.uk'
+
+for var in "$@"
+do
+  URL=$URL/job/$var
+done
+
+open "$URL"

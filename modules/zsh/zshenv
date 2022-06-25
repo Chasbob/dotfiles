@@ -37,7 +37,7 @@ export FZF_DEFAULT_COMMAND='fd --type=file --hidden --follow --exclude=.git'
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 # export ZSH_AUTOSUGGEST_STRATEGY=(completion)
 # export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
-export ZSH_AUTOSUGGEST_USE_ASYNC=yee
+# export ZSH_AUTOSUGGEST_USE_ASYNC=yee
 
 export COMPOSE_DOCKER_CLI_BUILD=1
 
@@ -47,10 +47,10 @@ export COMPOSE_DOCKER_CLI_BUILD=1
 
 PATH="/usr/local/bin:$PATH"
 PATH=/home/chasbob/bin:$PATH
-export FPATH=$HOME/.zfunc:$FPATH
+# export FPATH=$HOME/.zfunc:$FPATH
 export PATH=$DOTDIR/bin:$PATH
 
-export MAKEFLAGS="-j`nproc`"
+# export MAKEFLAGS="-j`nproc`"
 
 # export SPACEVIMDIR=$XDG_CONFIG_HOME/spacevim
 
@@ -77,3 +77,10 @@ export EMOJI_CLI_USE_EMOJI=true
 # export DOCKER_HOST=unix:///run/user/1000/docker.sock
 
 export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
+
+
+export DIRSTACKSIZE=8
+export POWERLEVEL9K_TERM_SHELL_INTEGRATION=true
+# which firefox-developer-edition && alias firefox=firefox-developer-edition
+alias assume="source assume"
+

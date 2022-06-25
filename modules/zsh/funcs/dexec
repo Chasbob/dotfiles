@@ -1,0 +1,1 @@
+docker run --rm -ti -v $PWD:$PWD --workdir=$PWD $1 bash

@@ -1,0 +1,3 @@
+function assume-web() {
+  nohup assume -c "$1" 
+}

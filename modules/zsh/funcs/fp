@@ -3,9 +3,9 @@
 # list directories in $PATH, press [enter] on an entry to list the executables inside.
 # press [escape] to go back to directory listing, [escape] twice to exit completely
 
-local loc=$(echo $PATH | sed -e $'s/:/\\\n/g' | eval "fzf ${FZF_DEFAULT_OPTS} --header='[find:path]'")
+# local loc=$(echo $PATH | sed -e $'s/:/\\\n/g' | eval "fzf ${FZF_DEFAULT_OPTS} --header='[find:path]'")
+echo $PATH | sed -e 's/:/\n/g' | xargs ls -1 2>/dev/null | sort | uniq | eval "fzf ${FZF_DEFAULT_OPTS} --header='[find:path]' --preview 'which {}'" >/dev/null | xargs which
 
-if [[ -d $loc ]]; then
-  echo "$(rg --files $loc | rev | cut -d"/" -f1 | rev)" | eval "fzf ${FZF_DEFAULT_OPTS} --header='[find:exe] => ${loc}' >/dev/null"
-  fp
-fi
+# if [[ -d $loc ]]; then
+  # echo "$(rg --files $loc | rev | cut -d"/" -f1 | rev)" | eval "fzf ${FZF_DEFAULT_OPTS} --header='[find:exe] => ${loc}' >/dev/null"
+# fi

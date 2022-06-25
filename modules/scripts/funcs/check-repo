@@ -1,0 +1,26 @@
+#!/bin/bash
+
+
+
+# DOT_GIT=$1
+# REPO=$(dirname $DOT_GIT)
+REPO=$1
+
+function die() {
+  echo "[die] '$REPO' $1"
+  exit 1
+}
+
+GIT_CMD="git -C $REPO"
+git -C $REPO remote update >/dev/null 2>&1 || die "has no remote"
+
+$GIT_CMD rev-parse HEAD >/dev/null 2>&1 || die "has no HEAD"
+HEAD="$($GIT_CMD rev-parse HEAD)"
+$GIT_CMD rev-parse @{u} >/dev/null 2>&1 || die "has no upstream branch"
+REMOTE_HEAD="$($GIT_CMD rev-parse @{u})"
+if [[ "$HEAD" != "$REMOTE_HEAD" ]]; then
+$GIT_CMD merge-base --is-ancestor $HEAD $REMOTE_HEAD || die "IS AHEAD OF REMOTE!"
+fi
+
+$GIT_CMD diff --quiet || die "'$REPO' IS DIRTY"
+$GIT_CMD diff --staged --quiet || die "'$REPO' IS DIRTY"

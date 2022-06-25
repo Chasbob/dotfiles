@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cupd=$(checkupdates | wc -l)
+if (( cupd > 0)); then
+  echo "  $cupd updates "
+fi

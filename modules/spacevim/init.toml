@@ -1,10 +1,9 @@
 [options]
-    autocomplete_method = 'coc'
-    snippet_engine = 'ultisnips'
+    # autocomplete_method = 'coc'
+    # snippet_engine = 'ultisnips'
     lint_engine = 'ale'
 
     colorscheme = 'onedark'
-    # colorscheme = 'bogster'
     colorscheme_bg = 'dark'
 
     guifont = 'JetBrainsMono\ Nerd\ Font\ Mono:h15'
@@ -25,15 +24,16 @@
     filetree_direction = 'left'
 
 
-
 [[layers]]
     name = 'shell'
     default_position = 'bottom'
     default_height = 30
+
 [[layers]]
     name = 'autocomplete'
     auto_completion_return_key_behavior = 'complete'
     auto_completion_tab_key_behavior = 'smart'
+
 [[layers]]
     name = 'colorscheme'
 [[layers]]
@@ -50,18 +50,25 @@
 [[layers]]
     name = 'ui'
 
-# [[layers]]
-    # name = 'incsearch'
-
-
-# [[layers]]
-  # name = 'checkers'
-  # lint_on_the_fly = true
-  # lint_on_save = true
-  # show_cursor_error = true
+[[layers]]
+  name = 'checkers'
+  lint_on_the_fly = true
+  lint_on_save = true
+  show_cursor_error = true
+  lint_engine = 'ale'
 
 [[layers]]
     name = 'lsp'
+    # enabled_clients = ['pyright']
+    filetypes = [
+        'go'
+    ]
+
+[[layers]]
+  name = "format"
+  # format_on_save = true
+
+
 [[layers]]
     name = 'lang#java'
     format_on_save = true
@@ -72,49 +79,52 @@
 
 [[layers]]
     name = 'lang#sh'
+
 [[layers]]
     name = 'lang#go'
+[[custom_plugins]]
+    repo = 'mattn/vim-goimports'
+    merged = false
+
+[[layers]]
+    name = 'lang#groovy'
+
 [[layers]]
     name = 'lang#toml'
-[[layers]]
-    name = 'lang#latex'
-[[layers]]
-    name = 'lang#c'
+
 [[layers]]
   name = 'lang#markdown'
-  enabled_formater = ['prettier']
+  # enabled_formater = ['prettier']
+
 [[layers]]
     name = 'lang#python'
     enable_typeinfo = true
+    python_interpreter = '/usr/bin/python3'
+
 [[layers]]
     name = 'lang#javascript'
     auto_fix = true
     enable_flow_syntax = true
 [[layers]]
     name = 'lang#typescript'
-
-[[custom_plugins]]
-    repo = 'tpope/vim-sleuth'
-    merged = false
-
 [[custom_plugins]]
     repo = 'mxw/vim-jsx'
     merged = false
 
 [[custom_plugins]]
+    repo = 'tpope/vim-sleuth'
+    merged = false
+[[custom_plugins]]
     repo = 'nathanaelkane/vim-indent-guides'
     merged = false
-
 [[custom_plugins]]
     repo = 'folke/todo-comments.nvim'
     merged = false
-
-[[custom_plugins]]
-    repo = 'matze/vim-tex-fold'
-    merged = false
-
 [[custom_plugins]]
     repo = 'Xuyuanp/nerdtree-git-plugin'
+    merged = false
+[[custom_plugins]]
+    repo = 'PhilRunninger/nerdtree-visual-selection'
     merged = false
 
 [[custom_plugins]]
@@ -126,18 +136,6 @@
     merged = false
 
 [[custom_plugins]]
-    repo = 'wojciechkepka/bogster'
-    merged = false
-
-[[custom_plugins]]
-    repo = 'scrooloose/nerdtree-project-plugin'
-    merged = false
-
-[[custom_plugins]]
-    repo = 'PhilRunninger/nerdtree-visual-selection'
-    merged = false
-
-[[custom_plugins]]
     repo = 'liuchengxu/graphviz.vim'
     merged = false
 
@@ -146,22 +144,12 @@
     merged = false
 
 [[custom_plugins]]
-    repo = 'stephpy/vim-yaml'
-    merged = false
-
-[[custom_plugins]]
-    repo = 'bufbuild/vim-buf'
-    merged = false
-
-[[custom_plugins]]
     repo = 'hashivim/vim-hashicorp-tools'
     merged = false
 
-# [[custom_plugins]]
-    # repo = 'hashivim/vim-terraform'
-    # merged = false
-
-
+[[custom_plugins]]
+    repo = 'hashivim/vim-terraform'
+    merged = false
 [[custom_plugins]]
     repo = 'jvirtanen/vim-hcl'
     merged = false
@@ -170,6 +158,6 @@
     repo = 'martinda/Jenkinsfile-vim-syntax'
     merged = false
 
-[[custom_plugins]]
-    repo = 'jupyter-vim/jupyter-vim'
-    merged = false
+# [[custom_plugins]]
+#     repo = 'github/copilot.vim'
+#     merged = false

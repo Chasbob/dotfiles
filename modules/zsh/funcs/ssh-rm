@@ -1,0 +1,6 @@
+LINE=$1
+
+set -x
+HOST=$(sed "${LINE}q;d" ~/.ssh/known_hosts | awk '{print $1}')
+echo $HOST
+ssh-keygen -R $HOST

@@ -23,8 +23,8 @@
 [init]
 	defaultBranch = main
 
-[url "ssh://git@github.com/"]
-	insteadOf = https://github.com/
-
 [alias]
 	tldr = show --stat --oneline
+
+[url "git@github.com:risqcapital"]
+	insteadOf = https://github.com/risqcapital
