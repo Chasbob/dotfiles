@@ -703,8 +703,10 @@ myKeys =
         , ("M3-<XF86AudioLowerVolume>", spawn "v4l2-ctl -d /dev/video0 -c zoom_absolute=\"$(v4l2-ctl -d /dev/video0 -C zoom_absolute|awk '{sum = $2 - 5; print sum}')\"")
         , ("M3-<XF86AudioRaiseVolume>", spawn "v4l2-ctl -d /dev/video0 -c zoom_absolute=\"$(v4l2-ctl -d /dev/video0 -C zoom_absolute|awk '{sum = $2 + 5; print sum}')\"")
     -- Screenshots
-        , ("M-C-4", spawn "maim -s | xclip -selection clipboard -t image/png")
-        , ("M-C-3", spawn "maim -st 9999999 | convert - \'(' +clone -background black -shadow 80x3+5+5 \')' +swap -background none -layers merge +repage | xclip -selection clipboard -t image/png")
+        -- , ("M-C-4", spawn "maim -s | xclip -selection clipboard -t image/png")
+        , ("M-C-1", spawn "maim --hidecursor -t 9999999 --window $(xdotool getactivewindow) | convert - \'(' +clone -background black -shadow 80x3+5+5 \')' +swap -background none -layers merge +repage - | xclip -selection clipboard -t image/png")
+        , ("M-C-2", spawn "maim --hidecursor -s | convert - \'(' +clone -background black -shadow 80x3+5+5 \')' +swap -background none -layers merge +repage - | xclip -selection clipboard -t image/png")
+        -- , ("M-C-3", spawn "maim -st 9999999 | convert - \'(' +clone -background black -shadow 80x3+5+5 \')' +swap -background none -layers merge +repage | xclip -selection clipboard -t image/png")
         ]
     -- Appending search engine prompts to keybindings list.
     -- Look at "search engines" section of this config for values for "k".
