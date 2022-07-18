@@ -556,8 +556,8 @@ myLayoutHook = avoidStruts $ mouseResize $ windowArrange
                                  -- ||| myGaps
                                  -- ||| tall
                                  -- ||| columns
-                                 ||| threeCol
                                  ||| grid
+                                 ||| threeCol
                                  -- ||| threeRow
                                  ||| wideAccordion
 
