@@ -68,8 +68,7 @@ export NeovideMultiGrid='true'
   # export SSH_AUTH_SOCK="$GNOME_SSH_KEYRING"
 # fi
 if [ -n "$DESKTOP_SESSION" ];then
-    eval $(gnome-keyring-daemon --start)
-    export SSH_AUTH_SOCK
+    export SSH_AUTH_SOCK="/run/user/$(id -u)/keyring/ssh"
 fi
 
 export EMOJI_CLI_USE_EMOJI=true
