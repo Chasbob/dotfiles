@@ -1,0 +1,10 @@
+function cdtn() {
+  if [ "$#" -ne 1 ]; then
+    echo "USAGE: cdtn [name]"
+    exit 1
+  fi
+  local tmp_path="/tmp/$USER/$1"
+  mkdir -p "$tmp_path"
+  pushd "$tmp_path"
+
+}

@@ -75,7 +75,7 @@ alias cll='clear && ll'
 alias l.='ls -a .*'
 
 alias nsl='nslookup'
-alias cdt='mkdir -p "/tmp/$(id -u)" && pushd $(mktemp -p "/tmp/$(id -u)" -d)'
+alias cdt='mkdir -p "/tmp/$USER" && pushd "/tmp/$USER"'
 
 alias dps="docker ps --format='table | {{.ID}} ~ {{.Names}} |'"
 alias dpsi="docker inspect --format='| {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}} |'"
@@ -98,3 +98,5 @@ alias restart-dns-macos='sudo killall -HUP mDNSResponder;sudo killall mDNSRespon
 alias icat="kitty +kitten icat"
 
 alias dh='dirs -v'
+
+alias zrecomp='rm ~/.cache/.zcompdump; zi compinit'
