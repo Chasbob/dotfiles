@@ -7,6 +7,7 @@
 .direnv
 .env
 .envrc
+.envrc.private
 
 ### VS Code
 .vscode
