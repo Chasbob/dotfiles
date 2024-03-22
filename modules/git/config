@@ -1,9 +1,22 @@
+[gpg]
+  format = ssh
+
+[gpg "ssh"]
+  program = "/opt/1Password/op-ssh-sign"
+  allowedSignersFile = ~/.config/git/allowed_signers
+
+[commit]
+  gpgsign = true
+
 [user]
-	name = Charles de Freitas
-	email = cdf@risq.uk
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIj/9puR4Q8kgLJsG0UHxaxljVubUD/PjaDOYZM8s4b5
+  name  = Charles de Freitas
+  email = charles.defreitas@risqcapital.com
 
 [core]
 	pager = delta
+	excludesfile = ~/.config/git/ignore
+	autocrlf = input
 
 [interactive]
     diffFilter = delta --color-only
@@ -26,5 +39,19 @@
 [alias]
 	tldr = show --stat --oneline
 
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
 [url "git@github.com:risqcapital"]
 	insteadOf = https://github.com/risqcapital
+[credential "https://gitlab.com"]
+	helper = 
+	helper = !/usr/bin/glab auth git-credential
