@@ -1,0 +1,6 @@
+[submodule "modules/kitty/kitten-search"]
+	path = modules/kitty/kitten-search
+	url = ../../trygveaa/kitty-kitten-search
+[submodule "modules/kitty/navigator"]
+	path = modules/kitty/navigator
+	url = ../../knubie/vim-kitty-navigator
