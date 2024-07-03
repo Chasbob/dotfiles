@@ -122,14 +122,11 @@ zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
 FPATH=$HOME/.zfunc:$FPATH
 # Setup PATH
 PATH="$PATH:$FORGIT_INSTALL_DIR/bin"
-PATH=$HOME/.SpaceVim/bin:$PATH
-PATH=$HOME/.emacs.d/bin:$PATH
-PATH=$HOME/.local/bin:$PATH
-PATH=$HOME/.local/work-bin:$PATH
-PATH=$HOME/.poetry/bin:$PATH
-PATH=$HOME/.yarn/bin:$PATH
+PATH=$ZDOTDIR/bin:$PATH
 PATH=$HOME/go/bin:$PATH
-PATH=/usr/bin/vendor_perl:$PATH
+# Append this so that system pipx gets used in toolbox containers
+PATH=$PATH:$HOME/.local/bin
+PATH=$PATH:$HOME/.local/share/JetBrains/Toolbox/scripts
 
 if [[ $OSTYPE == darwin* ]]; then
   PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"

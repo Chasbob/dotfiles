@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -eu
+ec2_query='Reservations[].Instances[].{InstanceId:InstanceId,NAME:Tags[?Key==`Name`].Value[]|[0],IP:NetworkInterfaces[].PrivateIpAddresses[].PrivateIpAddress[]|[0]}'
+ec2_filter='Name=instance-state-name,Values=[running]'
+ssm_filter='InstanceInformationList[].{InstanceId:InstanceId,NAME:ComputerName,IP:IPAddress}'
+regions="eu-west-1 eu-central-1 eu-west-2 us-east-2 eu-north-1 us-west-2 ap-southeast-2 ap-northeast-1"
+region=${AWS_REGION:-$(echo $regions | tr ' ' '\n' | fzf)}
+profile=${AWS_PROFILE:-$(aws configure list-profiles | fzf)}
+search_cmd="aws --region $region --profile $profile ec2 describe-instances --filters '$ec2_filter' --query '$ec2_query' --output json;aws --region $region --profile $profile ssm describe-instance-information --query '$ssm_filter' --output json"
+if [ "$#" -eq 1 ]; then
+  target="$1"
+elif [ "$#" -eq 0 ]; then
+  target="$(eval $search_cmd | jq -c '.[]' | fzf | jq .InstanceId -r)"
+fi
+set -x
+aws --region $region --profile $profile ssm start-session --target $target
