@@ -58,20 +58,16 @@
   lint_engine = 'ale'
 
 [[layers]]
-    name = 'lsp'
-    # enabled_clients = ['pyright']
-    filetypes = [
-        'go'
-    ]
-
-[[layers]]
   name = "format"
   # format_on_save = true
 
 
 [[layers]]
+  name = "lang#cmake"
+
+[[layers]]
     name = 'lang#java'
-    format_on_save = true
+    format_on_save = false
     java_formatter_jar = '/usr/share/java/google-java-format/google-java-format.jar'
 
 [[layers]]
@@ -158,6 +154,30 @@
     repo = 'martinda/Jenkinsfile-vim-syntax'
     merged = false
 
+[[custom_plugins]]
+    repo = 'cdelledonne/vim-cmake'
+    merged = false
+
+[[custom_plugins]]
+    repo = 'sheerun/vim-polyglot'
+    merged = false
+
+[[custom_plugins]]
+    repo = 'ckipp01/nvim-jenkinsfile-linter'
+    merged = false
+
+[[custom_plugins]]
+    repo = 'nvim-lua/plenary.nvim'
+    merged = false
+
 # [[custom_plugins]]
 #     repo = 'github/copilot.vim'
 #     merged = false
+#
+# [[custom_plugins]]
+#     repo = 'github/copilot.vim'
+#     merged = false
+
+[[custom_plugins]]
+    repo = 'knubie/vim-kitty-navigator'
+    merged = false
