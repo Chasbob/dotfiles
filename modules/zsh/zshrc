@@ -61,8 +61,14 @@ zinit depth=1 lucid nocd \
 zinit load wfxr/forgit
 zinit lucid atload'_zsh_autosuggest_start;' for zsh-users/zsh-autosuggestions
 zinit lucid atinit'ZINIT[COMPINIT_OPTS]=-C; zpcompinit; zpcdreplay;' for zdharma-continuum/fast-syntax-highlighting
-zinit lucid pick'/dev/null' for zsh-users/zsh-completions
+zi for \
+    atload"zicompinit; zicdreplay" \
+    blockf \
+    lucid \
+    wait \
+  zsh-users/zsh-completions
 zinit lucid bindmap'^R -> ^F' atinit'zstyle :history-search-multi-word page-size 7;' for zdharma-continuum/history-search-multi-word
+zinit light zdharma-continuum/zinit-annex-bin-gem-node
 
 # zinit for b4b4r07/emoji-cli
 
@@ -83,6 +89,27 @@ zinit from"gh-r" as"program" mv"direnv* -> direnv" \
     pick"direnv" src="zhook.zsh" for \
         direnv/direnv
 
+# All of the above using the for-syntax and also z-a-bin-gem-node annex
+zinit wait"1" lucid from"gh-r" for \
+     sbin"fzf"          junegunn/fzf-bin \
+     mv"**/fd -> fd" sbin"fd"     @sharkdp/fd \
+     mv"**/bat -> bat" sbin"bat"  @sharkdp/bat \
+     mv"**/eza -> eza" sbin"eza"  eza-community/eza
+
+
+zinit ice as"program" pick"yank" make
+zinit light mptre/yank
+
+# fzf-marks
+zinit ice wait lucid
+zinit load urbainvaes/fzf-marks
+
+zinit ice wait lucid
+zinit load hlissner/zsh-autopair
+
+zinit ice wait lucid
+zinit load redxtech/zsh-asdf-direnv
+
 ### asdf-vm
 zinit lucid as"null" \
     from"github" src"asdf.sh" as"program" for \
@@ -90,10 +117,10 @@ zinit lucid as"null" \
 
 # Source plugin specific scripts
 
-zinit wait lucid has"java" \
-      if"[ -f $ASDF_DATA_DIR/plugins/java/set-java-home.zsh ]" \
-      atinit"source $ASDF_DATA_DIR/plugins/java/set-java-home.zsh" for \
-        id-as"asdf-vm/java-home" zdharma-continuum/null
+# zinit wait lucid has"java" has"asdf" \
+#       if"[ -f $ASDF_DATA_DIR/plugins/java/set-java-home.zsh ]" \
+#       atinit"source $ASDF_DATA_DIR/plugins/java/set-java-home.zsh" for \
+#         id-as"asdf-vm/java-home" zdharma-continuum/null
 
 # - - - - - - - - - - - - - - - - - - - -
 # Completions
@@ -110,14 +137,8 @@ zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
     as"completion" \
       OMZP::docker-compose/_docker-compose \
     has"gradle" \
-      OMZP::gradle \
-    OMZP::colored-man-pages
-    # as"completion" mv"completions/zsh/_exa -> _exa" id-as"ogham/exa-comp" \
-      # ogham/exa \
+      OMZP::gradle
 
-    # as"completion" mv"autocompletion/autocomplete.zsh -> _tldr" id-as"mstruebing/tldr-comp" \
-      # mstruebing/tldr
-# zinit add-fpath -f $HOME/.zfunc
 
 FPATH=$HOME/.zfunc:$FPATH
 # Setup PATH
@@ -133,8 +154,6 @@ if [[ $OSTYPE == darwin* ]]; then
 fi
 
 export PATH
-
-# export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 
 source "$ZDOTDIR/aliases"
 source "$ZDOTDIR/bindkeys"
@@ -161,9 +180,16 @@ autoload -Uz add-zsh-hook
 add-zsh-hook precmd myprmptcmd
 export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>|'
 
+which aws_completer >/dev/null 2>&1 && complete -C "$(which aws_completer)" aws
+
 autoload bashcompinit && bashcompinit
-autoload -Uz compinit && compinit
+autoload -Uz compinit
+compinit
+zinit cdreplay -q
 
-which aws_completer >/dev/null 2>&1 && complete -C '/usr/bin/aws_completer' aws
 
-source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc"
+
+# To customize prompt, run `p10k configure` or edit ~/.config/zsh/p10k.zsh.
+[[ ! -f ~/.config/zsh/p10k.zsh ]] || source ~/.config/zsh/p10k.zsh
+
+export TERM=xterm-256color

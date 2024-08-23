@@ -6,11 +6,15 @@ ssm_filter='InstanceInformationList[].{InstanceId:InstanceId,NAME:ComputerName,I
 regions="eu-west-1 eu-central-1 eu-west-2 us-east-2 eu-north-1 us-west-2 ap-southeast-2 ap-northeast-1"
 region=${AWS_REGION:-$(echo $regions | tr ' ' '\n' | fzf)}
 profile=${AWS_PROFILE:-$(aws configure list-profiles | fzf)}
-search_cmd="aws --region $region --profile $profile ec2 describe-instances --filters '$ec2_filter' --query '$ec2_query' --output json;aws --region $region --profile $profile ssm describe-instance-information --query '$ssm_filter' --output json"
+ec2_search="aws --region $region --profile $profile ec2 describe-instances --filters '$ec2_filter' --query '$ec2_query' --output json"
+ssm_search="aws --region $region --profile $profile ssm describe-instance-information --query '$ssm_filter' --output json"
+search_cmd="$ec2_search ; $ssm_search"
 if [ "$#" -eq 1 ]; then
   target="$1"
 elif [ "$#" -eq 0 ]; then
-  target="$(eval $search_cmd | jq -c '.[]' | fzf | jq .InstanceId -r)"
+  target="$(eval $search_cmd | jq -c '.[]' | fzf | jq -r -c)"
 fi
+echo "${target}" | jq
+target_id="$(echo $target | jq -r .InstanceId)"
 set -x
-aws --region $region --profile $profile ssm start-session --target $target
+aws --region $region --profile $profile ssm start-session --target $target_id

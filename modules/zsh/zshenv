@@ -1,7 +1,5 @@
 #!/bin/bash
 
-export DEFAULT_USER=chasbob
-
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
@@ -12,7 +10,6 @@ export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgreprc"
 
 # export HISTORY_IGNORE="(ls|cd|pwd|exit|sudo reboot|history|cd -|cd ..)"
 export HISTORY_SUBSTRING_SEARCH_PREFIXED='yes'
-export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 
 export ZSH_CACHE_DIR="$XDG_CACHE_HOME/zsh"
@@ -22,8 +19,6 @@ export GPG_TTY="$(tty)"
 
 export STEPPATH="$XDG_CONFIG_HOME/step"
 
-export LC_ALL="en_GB.UTF-8"
-export LANG="en_GB.UTF-8"
 export TERM=xterm-256color
 
 export EDITOR="nvim"
@@ -35,25 +30,10 @@ export FZF_DEFAULT_OPTS='--layout=reverse --border --inline-info --height=80%'
 export FZF_DEFAULT_COMMAND='fd --type=file --hidden --follow --exclude=.git'
 
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-# export ZSH_AUTOSUGGEST_STRATEGY=(completion)
-# export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
-# export ZSH_AUTOSUGGEST_USE_ASYNC=yee
 
 export COMPOSE_DOCKER_CLI_BUILD=1
 
 export ASDF_DATA_DIR=$XDG_CONFIG_HOME/asdf
-
-export COMPOSE_DOCKER_CLI_BUILD=1
-
-PATH="/usr/local/bin:$PATH"
-PATH=/home/chasbob/bin:$PATH
-# export FPATH=$HOME/.zfunc:$FPATH
-export PATH=$DOTDIR/bin:$PATH
-
-# export MAKEFLAGS="-j`nproc`"
-
-# export SPACEVIMDIR=$XDG_CONFIG_HOME/spacevim
-
 
 export JAVA_HOME=/usr/lib/jvm/default
 export JDK_HOME=/usr/lib/jvm/default
@@ -63,23 +43,17 @@ export QT_QPA_PLATFORMTHEME=qt5ct
 export KUBECONFIG=$XDG_CONFIG_HOME/kube/kube.config
 export NeovideMultiGrid='true'
 
-# export GNOME_SSH_KEYRING="/run/user/$(id -u)/keyring/ssh"
-# if [ -S "$GNOME_SSH_KEYRING" ]; then
-  # export SSH_AUTH_SOCK="$GNOME_SSH_KEYRING"
-# fi
-if [ -n "$DESKTOP_SESSION" ];then
-    export SSH_AUTH_SOCK="/run/user/$(id -u)/keyring/ssh"
-fi
+export SSH_AUTH_SOCK="$HOME/.1password/agent.sock"
 
 export EMOJI_CLI_USE_EMOJI=true
 
-# export DOCKER_HOST=unix:///run/user/1000/docker.sock
-
 export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
-
 
 export DIRSTACKSIZE=8
 export POWERLEVEL9K_TERM_SHELL_INTEGRATION=true
-# which firefox-developer-edition && alias firefox=firefox-developer-edition
-alias assume="source assume"
 
+export DIRENV_LOG_FORMAT=
+export skip_global_compinit=1
+
+export AWS_EC2_METADATA_DISABLED=true
+export AWS_EC2_METADATA_V1_DISABLED=true

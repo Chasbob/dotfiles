@@ -55,19 +55,15 @@ alias wanip='dig @resolver1.opendns.com ANY myip.opendns.com +short'
 alias dots='pushd $DOTDIR/'
 alias zdots='pushd $ZDOTDIR'
 alias gs='git status'
+alias gds='gd --staged'
 alias lspath='echo "$PATH" | tr ":" "\n"'
 alias lsfpath='echo "$FPATH" | tr ":" "\n"'
 
 
 alias fce='emoji::emoji_get|pbc'
 
-# alias ls='exa -al --color=always --group-directories-first' # my preferred listing
-# alias la='exa -a --color=always --group-directories-first'  # all files and dirs
-# alias ll='exa -l --color=always --group-directories-first'  # long format
-# alias lt='exa -aT --color=always --group-directories-first' # tree listing
-
-alias ls='exa --group-directories-first'
-alias la='ls -la --git-ignore'
+alias ls='eza --group-directories-first'
+alias la='ls -la --git-ignore --git'
 alias ll='ls --tree --git-ignore'
 alias laa='ls -la'
 alias lla='ls --tree'
@@ -100,3 +96,11 @@ alias icat="kitty +kitten icat"
 alias dh='dirs -v'
 
 alias zrecomp='rm ~/.cache/.zcompdump; zi compinit'
+
+alias assume="source assume"
+
+alias conan2="pipx run -q --spec 'conan>=2.0.0' conan"
+alias conan1="pipx run -q --spec 'conan<2.0.0' conan"
+
+alias jenkins-asg="source assume ISQ---Internal/admin --cd 'https://eu-west-1.console.aws.amazon.com/ec2/home?region=eu-west-1#AutoScalingGroupDetails:id=jenkins-worker-package;view=instanceManagement'"
+alias credstash="credstash -p ISQ---Internal/admin -r eu-west-1"
