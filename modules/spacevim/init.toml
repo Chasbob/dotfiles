@@ -170,13 +170,9 @@
     repo = 'nvim-lua/plenary.nvim'
     merged = false
 
-# [[custom_plugins]]
-#     repo = 'github/copilot.vim'
-#     merged = false
-#
-# [[custom_plugins]]
-#     repo = 'github/copilot.vim'
-#     merged = false
+[[custom_plugins]]
+    repo = 'tpope/vim-rhubarb'
+    merged = false
 
 [[custom_plugins]]
     repo = 'knubie/vim-kitty-navigator'
