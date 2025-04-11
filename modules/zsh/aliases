@@ -98,8 +98,3 @@ alias dh='dirs -v'
 alias zrecomp='rm ~/.cache/.zcompdump; zi compinit'
 
 alias assume="source assume"
-
-alias conan2="pipx run -q --spec 'conan>=2.0.0' conan"
-alias conan1="pipx run -q --spec 'conan<2.0.0' conan"
-
-alias credstash="credstash -p ISQ---Internal/admin -r eu-west-1"
