@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Function to check for unpushed changes in a specific repository
+check_repo() {
+  local repo_path="$1"
+
+
+  if git -C "$repo_path" log --branches --not --remotes --pretty=format:%h | grep -q . ; then
+    echo "Unpushed commits in $repo_path:"
+    git -C "$repo_path" log --branches --not --remotes --pretty=format:%h
+  fi
+  # Check if the repository is clean
+  if git -C "$repo_path" status --porcelain | grep -q "^[MD]"; then
+    echo "Unpushed changes in $repo_path:"
+    git -C "$repo_path" status --short
+  fi
+
+  # Check for untracked files
+  if git -C "$repo_path" status --porcelain | grep -q "^??"; then
+    echo "Untracked files in $repo_path:"
+    git -C "$repo_path" status --porcelain | grep "^??"
+  fi
+
+}
+
+# Get a list of all Git repositories in the current directory and subdirectories
+repos=$(find . -type d -name ".git" -prune | xargs dirname)
+
+# Iterate through each repository and check for unpushed changes
+for repo in $repos; do
+  check_repo "$repo"
+done

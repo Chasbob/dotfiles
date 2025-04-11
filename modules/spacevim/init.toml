@@ -1,6 +1,4 @@
 [options]
-    # autocomplete_method = 'coc'
-    # snippet_engine = 'ultisnips'
     lint_engine = 'ale'
 
     colorscheme = 'onedark'
@@ -66,18 +64,11 @@
   name = "lang#cmake"
 
 [[layers]]
-    name = 'lang#java'
-    format_on_save = false
-    java_formatter_jar = '/usr/share/java/google-java-format/google-java-format.jar'
-
-[[layers]]
-  name = 'lang#haskell'
-
-[[layers]]
     name = 'lang#sh'
 
 [[layers]]
     name = 'lang#go'
+
 [[custom_plugins]]
     repo = 'mattn/vim-goimports'
     merged = false
@@ -90,7 +81,6 @@
 
 [[layers]]
   name = 'lang#markdown'
-  # enabled_formater = ['prettier']
 
 [[layers]]
     name = 'lang#python'
@@ -99,10 +89,10 @@
 
 [[layers]]
     name = 'lang#javascript'
-    auto_fix = true
-    enable_flow_syntax = true
+
 [[layers]]
     name = 'lang#typescript'
+
 [[custom_plugins]]
     repo = 'mxw/vim-jsx'
     merged = false
@@ -110,15 +100,19 @@
 [[custom_plugins]]
     repo = 'tpope/vim-sleuth'
     merged = false
+
 [[custom_plugins]]
     repo = 'nathanaelkane/vim-indent-guides'
     merged = false
+
 [[custom_plugins]]
     repo = 'folke/todo-comments.nvim'
     merged = false
+
 [[custom_plugins]]
     repo = 'Xuyuanp/nerdtree-git-plugin'
     merged = false
+
 [[custom_plugins]]
     repo = 'PhilRunninger/nerdtree-visual-selection'
     merged = false
@@ -128,42 +122,7 @@
     merged = false
 
 [[custom_plugins]]
-    repo = 'vim-scripts/gitignore'
-    merged = false
-
-[[custom_plugins]]
-    repo = 'liuchengxu/graphviz.vim'
-    merged = false
-
-[[custom_plugins]]
-    repo = 'NoahTheDuke/vim-just'
-    merged = false
-
-[[custom_plugins]]
-    repo = 'hashivim/vim-hashicorp-tools'
-    merged = false
-
-[[custom_plugins]]
-    repo = 'hashivim/vim-terraform'
-    merged = false
-[[custom_plugins]]
-    repo = 'jvirtanen/vim-hcl'
-    merged = false
-
-[[custom_plugins]]
-    repo = 'martinda/Jenkinsfile-vim-syntax'
-    merged = false
-
-[[custom_plugins]]
-    repo = 'cdelledonne/vim-cmake'
-    merged = false
-
-[[custom_plugins]]
     repo = 'sheerun/vim-polyglot'
-    merged = false
-
-[[custom_plugins]]
-    repo = 'ckipp01/nvim-jenkinsfile-linter'
     merged = false
 
 [[custom_plugins]]
@@ -176,4 +135,8 @@
 
 [[custom_plugins]]
     repo = 'knubie/vim-kitty-navigator'
+    merged = false
+
+[[custom_plugins]]
+    repo = 'LhKipp/nvim-nu'
     merged = false

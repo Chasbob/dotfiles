@@ -89,13 +89,26 @@ zinit from"gh-r" as"program" mv"direnv* -> direnv" \
     pick"direnv" src="zhook.zsh" for \
         direnv/direnv
 
+zinit ice atclone"dircolors -b LS_COLORS > clrs.zsh" \
+    atpull'%atclone' pick"clrs.zsh" nocompile'!' \
+    atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”'
+zinit light trapd00r/LS_COLORS
+
+
 # All of the above using the for-syntax and also z-a-bin-gem-node annex
 zinit wait"1" lucid from"gh-r" for \
-     sbin"fzf"          junegunn/fzf-bin \
      mv"**/fd -> fd" sbin"fd"     @sharkdp/fd \
      mv"**/bat -> bat" sbin"bat"  @sharkdp/bat \
      mv"**/eza -> eza" sbin"eza"  eza-community/eza
 
+
+zinit for \
+    as"command" \
+    atclone"cp contrib/fzy-* $ZPFX/bin/" \
+    load \
+    make"!PREFIX=$ZPFX install" \
+    pick"$ZPFX/bin/fzy*" \
+  @jhawthorn/fzy
 
 zinit ice as"program" pick"yank" make
 zinit light mptre/yank
@@ -107,13 +120,9 @@ zinit load urbainvaes/fzf-marks
 zinit ice wait lucid
 zinit load hlissner/zsh-autopair
 
-zinit ice wait lucid
-zinit load redxtech/zsh-asdf-direnv
+zinit wait"1" lucid from"gh-r" for \
+  sbin"asdf" @asdf-vm/asdf
 
-### asdf-vm
-zinit lucid as"null" \
-    from"github" src"asdf.sh" as"program" for \
-    @asdf-vm/asdf
 
 # Source plugin specific scripts
 
@@ -129,15 +138,6 @@ zinit lucid as"null" \
     # OMZP::git-auto-fetch \
     # has"kubectl" \
       # OMZP::kubectl \
-zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
-    has"docker" \
-    as"completion" \
-      OMZP::docker/_docker \
-    OMZP::docker-compose \
-    as"completion" \
-      OMZP::docker-compose/_docker-compose \
-    has"gradle" \
-      OMZP::gradle
 
 
 FPATH=$HOME/.zfunc:$FPATH
@@ -148,6 +148,8 @@ PATH=$HOME/go/bin:$PATH
 # Append this so that system pipx gets used in toolbox containers
 PATH=$PATH:$HOME/.local/bin
 PATH=$PATH:$HOME/.local/share/JetBrains/Toolbox/scripts
+PATH="$HOME/.yarn/bin:$PATH"
+PATH="$ASDF_DATA_DIR/shims:$PATH"
 
 if [[ $OSTYPE == darwin* ]]; then
   PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"

@@ -1,0 +1,35 @@
+tmux-sh() {
+  local session_name="tmux-session-$RANDOM"  # Generate a random session name
+  local command=""
+
+  # Check if any arguments were provided
+  if [ $# -eq 0 ]; then
+    echo "Usage: tmux-sh <command> [args...]"
+    return 1
+  fi
+
+  # Build the command string from all arguments
+  for arg in "$@"; do
+    command+="$arg "
+  done
+  command=$(echo "$command" | xargs) # Trim extra whitespace
+
+  # Create the tmux session and run the command
+  tmux new-session -d -s "$session_name" "$command"
+
+  # Optionally, switch to the new session
+  # tmux switch-client -t "$session_name"  # Uncomment if you want to switch automatically
+
+  echo "Created tmux session '$session_name' and ran command: $command"
+  echo "To attach to the session: tmux attach-session -t $session_name"
+}
+
+# Add the function to your .bashrc or .zshrc
+# For example, in .bashrc:
+# echo 'tmux-sh() { ... }' >> ~/.bashrc
+# source ~/.bashrc
+
+# Example usage:
+# tmux-sh ls -l /tmp
+# tmux-sh "long running command" with "some args"
+# tmux-sh top

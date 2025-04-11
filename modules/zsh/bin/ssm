@@ -10,11 +10,12 @@ ec2_search="aws --region $region --profile $profile ec2 describe-instances --fil
 ssm_search="aws --region $region --profile $profile ssm describe-instance-information --query '$ssm_filter' --output json"
 search_cmd="$ec2_search ; $ssm_search"
 if [ "$#" -eq 1 ]; then
-  target="$1"
+  target_id="$1"
 elif [ "$#" -eq 0 ]; then
   target="$(eval $search_cmd | jq -c '.[]' | fzf | jq -r -c)"
+  echo "${target}" | jq
+  target_id="$(echo $target | jq -r .InstanceId)"
 fi
-echo "${target}" | jq
-target_id="$(echo $target | jq -r .InstanceId)"
-set -x
+echo "aws --region $region --profile $profile ssm start-session --target $target_id"
 aws --region $region --profile $profile ssm start-session --target $target_id
+echo "aws --region $region --profile $profile ssm start-session --target $target_id"

@@ -57,3 +57,6 @@ export skip_global_compinit=1
 
 export AWS_EC2_METADATA_DISABLED=true
 export AWS_EC2_METADATA_V1_DISABLED=true
+
+export TERRAGRUNT_DOWNLOAD="$XDG_CACHE_HOME/terragrunt"
+export TF_PLUGIN_CACHE_DIR="$XDG_CACHE_HOME/terraform.d/plugin-cache"

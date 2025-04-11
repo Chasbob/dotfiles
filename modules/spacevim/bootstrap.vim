@@ -92,7 +92,7 @@ function! bootstrap#before() abort
 
   call SpaceVim#custom#SPCGroupName(['k'], '+Mine')
   call SpaceVim#custom#SPC('nore', ['k', 'f'], 'normal gqip', 'format para', 1)
-  call SpaceVim#custom#SPC('nore', ['g', 'B'], ':GBrowse', 'GBrowse', 1)
+  call SpaceVim#custom#SPC('noremap', ['g', 'B'], ':GBrowse', 'GBrowse', 1)
   nmap <silent> <leader>sb ysis*gvS*
 
   " let g:python3_host_prog = '~/.SpaceVim.d/venv/bin/python'

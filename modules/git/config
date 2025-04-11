@@ -45,16 +45,11 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+
 [credential "https://github.com"]
-	helper = 
 	helper = !/usr/bin/gh auth git-credential
 [credential "https://gist.github.com"]
-	helper = 
 	helper = !/usr/bin/gh auth git-credential
-[url "https://github.com/risqcapital"]
-	insteadOf = git@github.com:risqcapital
-[credential "https://gitlab.com"]
-	helper = 
-	helper = !/usr/bin/glab auth git-credential
+
 [rebase]
 	autoStash = true
