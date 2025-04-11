@@ -80,9 +80,6 @@ function! bootstrap#after() abort
   autocmd FileType make set noexpandtab shiftwidth=2 softtabstop=0
   " autocmd BufWritePre *.md normal gqip
   autocmd BufWritePost *.dot GraphvizCompile
-" require("jenkinsfile_linter").validate()
-  autocmd BufWritePost Jenkinsfile :lua require("jenkinsfile_linter").validate()
-  " autocmd BufWritePost Jenkinsfile !curl -n -X POST -H "$(curl -n 'https://jenkins-2.risq.uk/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,\":\",//crumb)')" -n https://jenkins-2.risq.uk/pipeline-model-converter/validate < %
 endfunction
 
 function! bootstrap#before() abort
