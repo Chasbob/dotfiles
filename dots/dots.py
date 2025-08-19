@@ -33,7 +33,7 @@ def action_list(args):
     """
 
     module_root = Path("modules/")
-    modules = load_modules(module_root, not args.skip_hooks)
+    modules = load_modules(module_root, False)
 
     print("Available modules:")
     for module in modules:
