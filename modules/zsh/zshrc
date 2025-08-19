@@ -80,15 +80,6 @@ zinit lucid for zsh-users/zsh-history-substring-search
 zinit snippet OMZ::lib/completion.zsh
 export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>|'
 
-# - - - - - - - - - - - - - - - - - - - -
-# Tools
-# - - - - - - - - - - - - - - - - - - - -
-
-zinit from"gh-r" as"program" mv"direnv* -> direnv" \
-    atclone'./direnv hook zsh > zhook.zsh' atpull'%atclone' \
-    pick"direnv" src="zhook.zsh" for \
-        direnv/direnv
-
 zinit ice atclone"dircolors -b LS_COLORS > clrs.zsh" \
     atpull'%atclone' pick"clrs.zsh" nocompile'!' \
     atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”'
@@ -120,16 +111,8 @@ zinit load urbainvaes/fzf-marks
 zinit ice wait lucid
 zinit load hlissner/zsh-autopair
 
-zinit wait"1" lucid from"gh-r" for \
-  sbin"asdf" @asdf-vm/asdf
-
 
 # Source plugin specific scripts
-
-# zinit wait lucid has"java" has"asdf" \
-#       if"[ -f $ASDF_DATA_DIR/plugins/java/set-java-home.zsh ]" \
-#       atinit"source $ASDF_DATA_DIR/plugins/java/set-java-home.zsh" for \
-#         id-as"asdf-vm/java-home" zdharma-continuum/null
 
 # - - - - - - - - - - - - - - - - - - - -
 # Completions
@@ -149,7 +132,8 @@ PATH=$HOME/go/bin:$PATH
 PATH=$PATH:$HOME/.local/bin
 PATH=$PATH:$HOME/.local/share/JetBrains/Toolbox/scripts
 PATH="$HOME/.yarn/bin:$PATH"
-PATH="$ASDF_DATA_DIR/shims:$PATH"
+# This will get dropped by mise activate
+PATH="$HOME/.local/share/mise/shims:$PATH"
 
 if [[ $OSTYPE == darwin* ]]; then
   PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
@@ -195,3 +179,4 @@ zinit cdreplay -q
 [[ ! -f ~/.config/zsh/p10k.zsh ]] || source ~/.config/zsh/p10k.zsh
 
 export TERM=xterm-256color
+eval "$(mise activate zsh)"
