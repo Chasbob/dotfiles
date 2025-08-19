@@ -2,10 +2,30 @@
 if [[ "$OSTYPE" != darwin* ]]; then
   alias open='xdg-open'
   # alias xclip to pbcopy and paste
-  if [ $+commands[xclip] ]; then
-    alias pbcopy='xclip -selection clipboard -in'
-    alias pbpaste='xclip -selection clipboard -out'
+  # set pbcopy/pbpaste based on session type and available commands
+  if [ -n "$XDG_SESSION_TYPE" ]; then
+    case "$XDG_SESSION_TYPE" in
+      wayland)
+        if (( $+commands[wl-copy] )); then
+          alias pbcopy='wl-copy'
+          alias pbpaste='wl-paste'
+        elif (( $+commands[xclip] )); then
+          alias pbcopy='xclip -selection clipboard -in'
+          alias pbpaste='xclip -selection clipboard -out'
+        fi
+        ;;
+      x11)
+        if (( $+commands[xclip] )); then
+          alias pbcopy='xclip -selection clipboard -in'
+          alias pbpaste='xclip -selection clipboard -out'
+        elif (( $+commands[wl-copy] )); then
+          alias pbcopy='wl-copy'
+          alias pbaste='wl-paste'
+        fi
+        ;;
+    esac
   fi
+
 fi
 
 function o(){
