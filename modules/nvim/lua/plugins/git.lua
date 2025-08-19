@@ -1,0 +1,20 @@
+return {
+    {
+      "tpope/vim-fugitive"
+    },
+    {
+        "tpope/vim-rhubarb"
+    },
+    {
+        "tpope/vim-sleuth"
+    },
+    {
+        "folke/todo-comments.nvim"
+    },
+    {
+        "knubie/vim-kitty-navigator"
+    },
+    {
+        "lewis6991/gitsigns.nvim"
+    },
+}
