@@ -1,0 +1,279 @@
+[toplevel]
+whoami = sts get-caller-identity
+whoami2 = sts get-caller-identity --query AccountName --output text
+regions = !aws ec2 describe-regions --query 'Regions[].RegionName' --all-regions | jq -c '.[]' -r
+profiles = configure list-profiles
+get-secret-value =
+  !f() {
+    aws secretsmanager get-secret-value --secret-id $(aws secretsmanager list-secrets --output text --query 'SecretList[].Name' | fzf) --query SecretString --output text
+  }; f
+
+instance-select-2 =
+  !f() {
+    REGIONS="$(aws regions | fzf --multi)"
+    {
+      for region in $REGIONS
+      do
+        aws ec2 describe-instances \
+          --filters "Name=instance-state-name,Values=[running]" \
+          --query 'Reservations[].Instances[].{InstanceId:InstanceId,NAME:Tags[?Key==`Name`].Value[]|[0],IP:NetworkInterfaces[].PrivateIpAddresses[].PrivateIpAddress[]|[0]}' \
+          --region $region \
+          --output json |\
+          jq ". | map_values(. + {Region: \"$region\"}) | .[]" -c
+      done \
+    } | \
+      fzf \
+        --preview="jq -r '[\"ID                 \", \"IP             \",\"NAME           \"] , [\"-------------------\", \"---------------\", \"---------------\"], ([.InstanceId, .IP, .NAME]) | @tsv' <<< {}"
+  }; f
+
+; --preview="jq -r '[\"ID                 \", \"IP             \",\"NAME           \"] , [\"-------------------\", \"---------------\", \"---------------\"], ([.InstanceId, .IP, .NAME]) | @tsv' <<< {}"
+select-instance-type =
+  !f() {
+    aws ec2 describe-instance-types \
+      --query 'InstanceTypes[].InstanceType' \
+      --output json |\
+      jq -c '.[]' |\
+      fzf
+  }; f
+
+ssh2 = 
+  !f() {
+    INSTANCE="$(aws instance-select-2)"
+    export AWS_REGION="$(echo $INSTANCE | jq -r .Region)"
+    echo "$INSTANCE"|jq --raw-output .InstanceId | xargs -ro ssh
+  }; f
+ssh =
+  !f() {
+    aws instance-select | jq --raw-output .InstanceId | xargs -ro ssh
+  }; f
+tssh =
+  !f() {
+    aws instance-select | jq --raw-output .InstanceId | xargs -I _ -ro ssh _ -t 'tmux has-session && tmux attach -t tssh || tmux new -s tssh'
+  }; f
+
+force-restart-instance =
+  !f() {
+    instanceId="$(aws instance-select | jq --raw-output .InstanceId)"
+    aws ssm start-automation-execution --document-name "AWS-RestartEC2Instance" --document-version "\$DEFAULT" --parameters '{"InstanceId":["$instanceId"],"AutomationAssumeRole":[""]}' --region eu-west-1
+  }; f
+
+resize-instance =
+  !f() {
+    instanceId="$(aws instance-select|jq --raw-output .InstanceId)"
+    echo "RESIZE: $instanceId to $1"
+    aws ssm start-automation-execution --document-name "AWS-ResizeInstance" --document-version "\$DEFAULT" --parameters '{"InstanceType":["$1"], "InstanceId":["$instanceId"],"SleepWait":["PT5S"]}' --region eu-west-1
+  }; f
+
+cluster-name =
+  !f() {
+    aws ecs list-clusters --query clusterArns | jq -c '.[]' -r | awk -F '/' '{print $2}' | fzf
+  }; f
+
+task-name-json =
+  !f() {
+    set -eu
+    CLUSTER_NAME="$1"
+    TASK_NAME="$2"
+    TASK_DEF_ARN="$(aws ecs describe-tasks --tasks "$TASK_NAME" --cluster "$CLUSTER_NAME" --query 'tasks[0].taskDefinitionArn' --output=text)"
+    jq --null-input -cr \
+      --arg task "$TASK_NAME" \
+      --arg taskDef "$TASK_DEF_ARN" \
+      --arg cluster "$CLUSTER_NAME" \
+      '{"task": $task, "taskDef": $taskDef, "cluster": $cluster}'
+
+
+  }; f
+
+ecs-task-ip =
+  !f() {
+    
+    cluster="$(aws ecs list-clusters --query clusterArns | jq -c '.[]' -r | awk -F '/' '{print $2}' | fzf)"
+    preview="aws ecs describe-tasks --cluster $cluster --tasks {} --query 'tasks[0].taskDefinitionArn' | xargs -ro aws ecs describe-task-definition --query taskDefinition.taskDefinitionArn --output=text --task-definition"
+    taskArn="$(aws ecs list-tasks --cluster "$cluster" --query taskArns | jq -c '.[]' -r | fzf --preview="$preview")"
+    echo "TASK=$taskArn"
+    aws ecs describe-tasks --tasks $taskArn --cluster $cluster --query 'tasks'
+  }; f
+
+ecs-exec =
+  !f() {
+    cluster="$(aws ecs list-clusters --query clusterArns | jq -c '.[]' -r | awk -F '/' '{print $2}' | fzf)"
+    preview="aws ecs describe-tasks --cluster $cluster --tasks {} --query 'tasks[0].taskDefinitionArn' | xargs -ro aws ecs describe-task-definition --query taskDefinition.taskDefinitionArn --output=text --task-definition"
+    taskArn="$(aws ecs list-tasks --cluster "$cluster" --query taskArns | jq -c '.[]' -r | fzf --preview="$preview")"
+    containerName="$(aws ecs describe-tasks --tasks $taskArn --cluster $cluster --query 'tasks[0].containers[].name' | jq -c '.[]' -r | fzf)"
+    aws ecs execute-command \
+      --cluster "$cluster" \
+      --task "$(echo -n "$taskArn" | awk -F '/' '{print $3}')" \
+      --container "$containerName" \
+      --interactive \
+      --command $1
+  }; f
+
+ecs-exec2 =
+  !f() {
+    set -eu
+    cluster="$(aws ecs list-clusters --query clusterArns | jq -c '.[]' -r | awk -F '/' '{print $2}' | fzf)"
+    aws ecs list-tasks --cluster "$cluster" --query taskArns | jq -c '.[]' -r | xargs aws task-name-json $cluster 
+    echo "$task"
+    taskArn="$(echo -n $task | jq -r '.task')"
+    containerName="$(aws ecs describe-tasks --tasks $taskArn --cluster $cluster --query 'tasks[0].containers[].name' | jq -c '.[]' -r| fzf)"
+    aws ecs execute-command \
+      --cluster "$cluster" \
+      --task "$(echo -n "$taskArn" | awk -F '/' '{print $3}')" \
+      --container "$containerName" \
+      --interactive \
+      --command $1
+  }; f
+
+running-instances = ec2 describe-instances \
+    --filter Name=instance-state-name,Values=running \
+    --output table \
+    --query 'Reservations[].Instances[].{ID: InstanceId,Hostname: PublicDnsName,Name: Tags[?Key==`Name`].Value | [0],Type: InstanceType, Platform: Platform || `Linux`}'
+
+ecr-login =
+  !f() {
+    set -eu
+    REGISTRY="$(aws whoami | jq .Account --raw-output).dkr.ecr.${AWS_REGION}.amazonaws.com"
+    echo "Login to '$REGISTRY'"
+    aws ecr get-login-password --region "$AWS_REGION" | docker login --username AWS --password-stdin "$REGISTRY"
+  }; f
+
+add-ssh-key =
+  !f() {
+    set -eux
+    INSTANCE_ID="$1"
+    PUB_KEY="$2"
+    aws ssm \
+      start-session \
+        --document-name 'AWS-StartNonInteractiveCommand' \
+        --target "$INSTANCE_ID" \
+        --parameters "{\"command\": [\"bash -c 'mkdir -p ~/.ssh && touch ~/.ssh/authorized_keys && echo $PUB_KEY >> ~/.ssh/authorized_keys'\"]}"
+  }; f
+
+find-instances =
+  !f() {
+    set -eu
+    echo "aws configure list-profiles" >&2
+    PROFILES="$(aws configure list-profiles | fzf --multi)"
+    REGIONS="eu-west-1 eu-west-2 eu-central-1 us-east-2 eu-north-1 us-west-2 ap-southeast-2 ap-northeast-1"
+    {
+      for profile in $PROFILES
+      do
+        for region in $REGIONS
+        do
+          {
+            echo "aws ec2 describe-instances --filters 'Name=instance-state-name,Values=[running]' --query 'Reservations[].Instances[].{InstanceId:InstanceId,NAME:Tags[?Key==\`Name\`].Value[]|[0],IP:NetworkInterfaces[].PrivateIpAddresses[].PrivateIpAddress[]|[0]}' --output json --region $region --profile $profile"
+          } >&2
+        done
+      done
+    }
+    {
+      for profile in $PROFILES
+      do
+        for region in $REGIONS
+        do
+          aws --region $region --profile $profile ec2 describe-instances \
+            --filters 'Name=instance-state-name,Values=[running]' \
+            --query 'Reservations[].Instances[].{InstanceId:InstanceId,NAME:Tags[?Key==`Name`].Value[]|[0],IP:NetworkInterfaces[].PrivateIpAddresses[].PrivateIpAddress[]|[0]}' \
+            --output json |\
+            jq ". | map_values(. + {Region: \"$region\", Profile: \"$profile\"}) | .[]" -c
+        done
+      done
+    } | fzf --multi --preview "jq --color-output . <(echo {})" |\
+    jq -r '"aws --region \(.Region) --profile \(.Profile) ssm start-session --target \(.InstanceId)"'
+  }; f
+
+ssm-cmd =
+  !f() {
+    set -e
+    aws ssm start-session \
+      --document-name 'AWS-StartNonInteractiveCommand' \
+      --parameters "{\"command\": [\"$*\"]}" \
+      --target "$(aws instance-select | jq .InstanceId -r)"
+  }; f
+
+ssm-sh =
+  !f() {
+    set -e
+    aws ssm start-session --target "$(aws instance-select | jq .InstanceId -r)"
+  }; f
+
+ssm-sh2 = !aws ssm start-session --target "$1"
+
+[command ecr]
+search =
+  !f() {
+    aws ecr describe-repositories --query "repositories[].repositoryUri" --output json | jq '.[]' -r | fzf
+  }; f
+[command ssm]
+
+get = !aws ssm get-parameter  --with-decryption  --query Parameter.Value --output text --name
+
+instances = !aws ssm describe-instance-information --query 'InstanceInformationList[].{InstanceId:InstanceId,NAME:ComputerName,IP:IPAddress}'
+
+search = 
+  !f() {
+    aws ssm describe-parameters --query 'Parameters[].Name' | jq '.[]' -r | fzf
+  }; f
+
+search-value =
+  !f() {
+    aws ssm search | xargs aws ssm get-value
+  }; f
+
+start = !echo "aws ssm start-session --target $(aws ec2 instance-select | jq .InstanceId -r)"
+connect =
+  !f(){
+    aws ssm start-session --target "$(aws ec2 instance-select | jq .InstanceId -r)"
+  }; f
+
+[command ec2]
+
+regions = describe-regions --query Regions[].RegionName
+
+instance-profiles = !aws iam list-instance-profiles
+
+instances = describe-instances \
+      --filters "Name=instance-state-name,Values=[running]" \
+      --query 'Reservations[].Instances[].{InstanceId:InstanceId,NAME:Tags[?Key==`Name`].Value[]|[0],IP:NetworkInterfaces[].PrivateIpAddresses[].PrivateIpAddress[]|[0]}' \
+      --output json
+
+instance-select =
+  !f() {
+    aws ec2 instances $@ | jq -c '.[]' | fzf
+  }; f
+
+sg-usage =
+  !f() {
+    set -eu
+    aws \
+      ec2 \
+      describe-network-interfaces \
+      --filters Name=group-id,Values="$1" \
+      --output table \
+      --query  'NetworkInterfaces[].{Description: Description, Tags: TagSet}'
+  }; f
+
+[command secretsmanager]
+
+ls = list-secrets --query 'SecretList[].Name'
+
+get-json =
+  !f() {
+    set -eu
+    aws secretsmanager get-secret-value  --query SecretString --output text --secret-id "$1" | jq
+  }; f
+
+[command logs]
+
+ls-groups = describe-log-groups --query 'logGroups[].logGroupName'
+
+ls-streams = describe-log-streams \
+  --order-by=LastEventTime \
+  --descending \
+  --max-items 10 \
+  --query 'logStreams[].logStreamName' \
+  --log-group-identifier
+
+[command sts]
+
+decode = aws sts decode-authorization-message --query DecodedMessage --output text
