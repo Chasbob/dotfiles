@@ -7,7 +7,7 @@ if [[ $# -lt 1 ]]; then
   return
 fi
 cluster="$(aws ecs list-clusters --query clusterArns | jq -c '.[]' -r | awk -F '/' '{print $2}' | fzf)"
-preview="aws ecs describe-tasks --cluster $cluster --tasks {} --query 'tasks[0].taskDefinitionArn' | xargs -ro aws ecs describe-task-definition --query taskDefinition.taskDefinitionArn --output=text --task-definition"
+preview="aws ecs describe-tasks --cluster $cluster --tasks {} --query 'tasks[0].taskDefinitionArn' --output text | sed 's|.*/||'"
 taskArn="$(aws ecs list-tasks --cluster "$cluster" --query taskArns | jq -c '.[]' -r | fzf --preview="$preview")"
 containerName="$(aws ecs describe-tasks --tasks $taskArn --cluster $cluster --query 'tasks[0].containers[].name' | jq -c '.[]' -r | fzf)"
 aws ecs execute-command \
