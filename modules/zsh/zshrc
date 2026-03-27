@@ -48,12 +48,6 @@ autoload "$ZDOTDIR"/funcs/*
 
 setopt promptsubst
 
-POWERLEVEL9K_SHORTEN_STRATEGY=truncate_to_last
-POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
-POWERLEVEL9K_SHORTEN_DELIMITER=""
-zinit depth=1 lucid nocd \
-      atload"source $ZDOTDIR/p10k.zsh; _p9k_precmd" for romkatv/powerlevel10k
-
 # - - - - - - - - - - - - - - - - - - - -
 # Meta Plugins
 # - - - - - - - - - - - - - - - - - - - -
@@ -173,10 +167,6 @@ autoload -Uz compinit
 compinit
 zinit cdreplay -q
 
-
-
-# To customize prompt, run `p10k configure` or edit ~/.config/zsh/p10k.zsh.
-[[ ! -f ~/.config/zsh/p10k.zsh ]] || source ~/.config/zsh/p10k.zsh
-
 export TERM=xterm-256color
 eval "$(mise activate zsh)"
+eval "$(oh-my-posh init zsh --config $ZDOTDIR/oh-my-posh.json)"
