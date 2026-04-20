@@ -1,0 +1,30 @@
+#!/usr/bin/env python3
+
+import ast
+import json
+import sys
+
+
+def main() -> int:
+    raw = sys.stdin.read().strip()
+    if not raw:
+        print("No input provided on stdin.", file=sys.stderr)
+        return 1
+
+    try:
+        data = ast.literal_eval(raw)
+    except (SyntaxError, ValueError) as e:
+        print(f"Failed to parse Python dict: {e}", file=sys.stderr)
+        return 1
+
+    if not isinstance(data, dict):
+        print("Input is not a Python dict.", file=sys.stderr)
+        return 1
+
+    json.dump(data, sys.stdout, indent=2, sort_keys=True)
+    sys.stdout.write("\n")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
