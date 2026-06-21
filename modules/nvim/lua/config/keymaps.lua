@@ -1,2 +1,3 @@
-vim.keymap.set("n", "<leader>sc", "<cmd>s/ --/ \\\\\r\t--/g<cr>", { desc = "Split command args onto new lines" })
-
+-- Keymaps are automatically loaded on the VeryLazy event
+-- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
+-- Add any additional keymaps here
