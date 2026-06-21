@@ -1,6 +1,5 @@
 [toplevel]
 whoami = sts get-caller-identity
-whoami2 = sts get-caller-identity --query AccountName --output text
 regions = !aws ec2 describe-regions --query 'Regions[].RegionName' --all-regions | jq -c '.[]' -r
 profiles = configure list-profiles
 get-secret-value =
@@ -212,7 +211,11 @@ instances = !aws ssm describe-instance-information --query 'InstanceInformationL
 
 search = 
   !f() {
-    aws ssm describe-parameters --query 'Parameters[].Name' | jq '.[]' -r | fzf
+    aws ssm \
+      get-parameters-by-path \
+      --recursive \
+      --path "${1:-/}" \
+      --query 'Parameters[].Name' | jq '.[]' -r | fzf
   }; f
 
 search-value =
@@ -255,7 +258,7 @@ sg-usage =
 
 [command secretsmanager]
 
-ls = list-secrets --query 'SecretList[].Name'
+ls = list-secrets --query 'SecretList[*].[Name]' --output=text
 
 get-json =
   !f() {
@@ -264,15 +267,37 @@ get-json =
   }; f
 
 [command logs]
+itailfj =
+    !f() {
+        set -exu
+        LOG_GROUP="${1:-$(aws logs select-group)}"
+        aws logs tailfj "$LOG_GROUP"
+        echo "aws logs tailfj $LOG_GROUP"
+    }; f
+tailfj = tail --follow --format=json
 
-ls-groups = describe-log-groups --query 'logGroups[].logGroupName'
+ls-groups = describe-log-groups --query 'logGroups[*].[logGroupName]' --output=text
+
 
 ls-streams = describe-log-streams \
   --order-by=LastEventTime \
   --descending \
   --max-items 10 \
-  --query 'logStreams[].logStreamName' \
+  --query 'logStreams[*].[logStreamName]' \
+  --output=text \
   --log-group-identifier
+
+select-group =
+    !f() {
+        aws logs ls-groups | fzf
+    }; f
+
+select-stream =
+    !f() {
+        set -eu
+        LOG_GROUP="${1:-$(aws logs select-group)}"
+        aws logs ls-streams "$LOG_GROUP" | fzf
+    };f
 
 [command sts]
 
