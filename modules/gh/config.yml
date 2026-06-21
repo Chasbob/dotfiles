@@ -19,6 +19,7 @@ aliases:
     pl: pr list
     auto: pr merge -sd --auto
     ok: pr review --approve
+    aok: '!gh auto "$1" ; gh ok "$1"'
     view-commit: '!gh browse $(git rev-parse HEAD)'
 # The path to a unix socket through which send HTTP connections. If blank, HTTP traffic will be handled by net/http.DefaultTransport.
 http_unix_socket:
