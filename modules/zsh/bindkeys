@@ -3,11 +3,8 @@ bindkey "^[[B" history-substring-search-down
 bindkey -M vicmd 'k' history-substring-search-up
 bindkey -M vicmd 'j' history-substring-search-down
 
-bindkey '^ ' autosuggest-execute
+bindkey '^x' autosuggest-execute
 bindkey '^A' autosuggest-accept
-
-zle -N emojicp
-bindkey '^x' emojicp
 
 # Bind home and end keys to start and end of line
 bindkey  "^[[1~"   beginning-of-line

@@ -51,8 +51,6 @@ else
   alias http-serve='python -m SimpleHTTPServer'
 fi
 
-alias lanip="ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'"
-
 # Alias NeoVim for Vim
 if command -v nvim &> /dev/null
 then
@@ -82,9 +80,9 @@ alias lsfpath='echo "$FPATH" | tr ":" "\n"'
 
 alias fce='emoji::emoji_get|pbc'
 
-alias ls='eza --group-directories-first'
-alias la='ls -la --git-ignore --git'
-alias ll='ls --tree --git-ignore'
+alias ls='eza --group-directories-first --git'
+alias la='ls -la --git'
+alias ll='ls --tree --git'
 alias laa='ls -la'
 alias lla='ls --tree'
 alias cll='clear && ll'
@@ -98,12 +96,12 @@ alias dpsi="docker inspect --format='| {{range .NetworkSettings.Networks}}{{.IPA
 alias dpsp="docker ps --format='table | {{.ID}} ~ {{.Names}} ~ {{ .Ports }} |'"
 alias dstop="docker ps -aq | xargs docker stop"
 
-(( ${+commands[docker-compose]} )) && dccmd='docker-compose' || dccmd='docker compose'
+(( ${+commands[docker-compose]} )) && alias dco='docker-compose' || alias dco='docker compose'
 
 if [ $+commands[yh] ]; then
-  alias dcc="$dccmd config | yh"
+  alias dcoc="dco config | yq"
 else
-  alias dcc="$dccmd config"
+  alias dcoc="dco config"
 fi
 
 alias dm='docker-machine'
@@ -117,4 +115,9 @@ alias dh='dirs -v'
 
 alias zrecomp='rm ~/.cache/.zcompdump; zi compinit'
 
+alias bench-zsh="for i in 1 2 3 4 5; do { time zsh -i -c 'exit 0' ; } 2>&1; done"
+
 alias assume="source assume"
+
+# Windows 11 VM
+alias winlab='xfreerdp3 /u:chasbob /v:100.65.116.57 /d:. /f /sec:nla +clipboard +dynamic-resolution'
