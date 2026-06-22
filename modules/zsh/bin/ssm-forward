@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
-set -eu
+set -euo pipefail
+
+if [ "$#" -lt 2 ] || [ "$#" -gt 3 ]; then
+  echo "usage: $(basename "$0") LOCAL_PORT REMOTE_PORT [TARGET_ID]" >&2
+  exit 1
+fi
+
+LOCAL_PORT="$1"
+REMOTE_PORT="$2"
 ec2_query='Reservations[].Instances[].{InstanceId:InstanceId,NAME:Tags[?Key==`Name`].Value[]|[0],IP:NetworkInterfaces[].PrivateIpAddresses[].PrivateIpAddress[]|[0]}'
 ec2_filter='Name=instance-state-name,Values=[running]'
 ssm_filter='InstanceInformationList[].{InstanceId:InstanceId,NAME:ComputerName,IP:IPAddress}'
@@ -9,9 +17,9 @@ profile=${AWS_PROFILE:-$(aws configure list-profiles | fzf)}
 ec2_search="aws --region $region --profile $profile ec2 describe-instances --filters '$ec2_filter' --query '$ec2_query' --output json"
 ssm_search="aws --region $region --profile $profile ssm describe-instance-information --query '$ssm_filter' --output json"
 search_cmd="$ec2_search ; $ssm_search"
-if [ "$#" -eq 1 ]; then
-  target_id="$1"
-elif [ "$#" -eq 0 ]; then
+if [ "$#" -eq 3 ]; then
+  target_id="$3"
+else
   target="$(eval "$search_cmd" | jq -sc '
     (.[0] // []) as $ec2
     | (.[1] // []) as $ssm
@@ -22,6 +30,9 @@ elif [ "$#" -eq 0 ]; then
   echo "$target" | jq
   target_id="$(echo "$target" | jq -r .InstanceId)"
 fi
-echo "aws --region $region --profile $profile ssm start-session --target $target_id"
-aws --region $region --profile $profile ssm start-session --target $target_id
-echo "aws --region $region --profile $profile ssm start-session --target $target_id"
+
+echo "aws --region $region --profile $profile ssm start-session --target $target_id --document-name AWS-StartPortForwardingSession --parameters portNumber=$REMOTE_PORT,localPortNumber=$LOCAL_PORT"
+exec aws --region "$region" --profile "$profile" ssm start-session \
+  --target "$target_id" \
+  --document-name AWS-StartPortForwardingSession \
+  --parameters "portNumber=$REMOTE_PORT,localPortNumber=$LOCAL_PORT"

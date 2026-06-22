@@ -6,13 +6,34 @@ if [[ $# -lt 1 ]]; then
   echo "Error: provide the command you want to run in the container as an argument (e.g. bash)"
   return
 fi
-cluster="$(aws ecs list-clusters --query clusterArns | jq -c '.[]' -r | awk -F '/' '{print $2}' | fzf)"
-preview="aws ecs describe-tasks --cluster $cluster --tasks {} --query 'tasks[0].taskDefinitionArn' --output text | sed 's|.*/||'"
-taskArn="$(aws ecs list-tasks --cluster "$cluster" --query taskArns | jq -c '.[]' -r | fzf --preview="$preview")"
-containerName="$(aws ecs describe-tasks --tasks $taskArn --cluster $cluster --query 'tasks[0].containers[].name' | jq -c '.[]' -r | fzf)"
-aws ecs execute-command \
+regions="eu-west-1 eu-central-1 eu-west-2 us-east-2 eu-north-1 us-west-2 ap-southeast-2 ap-northeast-1"
+region=${AWS_REGION:-$(echo $regions | tr ' ' '\n' | fzf)}
+profile=${AWS_PROFILE:-$(aws configure list-profiles | fzf)}
+AWS_CLI="aws --region $region --profile $profile"
+cluster="$($AWS_CLI ecs list-clusters --query clusterArns | jq -c '.[]' -r | awk -F '/' '{print $2}' | fzf)"
+
+# Precompute previews upfront: fetch every running task's definition in one
+# describe-tasks call and cache an "arn<TAB>taskDef" lookup so fzf's preview is
+# an instant grep rather than a per-scroll AWS call.
+taskArns="$($AWS_CLI ecs list-tasks --cluster "$cluster" --query taskArns | jq -c '.[]' -r)"
+if [[ -z "$taskArns" ]]; then
+  echo "No running tasks found in cluster $cluster"
+  return
+fi
+
+previewCache="$(mktemp)"
+trap 'rm -f "$previewCache"' EXIT
+$AWS_CLI ecs describe-tasks --cluster "$cluster" --tasks $taskArns \
+  --query 'tasks[].[taskArn,taskDefinitionArn]' --output text |
+  awk -F '\t' '{ sub(/.*\//, "", $2); print $1 "\t" $2 }' >"$previewCache"
+
+taskArn="$(echo "$taskArns" | fzf --preview="grep -F {} \"$previewCache\" | cut -f2")"
+containerName="$($AWS_CLI ecs describe-tasks --tasks $taskArn --cluster $cluster --query 'tasks[0].containers[].name' | jq -c '.[]' -r | fzf)"
+task="$(echo -n "$taskArn" | awk -F '/' '{print $3}')"
+echo "$AWS_CLI ecs execute-command --cluster $cluster --task $task --container $containerName --interactive --command $1"
+$AWS_CLI ecs execute-command \
   --cluster "$cluster" \
-  --task "$(echo -n "$taskArn" | awk -F '/' '{print $3}')" \
+  --task "$task" \
   --container "$containerName" \
   --interactive \
-  --command $1
+  --command "$1"

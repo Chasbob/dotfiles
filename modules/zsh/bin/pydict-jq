@@ -14,15 +14,16 @@ def main() -> int:
     try:
         data = ast.literal_eval(raw)
     except (SyntaxError, ValueError) as e:
-        print(f"Failed to parse Python dict: {e}", file=sys.stderr)
+        print(f"Failed to parse Python literal: {e}", file=sys.stderr)
         return 1
 
-    if not isinstance(data, dict):
-        print("Input is not a Python dict.", file=sys.stderr)
+    try:
+        json.dump(data, sys.stdout, indent=2, sort_keys=True)
+        sys.stdout.write("\n")
+    except TypeError as e:
+        print(f"Value is not JSON-serializable: {e}", file=sys.stderr)
         return 1
 
-    json.dump(data, sys.stdout, indent=2, sort_keys=True)
-    sys.stdout.write("\n")
     return 0
 
 
