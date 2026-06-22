@@ -19,3 +19,7 @@
 .chpwd-recent-dirs
 credstash.log
 cloud.tf
+
+**/.claude/settings.local.json
+.claude/worktrees
+/.codex
