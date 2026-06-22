@@ -50,9 +50,7 @@ export EMOJI_CLI_USE_EMOJI=true
 export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
 export DIRSTACKSIZE=8
-export POWERLEVEL9K_TERM_SHELL_INTEGRATION=true
 
-export DIRENV_LOG_FORMAT=
 export skip_global_compinit=1
 
 export AWS_EC2_METADATA_DISABLED=true

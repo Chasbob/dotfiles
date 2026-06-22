@@ -1,12 +1,5 @@
 #!/bin/bash
 
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 # - - - - - - - - - - - - - - - - - - - -
 # Zinit Configuration
 # - - - - - - - - - - - - - - - - - - - -
@@ -43,12 +36,6 @@ autoload "$ZDOTDIR"/funcs/*
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
 # - - - - - - - - - - - - - - - - - - - -
-# Theme
-# - - - - - - - - - - - - - - - - - - - -
-
-setopt promptsubst
-
-# - - - - - - - - - - - - - - - - - - - -
 # Meta Plugins
 # - - - - - - - - - - - - - - - - - - - -
 
@@ -62,60 +49,17 @@ zi for \
     wait \
   zsh-users/zsh-completions
 zinit lucid bindmap'^R -> ^F' atinit'zstyle :history-search-multi-word page-size 7;' for zdharma-continuum/history-search-multi-word
-zinit light zdharma-continuum/zinit-annex-bin-gem-node
-
-# zinit for b4b4r07/emoji-cli
 
 zinit autoload'#manydots-magic' for knu/zsh-manydots-magic
 
-# zinit lucid for marlonrichert/zsh-autocomplete
 zinit lucid for zsh-users/zsh-history-substring-search
 
 zinit snippet OMZ::lib/completion.zsh
-export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>|'
 
 zinit ice atclone"dircolors -b LS_COLORS > clrs.zsh" \
     atpull'%atclone' pick"clrs.zsh" nocompile'!' \
     atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”'
 zinit light trapd00r/LS_COLORS
-
-
-# All of the above using the for-syntax and also z-a-bin-gem-node annex
-zinit wait"1" lucid from"gh-r" for \
-     mv"**/fd -> fd" sbin"fd"     @sharkdp/fd \
-     mv"**/bat -> bat" sbin"bat"  @sharkdp/bat \
-     mv"**/eza -> eza" sbin"eza"  eza-community/eza
-
-
-zinit for \
-    as"command" \
-    atclone"cp contrib/fzy-* $ZPFX/bin/" \
-    load \
-    make"!PREFIX=$ZPFX install" \
-    pick"$ZPFX/bin/fzy*" \
-  @jhawthorn/fzy
-
-zinit ice as"program" pick"yank" make
-zinit light mptre/yank
-
-# fzf-marks
-zinit ice wait lucid
-zinit load urbainvaes/fzf-marks
-
-zinit ice wait lucid
-zinit load hlissner/zsh-autopair
-
-
-# Source plugin specific scripts
-
-# - - - - - - - - - - - - - - - - - - - -
-# Completions
-# - - - - - - - - - - - - - - - - - - - -
-    # OMZP::ssh-agent \
-    # OMZP::git-auto-fetch \
-    # has"kubectl" \
-      # OMZP::kubectl \
-
 
 FPATH=$HOME/.zfunc:$FPATH
 # Setup PATH
@@ -125,9 +69,6 @@ PATH=$HOME/go/bin:$PATH
 # Append this so that system pipx gets used in toolbox containers
 PATH=$PATH:$HOME/.local/bin
 PATH=$PATH:$HOME/.local/share/JetBrains/Toolbox/scripts
-PATH="$HOME/.yarn/bin:$PATH"
-# This will get dropped by mise activate
-PATH="$HOME/.local/share/mise/shims:$PATH"
 
 if [[ $OSTYPE == darwin* ]]; then
   PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
@@ -141,12 +82,9 @@ source "$ZDOTDIR/history"
 source "$ZDOTDIR/zstyles"
 source "$ZDOTDIR/cdpath"
 
-(( ! ${+functions[p10k]} )) || p10k finalize
-
 ### CHANGE TITLE OF TERMINALS
-# zshaddhistory() { eval 'print -Pn "\e]0;$@\a"' }
 case ${TERM} in
-  xterm*|rxvt*|Eterm*|aterm|kterm|gnome*|alacritty|st|konsole*)
+  xterm*|rxvt*|Eterm*|aterm|kterm|gnome*|alacritty|st|konsole*|*kitty*)
     PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOST%%.*}:${PWD/#$HOME/\~}\007"'
         ;;
   screen*)
@@ -160,13 +98,13 @@ autoload -Uz add-zsh-hook
 add-zsh-hook precmd myprmptcmd
 export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>|'
 
-which aws_completer >/dev/null 2>&1 && complete -C "$(which aws_completer)" aws
+eval "$(mise activate zsh)"
+eval "$(fnox activate zsh)"
+eval "$(oh-my-posh init zsh --config $ZDOTDIR/oh-my-posh.json)"
 
 autoload bashcompinit && bashcompinit
-autoload -Uz compinit
-compinit
-zinit cdreplay -q
+which aws_completer >/dev/null 2>&1 && complete -C aws_completer aws
 
-export TERM=xterm-256color
-eval "$(mise activate zsh)"
-eval "$(oh-my-posh init zsh --config $ZDOTDIR/oh-my-posh.json)"
+autoload -Uz compinit
+compinit -C
+zinit cdreplay -q
