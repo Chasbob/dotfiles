@@ -65,7 +65,10 @@ class Module:
             try:
                 os.symlink(src, dst)
             except FileExistsError:
-                os.remove(dst)
+                if os.path.isdir(dst) and not os.path.islink(dst):
+                    shutil.rmtree(dst)
+                else:
+                    os.remove(dst)
                 os.symlink(src, dst)
 
         # run post-hook
